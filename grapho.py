@@ -45,20 +45,28 @@ except RuntimeError:
     print("PANDAS unable to open")
     raise
 
+# COMPUTE: method called to perform the whole job
+def compute(infile, outfile):
+    read(infile)
+    write(outfile)
+    pass
 
-# INPUT/OUTPUT files
-input_file_name = sys.argv[1]
-output_file_name = sys.argv[2]
+# READ: a dataframe from a CSV inputfile
+def read(infile):
+    inputDF = pd.read_csv(infile)
+    print(inputDF)
+    # print(inputDF['age' == 1 and 'sex' == 0])
+    pass
 
-# READER
-# with open('small.csv', 'rb') as csvfile:
-#     csv_reader = csv.reader(csvfile, delimiter=',', quotechar='|')
-#     for row in csv_reader:
-#         print ', '.join(row)
+# WRITE: a gph output file
+def write(outfile):
+    with open(outfile, 'wb') as csvfile:
+        gph_writer = csv.writer(csvfile, delimiter=' ',
+                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        gph_writer.writerow(['Spam'] * 5 + ['Baked Beans'])
+        gph_writer.writerow(['Spam', 'Lovely Spam', 'Wonderful Spam'])
+    pass
 
-
-inputDF = pd.read_csv(input_file_name)
-print(inputDF)
 
 # COMPUTE
 # Directed graphs, that is, graphs with directed edges
@@ -69,14 +77,6 @@ G.add_edge(2,3,weight=0.9)
 G.add_nodes_from([2,3])
 
 print(G.adj)
-
-
-# WRITER
-with open(output_file_name, 'wb') as csvfile:
-    gph_writer = csv.writer(csvfile, delimiter=' ',
-                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
-    gph_writer.writerow(['Spam'] * 5 + ['Baked Beans'])
-    gph_writer.writerow(['Spam', 'Lovely Spam', 'Wonderful Spam'])
 
 
 

@@ -3,7 +3,7 @@ import sys
 import networkx
 
 # Bayesian scoring
-import grapho as go
+import grapho
 
 
 
@@ -17,6 +17,7 @@ def compute(infile, outfile):
     # WRITE YOUR CODE HERE
     # FEEL FREE TO CHANGE ANYTHING ANYWHERE IN THE CODE
     # THIS INCLUDES CHANGING THE FUNCTION NAMES, MAKING THE CODE MODULAR, BASICALLY ANYTHING
+    grapho.compute(infile, outfile)
     pass
 
 
