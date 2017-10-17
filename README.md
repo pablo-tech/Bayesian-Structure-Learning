@@ -3,7 +3,12 @@
 ## Bayesian Network Scoring
 This project is a competition to find Bayesian network structures that best fit some given data.
 
-### On Mac
+### Scoring: Cooper&Herskovits, 1992
+The scoring function is callibrated using the original Bayesian Structure Scoring paper, from which first published the
+equations in the Decision Under Uncertainty book (2.80).  The paper provides example input data and values for
+two Bayesian networks.
+The test class is: graphotest.py
+The input file: cooperh.csv
 
 #### Docker on Mac
 
