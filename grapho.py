@@ -55,6 +55,7 @@ except RuntimeError:
 def compute(infile, outfile):
     graph = read(infile)
     plotGraph(graph, outfile + ".png")
+    toString(graph)
     write(outfile)
     pass
 
@@ -112,53 +113,41 @@ def write(outfile):
         gph_writer.writerow(['Spam', 'Lovely Spam', 'Wonderful Spam'])
     pass
 
+def analizeGraph(graph):
+    # degree()
+    nx.connected_components
+    # graph.adj
 
-# COMPUTE
-# Directed graphs, that is, graphs with directed edges
-G=nx.Graph()
-G=nx.DiGraph()
-
-G.add_edge(2,3,weight=0.9)
-# G.add_nodes_from([2,3])
-
-# print(G.adj)
-
-# Matplotlib DeprecationWarning: pyplot.hold is deprecated
-def plotGraph(graph, filename):
+# PRINT nodes, graphs, edges, neighbors
+def toString(graph):
     print "GRAPH: {} ".format(graph.graph)
     print "NODES: {}".format(graph.nodes())
     print "EDGES: {}".format(graph.edges())
     for node in graph.nodes():
         print "{} EDGES: {}".format(node, graph[node])
         print "{} NEIGHTBORS: {}".format(node, graph.neighbors(node))
-        # degree()
-    nx.connected_components
-    #nx.draw_networkx(graph)
-    graph.adj
 
-    # positions
+# PLOT graph: nodes, edges, labesl
+def plotGraph(graph, filename):
+    # POSITIONS
     pos = nx.spring_layout(graph)  # positions for all nodes
-    # nodes
+    # NODES
     nx.draw_networkx_nodes(graph, pos,
                            nodelist=graph.nodes(),
-                           node_color='r') # alpha=0.8, node_size=500
-    # edges
+                           node_color='r', node_size=500) # alpha=0.8,
+    # EDGES
     nx.draw_networkx_edges(graph, pos,
                            edgelist=graph.edges(),
                            edge_color='b') # alpha=0.5, width=8,
-    # some math labels
+    # LABELS
     labels = {}
-    i = 0
     for node in graph.nodes():
         labels[str(node)] = str(node)
-        i=i+1
-    print labels
     nx.draw_networkx_labels(graph, pos, labels, font_size=10)
-    # draw all
+    # DRAW ALL
     plt.axis('off')
-    nx.draw(graph)
     plt.savefig(filename)
-    plt.show()
+    # plt.show()
 
 
 # FUTURE WORK
