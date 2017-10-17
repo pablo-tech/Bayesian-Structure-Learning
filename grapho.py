@@ -9,15 +9,6 @@ except RuntimeError:
     print("Networkx unable to open")
     raise
 
-# MATPLOTLIB
-try:
-    import matplotlib.pyplot as plt
-except ImportError:
-    raise ImportError("Matplotlib required for draw()")
-except RuntimeError:
-    print("Matplotlib unable to open")
-    raise
-
 # SYSTEM
 try:
     import sys
@@ -59,17 +50,12 @@ import graphoshow as oshow
 def compute(infile, outfile):
     graph = getNewGraph("first")
     inputDF = read(infile)
-    filter(inputDF)
+    score = oscore.getScore()
     graph = addRandomVarNodesToGraph(graph, inputDF)
     oshow.plotGraph(graph, outfile)
     oshow.toString(graph)
     oshow.write(outfile, graph)
     pass
-
-def filter(dataframe):
-    testQuery = [('age', 1), ('sex', 1)]
-    filteredDF = queryDataframe(dataframe, testQuery)
-    print(filteredDF)
 
 # READ: a dataframe from a CSV inputfile
 def read(infile):
@@ -81,23 +67,6 @@ def read(infile):
 def getNewGraph(graphName):
     graph = nx.DiGraph(name=graphName)
     return graph
-
-# def query(dataframe):
-#     #print(inputDF.loc[(inputDF['age']==1) & (inputDF['sex']==2)])
-#     print(dataframe.loc[(dataframe['age']==1) & (dataframe['sex']==2)][['age', 'sex']])
-#     pass
-
-# FILTER: reduce the dataframe to the rows that match a query, with only the columns that match the query
-# queryArray = [('age', 1), ('sex', 2)]
-def queryDataframe(dataframe, queryArray):
-    filteredDF = dataframe
-    fieldNames = []
-    for tuple in queryArray:
-        field_name = tuple[0]
-        field_value = tuple[1]
-        filteredDF = filteredDF.loc[(filteredDF[field_name] == field_value)]
-        fieldNames.append(field_name)
-    return filteredDF[fieldNames]
 
 # READ: get dataframe, inferring columns
 def getInputDF(infile):
