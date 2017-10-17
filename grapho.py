@@ -1,5 +1,4 @@
 # https://networkx.github.io/documentation/networkx-1.9/tutorial/tutorial.html
-import networkx as nx
 
 # NETWORKX
 try:
@@ -18,7 +17,6 @@ except ImportError:
 except RuntimeError:
     print("Matplotlib unable to open")
     raise
-
 
 # SYSTEM
 try:
@@ -47,6 +45,11 @@ except RuntimeError:
     print("PANDAS unable to open")
     raise
 
+
+# GRAPHO components
+import graphoscore as oscore
+import graphoshow as oshow
+
 # GRAPH: that is used to find best
 # initialGraph = nx.DiGraph()
 
@@ -54,8 +57,8 @@ except RuntimeError:
 # TODO: output both png and gph files
 def compute(infile, outfile):
     graph = read(infile)
-    plotGraph(graph, outfile + ".png")
-    toString(graph)
+    oshow.plotGraph(graph, outfile + ".png")
+    oshow.toString(graph)
     write(outfile)
     pass
 
@@ -132,36 +135,6 @@ def analizeGraph(graph):
     nx.connected_components
     # graph.adj
 
-# PRINT nodes, graphs, edges, neighbors
-def toString(graph):
-    print "GRAPH: {} ".format(graph.graph)
-    print "NODES: {}".format(graph.nodes())
-    print "EDGES: {}".format(graph.edges())
-    for node in graph.nodes():
-        print "{} EDGES: {}".format(node, graph[node])
-        print "{} NEIGHTBORS: {}".format(node, graph.neighbors(node))
-
-# PLOT graph: nodes, edges, labesl
-def plotGraph(graph, filename):
-    # POSITIONS
-    pos = nx.spring_layout(graph)  # positions for all nodes
-    # NODES
-    nx.draw_networkx_nodes(graph, pos,
-                           nodelist=graph.nodes(),
-                           node_color='r', node_size=500) # alpha=0.8,
-    # EDGES
-    nx.draw_networkx_edges(graph, pos,
-                           edgelist=graph.edges(),
-                           edge_color='b') # alpha=0.5, width=8,
-    # LABELS
-    labels = {}
-    for node in graph.nodes():
-        labels[str(node)] = str(node)
-    nx.draw_networkx_labels(graph, pos, labels, font_size=10)
-    # DRAW ALL
-    plt.axis('off')
-    plt.savefig(filename)
-    # plt.show()
 
 
 # FUTURE WORK
