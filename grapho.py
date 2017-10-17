@@ -54,6 +54,7 @@ import graphoshow as oshow
 # initialGraph = nx.DiGraph()
 
 # COMPUTE: method called to perform the whole job
+# TODO: make sure no self loops
 # TODO: output both png and gph files
 def compute(infile, outfile):
     graph = getNewGraph("first")
@@ -78,7 +79,7 @@ def read(infile):
 # Graph vs DiGraph
 # name=graphName
 def getNewGraph(graphName):
-    graph = nx.Graph(name=graphName)
+    graph = nx.DiGraph(name=graphName)
     return graph
 
 # def query(dataframe):

@@ -47,7 +47,8 @@ def plotGraph(graph, filename):
     # EDGES
     nx.draw_networkx_edges(graph, pos,
                            edgelist=graph.edges(),
-                           edge_color='b') # alpha=0.5, width=8,
+                           edge_color='b',
+                           arrows = True) # alpha=0.5, width=8,
     # LABELS
     labels = {}
     for node in graph.nodes():
@@ -65,8 +66,7 @@ def plotGraph(graph, filename):
 # WRITE: a gph output file
 def write(outfile, graph):
     with open(outfile, 'wb') as csvfile:
-        owriter = csv.writer(csvfile, delimiter=',',
-                                quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        owriter = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         for node in graph.nodes():
             owriter.writerow([node])
     pass
