@@ -62,6 +62,9 @@ def compute(infile, outfile):
 # READ: a dataframe from a CSV inputfile
 def read(infile):
     inputDF = getInputDF(infile)
+    testQuery = [('age', 1), ('sex', 1)]
+    filteredDF = queryDataframe(inputDF, testQuery)
+    print(filteredDF)
     graph = getNewGraph("first")
     graph = addGraphNodes(graph, inputDF)
     return graph
@@ -81,11 +84,22 @@ def getNewGraph(graphName):
     graph = nx.Graph(name=graphName)
     return graph
 
+# def query(dataframe):
+#     #print(inputDF.loc[(inputDF['age']==1) & (inputDF['sex']==2)])
+#     print(dataframe.loc[(dataframe['age']==1) & (dataframe['sex']==2)][['age', 'sex']])
+#     pass
 
-def query(dataframe):
-    #print(inputDF.loc[(inputDF['age']==1) & (inputDF['sex']==2)])
-    #print(inputDF.loc[(inputDF['age']==1) & (inputDF['sex']==2)][['age', 'sex']])
-    pass
+# FILTER: reduce the dataframe to the rows that match a query, with only the columns that match the query
+# queryArray = [('age', 1), ('sex', 2)]
+def queryDataframe(dataframe, queryArray):
+    filteredDF = dataframe
+    fieldNames = []
+    for tuple in queryArray:
+        field_name = tuple[0]
+        field_value = tuple[1]
+        filteredDF = filteredDF.loc[(filteredDF[field_name] == field_value)]
+        fieldNames.append(field_name)
+    return filteredDF[fieldNames]
 
 # READ: get dataframe, inferring columns
 def getInputDF(infile):
