@@ -1,3 +1,4 @@
+# https://networkx.github.io/documentation/networkx-1.9/tutorial/tutorial.html
 import networkx as nx
 
 # NETWORKX
@@ -50,8 +51,10 @@ except RuntimeError:
 # initialGraph = nx.DiGraph()
 
 # COMPUTE: method called to perform the whole job
+# TODO: output both png and gph files
 def compute(infile, outfile):
-    read(infile)
+    graph = read(infile)
+    plotGraph(graph, outfile + ".png")
     write(outfile)
     pass
 
@@ -60,10 +63,10 @@ def read(infile):
     inputDF = getInputDF(infile)
     graph = getNewGraph("first")
     graph = addGraphNodes(graph, inputDF)
+    return graph
     # print(graph.node['fare'])
     # nx.connected_components(graph)
     # graph.adj
-    plotGraph(graph)
 
     #print(inputDF)
 
@@ -94,9 +97,9 @@ def addGraphNodes(graph, dataframe):
         unique = dataframe[col].unique()
         print"{} \t\t UNIQUE: \t\t {} ".format(col, unique)
         graph.add_node(col)
+        # graph.add_edge('age', col)
         #graph.add_nodes_from([2, 3])
         #print(dataframe.col)
-        # dataframe[col].u
     return graph
 
 
@@ -120,13 +123,43 @@ G.add_edge(2,3,weight=0.9)
 
 # print(G.adj)
 
-
-def plotGraph(graph):
+# Matplotlib DeprecationWarning: pyplot.hold is deprecated
+def plotGraph(graph, filename):
     print "GRAPH: {} ".format(graph.graph)
     print "NODES: {}".format(graph.nodes())
     print "EDGES: {}".format(graph.edges())
     for node in graph.nodes():
+        print "{} EDGES: {}".format(node, graph[node])
         print "{} NEIGHTBORS: {}".format(node, graph.neighbors(node))
+        # degree()
     nx.connected_components
     #nx.draw_networkx(graph)
     graph.adj
+
+    # positions
+    pos = nx.spring_layout(graph)  # positions for all nodes
+    # nodes
+    nx.draw_networkx_nodes(graph, pos,
+                           nodelist=graph.nodes(),
+                           node_color='r') # alpha=0.8, node_size=500
+    # edges
+    nx.draw_networkx_edges(graph, pos,
+                           edgelist=graph.edges(),
+                           edge_color='b') # alpha=0.5, width=8,
+    # some math labels
+    labels = {}
+    i = 0
+    for node in graph.nodes():
+        labels[str(node)] = str(node)
+        i=i+1
+    print labels
+    nx.draw_networkx_labels(graph, pos, labels, font_size=10)
+    # draw all
+    plt.axis('off')
+    nx.draw(graph)
+    plt.savefig(filename)
+    plt.show()
+
+
+# FUTURE WORK
+#
