@@ -18,6 +18,7 @@ except RuntimeError:
     print("Matplotlib unable to open")
     raise
 
+
 # SYSTEM
 try:
     import sys
@@ -45,6 +46,9 @@ except RuntimeError:
     print("PANDAS unable to open")
     raise
 
+# GRAPH: that is used to find best
+# initialGraph = nx.DiGraph()
+
 # COMPUTE: method called to perform the whole job
 def compute(infile, outfile):
     read(infile)
@@ -53,10 +57,48 @@ def compute(infile, outfile):
 
 # READ: a dataframe from a CSV inputfile
 def read(infile):
-    inputDF = pd.read_csv(infile)
-    print(inputDF)
-    # print(inputDF['age' == 1 and 'sex' == 0])
+    inputDF = getInputDF(infile)
+    graph = getNewGraph("first")
+    graph = addGraphNodes(graph, inputDF)
+    # print(graph.node['fare'])
+    # nx.connected_components(graph)
+    # graph.adj
+    plotGraph(graph)
+
+    #print(inputDF)
+
+    # .values
+    # df.head()
     pass
+
+# Graph vs DiGraph
+# name=graphName
+def getNewGraph(graphName):
+    graph = nx.Graph(name=graphName)
+    return graph
+
+
+def query(dataframe):
+    #print(inputDF.loc[(inputDF['age']==1) & (inputDF['sex']==2)])
+    #print(inputDF.loc[(inputDF['age']==1) & (inputDF['sex']==2)][['age', 'sex']])
+    pass
+
+# READ: get dataframe, inferring columns
+def getInputDF(infile):
+    inputDF = pd.read_csv(infile, header='infer')
+    return inputDF
+
+def addGraphNodes(graph, dataframe):
+    for col in list(dataframe):
+        # len()
+        unique = dataframe[col].unique()
+        print"{} \t\t UNIQUE: \t\t {} ".format(col, unique)
+        graph.add_node(col)
+        #graph.add_nodes_from([2, 3])
+        #print(dataframe.col)
+        # dataframe[col].u
+    return graph
+
 
 # WRITE: a gph output file
 def write(outfile):
@@ -74,9 +116,17 @@ G=nx.Graph()
 G=nx.DiGraph()
 
 G.add_edge(2,3,weight=0.9)
-G.add_nodes_from([2,3])
+# G.add_nodes_from([2,3])
 
-print(G.adj)
+# print(G.adj)
 
 
-
+def plotGraph(graph):
+    print "GRAPH: {} ".format(graph.graph)
+    print "NODES: {}".format(graph.nodes())
+    print "EDGES: {}".format(graph.edges())
+    for node in graph.nodes():
+        print "{} NEIGHTBORS: {}".format(node, graph.neighbors(node))
+    nx.connected_components
+    #nx.draw_networkx(graph)
+    graph.adj
