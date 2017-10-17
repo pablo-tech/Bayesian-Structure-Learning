@@ -16,6 +16,15 @@ except RuntimeError:
     print("Matplotlib unable to open")
     raise
 
+# CSV
+try:
+    import csv
+except ImportError:
+    raise ImportError("CSV required for read()")
+except RuntimeError:
+    print("CSV unable to open")
+    raise
+
 # PRINT nodes, graphs, edges, neighbors
 def toString(graph):
     print "GRAPH: {} ".format(graph.graph)
@@ -46,3 +55,28 @@ def plotGraph(graph, filename):
     plt.axis('off')
     plt.savefig(filename)
     # plt.show()
+
+
+# REPRESENT: save the graph to file
+# def represent(graph):
+
+# WRITE: a gph output file
+def write(outfile, graph):
+    with open(outfile, 'wb') as csvfile:
+        owriter = csv.writer(csvfile, delimiter=' ',
+                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        owriter.writerow(['Spam'] * 5 + ['Baked Beans'])
+        owriter.writerow(['Spam', 'Lovely Spam', 'Wonderful Spam'])
+    pass
+
+
+def analizeGraph(graph):
+    # degree()
+    nx.connected_components
+    # graph.adj
+    # print(graph.node['fare'])
+    # nx.connected_components(graph)
+    # graph.adj
+    # print(inputDF)
+    # .values
+    # df.head()

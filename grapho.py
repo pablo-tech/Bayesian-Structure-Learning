@@ -62,7 +62,7 @@ def compute(infile, outfile):
     graph = addGraphNodes(graph, inputDF)
     oshow.plotGraph(graph, outfile + ".png")
     oshow.toString(graph)
-    write(outfile)
+    oshow.write(outfile, graph)
     pass
 
 def filter(dataframe):
@@ -113,31 +113,6 @@ def addGraphNodes(graph, dataframe):
         #graph.add_nodes_from([2, 3])
         #print(dataframe.col)
     return graph
-
-
-# WRITE: a gph output file
-def write(outfile):
-    with open(outfile, 'wb') as csvfile:
-        gph_writer = csv.writer(csvfile, delimiter=' ',
-                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        gph_writer.writerow(['Spam'] * 5 + ['Baked Beans'])
-        gph_writer.writerow(['Spam', 'Lovely Spam', 'Wonderful Spam'])
-    pass
-
-def analizeGraph(graph):
-    # degree()
-    nx.connected_components
-    # graph.adj
-
-
-    # print(graph.node['fare'])
-    # nx.connected_components(graph)
-    # graph.adj
-
-    #print(inputDF)
-
-    # .values
-    # df.head()
 
 
 # FUTURE WORK
