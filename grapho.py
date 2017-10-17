@@ -56,30 +56,24 @@ import graphoshow as oshow
 # COMPUTE: method called to perform the whole job
 # TODO: output both png and gph files
 def compute(infile, outfile):
-    graph = read(infile)
+    graph = getNewGraph("first")
+    inputDF = read(infile)
+    filter(inputDF)
+    graph = addGraphNodes(graph, inputDF)
     oshow.plotGraph(graph, outfile + ".png")
     oshow.toString(graph)
     write(outfile)
     pass
 
+def filter(dataframe):
+    testQuery = [('age', 1), ('sex', 1)]
+    filteredDF = queryDataframe(dataframe, testQuery)
+    print(filteredDF)
+
 # READ: a dataframe from a CSV inputfile
 def read(infile):
     inputDF = getInputDF(infile)
-    testQuery = [('age', 1), ('sex', 1)]
-    filteredDF = queryDataframe(inputDF, testQuery)
-    print(filteredDF)
-    graph = getNewGraph("first")
-    graph = addGraphNodes(graph, inputDF)
-    return graph
-    # print(graph.node['fare'])
-    # nx.connected_components(graph)
-    # graph.adj
-
-    #print(inputDF)
-
-    # .values
-    # df.head()
-    pass
+    return inputDF
 
 # Graph vs DiGraph
 # name=graphName
@@ -135,6 +129,15 @@ def analizeGraph(graph):
     nx.connected_components
     # graph.adj
 
+
+    # print(graph.node['fare'])
+    # nx.connected_components(graph)
+    # graph.adj
+
+    #print(inputDF)
+
+    # .values
+    # df.head()
 
 
 # FUTURE WORK
