@@ -35,7 +35,9 @@ def toString(graph):
         print "{} NEIGHTBORS: {}".format(node, graph.neighbors(node))
 
 # PLOT graph: nodes, edges, labesl
+# https://stackoverflow.com/questions/8213522/when-to-use-cla-clf-or-close-for-clearing-a-plot-in-matplotlib
 def plotGraph(graph, filename):
+    plt.clf()
     # POSITIONS
     pos = nx.spring_layout(graph)  # positions for all nodes
     # NODES
@@ -53,7 +55,7 @@ def plotGraph(graph, filename):
     nx.draw_networkx_labels(graph, pos, labels, font_size=10)
     # DRAW ALL
     plt.axis('off')
-    plt.savefig(filename)
+    plt.savefig(filename + ".png")
     # plt.show()
 
 

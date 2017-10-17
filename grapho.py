@@ -59,8 +59,8 @@ def compute(infile, outfile):
     graph = getNewGraph("first")
     inputDF = read(infile)
     filter(inputDF)
-    graph = addGraphNodes(graph, inputDF)
-    oshow.plotGraph(graph, outfile + ".png")
+    graph = addRandomVarNodesToGraph(graph, inputDF)
+    oshow.plotGraph(graph, outfile)
     oshow.toString(graph)
     oshow.write(outfile, graph)
     pass
@@ -103,7 +103,8 @@ def getInputDF(infile):
     inputDF = pd.read_csv(infile, header='infer')
     return inputDF
 
-def addGraphNodes(graph, dataframe):
+# ADD RANDOM VARIABLE NODES
+def addRandomVarNodesToGraph(graph, dataframe):
     for col in list(dataframe):
         # len()
         unique = dataframe[col].unique()
