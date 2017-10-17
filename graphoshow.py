@@ -63,10 +63,10 @@ def plotGraph(graph, filename):
 # WRITE: a gph output file
 def write(outfile, graph):
     with open(outfile, 'wb') as csvfile:
-        owriter = csv.writer(csvfile, delimiter=' ',
-                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        owriter.writerow(['Spam'] * 5 + ['Baked Beans'])
-        owriter.writerow(['Spam', 'Lovely Spam', 'Wonderful Spam'])
+        owriter = csv.writer(csvfile, delimiter=',',
+                                quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        for node in graph.nodes():
+            owriter.writerow([node])
     pass
 
 
