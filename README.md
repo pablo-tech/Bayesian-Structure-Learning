@@ -12,7 +12,11 @@ two Bayesian networks.
 - network2 score=2.22685407871e-10
 - THUS, network1 is more suitable for the given dataset
 
-The test class is: graphotest.py
+The test class is: 
+``
+graphotest.py
+``
+
 The input file: cooperh.csv
 The output files:
 - network1 graph: cooperh.gph-net1
@@ -20,10 +24,6 @@ The output files:
 - network2 graph: cooperh.gph-net2
 - network2 plot of the graph: cooperh.gph-net2.png
 
-To run the test:
-``
-/path/to/graphotest.py
-``
 
 ### Dataset:
 These datasets are taken from:
@@ -32,16 +32,29 @@ These datasets are taken from:
 - (large) secret dungeon
 
 ### Dataframes
-Data operations are performed by graphopanda, which relies on Python's Pandas library
+Data operations are performed by: 
+
+``
+graphopanda, which relies on Python's Pandas library
+``
 
 ### Plotting:
-Plotting is performed by graphoshow.py, which relies on Matplot
+Plotting is performed by:
+ 
+``
+graphoshow.py, which relies on Matplot
+``
 
 ### Graphs:
 Graph operations are performed by graphoxnet, which relies on Python's Networkx library
 
 ### Scoring:
-Scoring is performed by graphoscore.py
+
+Scoring is performed by: 
+
+``
+graphoscore.py
+``
 
 Because Cooper&Herskovits provide a numerical example, their formula (analogous to Decisions Under Uncertainty
 2.80) was initially used in scoring.  For reference, the Cooper&Herskovits is included in this repository.
@@ -50,7 +63,12 @@ The final Log scoring algorithm matches Decisions Under Uncertainty, page 47, fo
 
 Both scoring algorithms are defined in graphoscore.py
 
-They are compared to each other in graphotest.py
+They are compared to each other in: 
+
+``
+graphotest.py
+``
+
 
 ### Future work:
 Parallelize computation on Spark
