@@ -35,7 +35,8 @@ def getRandomVarNodeNames(dataframe):
 
 def getUniqueRandomVarValues(dataframe, varName):
     unique = dataframe[varName].unique()
-    print"{} \t\t UNIQUE: \t\t {} ".format(varName, unique)
+    # print"{} \t\t UNIQUE: \t\t {} ".format(str(varName), str(unique))
+    return unique
 
 def filter(dataframe):
     testQuery = [('age', 1), ('sex', 1)]

@@ -28,4 +28,4 @@ def getNewGraph(graphName):
 
 # PARENTS for a node
 def getRandomVarParents(randomVarName, graph):
-    return []
+    return graph.predecessors(randomVarName)

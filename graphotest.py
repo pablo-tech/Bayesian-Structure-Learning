@@ -17,10 +17,8 @@ import graphoxnet as oxnet
 inputFile = "cooperh.csv"
 outputFile = "cooperh.gph"
 
-# grapho.compute("cooperh.csv", "cooperh.gph")
-
-inputDF = opanda.read(inputFile)
-randomVarNames = opanda.getRandomVarNodeNames(inputDF)
+dataframe = opanda.read(inputFile)
+randomVarNames = opanda.getRandomVarNodeNames(dataframe)
 print "RANDOM VAR NAMES: " + str(randomVarNames)
 
 ############
@@ -33,8 +31,9 @@ net1Graph = grapho.addRandomVarNodesToGraph(net1Graph, randomVarNames)
 
 net1Graph.add_edge("x1", "x2")
 net1Graph.add_edge("x2", "x3")
+opanda.getUniqueRandomVarValues(dataframe, "x1")
 
-net1Score = oscore.getScore(net1Graph, inputDF)
+net1Score = oscore.getScore(net1Graph, dataframe, net1Name)
 print net1Name + " SCORE: " + str(net1Score)
 
 oshow.plotGraph(net1Graph, net1OutputFile)
@@ -52,7 +51,7 @@ net2Graph = grapho.addRandomVarNodesToGraph(net2Graph, randomVarNames)
 net2Graph.add_edge("x1", "x2")
 net2Graph.add_edge("x1", "x3")
 
-net2Score = oscore.getScore(net2Graph, inputDF)
+net2Score = oscore.getScore(net2Graph, dataframe, net2Name)
 print net2Name + " SCORE: " + str(net2Score)
 
 oshow.plotGraph(net2Graph, net2OutputFile)
