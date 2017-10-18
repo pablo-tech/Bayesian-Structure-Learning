@@ -69,15 +69,15 @@ def optimizeGraph(graph, dataframe):
 # attempt the modifiaction at the provided node
 # try to connect the provided node to a random other node
 def getChangedGraph(graph, fromNode, dataframe):
-    maxTries = 100
+    maxTries = 10
     attempt = 0
-    minScoreGain = 100
+    minScoreGain = 10
     initialGraph = graph
     bestMoveGaph = graph    # greedily find the best graph after maxTries
     while True:
         randomNode = choice(graph.nodes())
         attempt = attempt + 1
-        print "Attempt=" + str(attempt) + " at optimizing node=" + str(fromNode)
+        print "Attempt=" + str(attempt) + " at optimizing from node=" + str(fromNode)
         if attempt>maxTries:
             if int(oscore.getScore(bestMoveGaph, dataframe, attempt)) > int(oscore.getScore(initialGraph, dataframe, attempt)):
                 return bestMoveGaph # after many attempts, return the bestMoveGaph

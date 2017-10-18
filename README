@@ -89,17 +89,42 @@ For high performance, the algorithm developed relies on native filtering methods
 Below is the time it took to run on a personal laptop.  NOTE: the code was run with console logs enabled, which
 by itself would likely reduce performance by and order of magnitude.
 
+The algorithm is currently configured to make at most 100 attempts per node to optimize any one graph.
+
 Initial graph score evaluation:
 - (small) titanic: fraction of second
 - (medium) wine: 1 second
 - (large) secret dungeon: 2 seconds
 
 Run through completion building the highest scoring graph:
-- (small) titanic: fraction of second
-- (medium) wine: 1 second
+- (small) titanic: 35 seconds
+- (medium) wine: 4 minutes
 - (large) secret dungeon: 2 seconds
 
 The biggest performance penalty seems to be to check if the graph is still acyclical in a large network as it takes shape.
+
+### Sample output:
+
+- (medium) wine:
+ alcohol,fixedacidity
+ density,alcohol
+ alcohol,chlorides
+ fixedacidity,density
+ citricacid,sulphates
+ fixedacidity,citricacid
+ fixedacidity,residualsugar
+ fixedacidity,totalsulfurdioxide
+ alcohol,volatileacidity
+ fixedacidity,quality
+ fixedacidity,ph
+ alcohol,freesulfurdioxide
+
+### Plot output
+
+Please find in the folder:
+- (small) titanic: small.gph and small.gph.png
+- (medium) wine: medium.gph and small.gph.png
+- (large) secret dungeon: large.gph and large.gph.png
 
 ### Future work:
 Parallelize computation on Spark
