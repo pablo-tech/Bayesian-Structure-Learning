@@ -72,12 +72,17 @@ def getChangedGraph(graph, fromNode, dataframe):
     maxTries = 100
     attempt = 0
     minScoreGain = 100
+    initialGraph = graph
     bestMoveGaph = graph    # greedily find the best graph after maxTries
     while True:
         randomNode = choice(graph.nodes())
         attempt = attempt + 1
+        print "Attempt=" + str(attempt) + " at optimizing node=" + str(fromNode)
         if attempt>maxTries:
-            return bestMoveGaph # after many attempts, return the bestMoveGaph
+            if int(oscore.getScore(bestMoveGaph, dataframe, attempt)) > int(oscore.getScore(initialGraph, dataframe, attempt)):
+                return bestMoveGaph # after many attempts, return the bestMoveGaph
+            else:
+                return initialGraph
         if randomNode!=fromNode:   # connect only to a different node
             if not graph.has_edge(fromNode, randomNode):     # connect only if the nodes are not connected either way
                 if not graph.has_edge(randomNode, fromNode):  # connect only if the nodes are not connected either way
@@ -88,13 +93,13 @@ def getChangedGraph(graph, fromNode, dataframe):
                         currentBestScore = oscore.getScore(bestMoveGaph, dataframe, attempt)
                         delta = int(tentativeScore) - int(currentBestScore)
                         print ">Evaluating new graph for better score: from=" + str(int(currentBestScore)) + " to=" + str(int(tentativeScore)) + \
-                              " GAIN=" + str(delta) + " " + oshow.toGraphString(tentativeGraph)
+                              " GAIN=" + str(delta) + " adding EDGE=" + str(fromNode) +"-"+ str(randomNode)
                         if int(delta) > int(minScoreGain):
                             cycles = list(nx.simple_cycles(tentativeGraph))
                             print "Potential Graph Cycles: " + str(cycles)
                             if len(cycles)==0:
                                 if nx.is_directed_acyclic_graph(tentativeGraph)==False:
-                                    print "==> Switching graph! Cycles: " + str(cycles)
+                                    print "==> Switching graph candidate!"
                                     bestMoveGaph = tentativeGraph
 
 # ADD RANDOM VARIABLE NODES
