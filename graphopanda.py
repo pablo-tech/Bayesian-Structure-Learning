@@ -38,10 +38,11 @@ def getUniqueRandomVarValues(dataframe, varName):
     # print"{} \t\t UNIQUE: \t\t {} ".format(str(varName), str(unique))
     return unique
 
-def filter(dataframe):
-    testQuery = [('age', 1), ('sex', 1)]
-    filteredDF = queryDataframe(dataframe, testQuery)
-    print(filteredDF)
+
+# def filter(dataframe):
+#     testQuery = [('age', 1), ('sex', 1)]
+#     filteredDF = queryDataframe(dataframe, testQuery)
+#     print(filteredDF)
 
 # FILTER: reduce the dataframe to the rows that match a query, with only the columns that match the query
 # queryArray = [('age', 1), ('sex', 2)]
@@ -53,7 +54,9 @@ def queryDataframe(dataframe, queryArray):
         field_value = tuple[1]
         filteredDF = filteredDF.loc[(filteredDF[field_name] == field_value)]
         fieldNames.append(field_name)
-    return filteredDF[fieldNames]
+    finalDataframe = filteredDF[fieldNames] # only return the columns in question
+    # print finalDataframe
+    return finalDataframe
 
 # def query(dataframe):
 #     #print(inputDF.loc[(inputDF['age']==1) & (inputDF['sex']==2)])
