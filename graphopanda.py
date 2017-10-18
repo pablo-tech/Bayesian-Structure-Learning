@@ -32,7 +32,7 @@ def getInputDF(infile):
 
 def getRandomVarNodeNames(dataframe):
     varNames = list(dataframe)
-    print "Var NAMES: " + str(varNames)
+    # print "Var NAMES: " + str(varNames)
     return varNames
 
 def getUniqueRandomVarValues(dataframe, varName):

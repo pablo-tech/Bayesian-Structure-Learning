@@ -32,7 +32,7 @@ def optimizeGraph(graph, dataframe):
     score = oscore.getScore(graph, dataframe, attempt)
     for trie in range(0, maxTries):
         attempt = attempt + 1
-        tentativeGraph = getHigherScoringGraph(graph, dataframe)
+        tentativeGraph = getChangedGraph(graph)
         tentativeScore = oscore.getScore(graph, dataframe, attempt)
         if tentativeScore>score:
             graph = tentativeGraph
@@ -42,7 +42,7 @@ def optimizeGraph(graph, dataframe):
 
 # MORPH
 # greedy iteration over the graph looking for a better shape than current
-def getHigherScoringGraph(graph, dataframe):
+def getChangedGraph(graph):
     return graph
 
 
@@ -51,5 +51,5 @@ def getHigherScoringGraph(graph, dataframe):
 def addRandomVarNodesToGraph(graph, nodeNames):
     for col in nodeNames:
         graph.add_node(col)
-        # print "ADDING NODE TO GRAPH: " + col
+        print "ADDING NODE TO GRAPH: " + col
     return graph
