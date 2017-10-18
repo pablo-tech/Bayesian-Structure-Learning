@@ -98,7 +98,7 @@ def getLogBayesianScore(graph, dataframe, label):
     values = iterateThroughCombinations(graph, dataframe, label)
     alphaIJ0list = getAlphaij0Hyperparam(values)
     mij0list = getMij0GroupedCount(values)
-    print "groupled mij0: " + str(mij0list)
+    # print "groupled mij0: " + str(mij0list)
     randomVarNames = opanda.getRandomVarNodeNames(dataframe)
     for i in range(0, getNumRandomVars(randomVarNames)):
         # print "i= " + str(i)

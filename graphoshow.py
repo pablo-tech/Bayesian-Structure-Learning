@@ -76,11 +76,11 @@ def write(outfile, graph):
     with open(outfile, 'wb') as csvfile:
         owriter = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         for node in graph.nodes():
-            row = str(node)
+            row = node
             parents = oxnet.getRandomVarParents(str(node), graph)
             # print "Parents: " + str(parents)
             for parent in parents:
-                row = str(parent) + ", " + str(node) + "\n"
+                row = parent + "," + node
             print "writing row to file: " + str(row)
             owriter.writerow([row])
     pass

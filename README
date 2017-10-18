@@ -78,6 +78,10 @@ They are compared to each other in:
 graphotest.py
 ``
 
+### Learning:
+The algorithm to find the best representation combines programatic execution with an element of randomness,
+to have an opportunity to find a best graph that was not thought of when writing the code.
+
 ### Performane:
 
 For high performance, the algorithm developed relies on native filtering methods in Python Pandas Dataframes.
