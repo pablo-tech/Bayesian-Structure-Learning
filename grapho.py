@@ -1,3 +1,4 @@
+# Find the best Bayesian network, for a given dataset
 # https://networkx.github.io/documentation/networkx-1.9/tutorial/tutorial.html
 
 # NETWORKX
@@ -40,6 +41,7 @@ except RuntimeError:
 # GRAPHO components
 import graphoscore as oscore
 import graphoshow as oshow
+import graphopanda as opanda
 
 # GRAPH: that is used to find best
 # initialGraph = nx.DiGraph()
@@ -50,8 +52,9 @@ import graphoshow as oshow
 def compute(infile, outfile):
     graph = getNewGraph("first")
     inputDF = read(infile)
-    score = oscore.getScore()
-    graph = addRandomVarNodesToGraph(graph, inputDF)
+    randomVars = opanda.getRandomVarNodeNames(inputDF)
+    graph = addRandomVarNodesToGraph(graph, randomVars)
+    score = oscore.getScore(graph, inputDF)
     oshow.plotGraph(graph, outfile)
     oshow.toString(graph)
     oshow.write(outfile, graph)
@@ -74,17 +77,8 @@ def getInputDF(infile):
     return inputDF
 
 # ADD RANDOM VARIABLE NODES
-def addRandomVarNodesToGraph(graph, dataframe):
-    for col in list(dataframe):
-        # len()
-        unique = dataframe[col].unique()
-        print"{} \t\t UNIQUE: \t\t {} ".format(col, unique)
+# len()
+def addRandomVarNodesToGraph(graph, nodeNames):
+    for col in nodeNames:
         graph.add_node(col)
-        # graph.add_edge('age', col)
-        #graph.add_nodes_from([2, 3])
-        #print(dataframe.col)
     return graph
-
-
-# FUTURE WORK
-#

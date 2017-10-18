@@ -27,7 +27,12 @@ These datasets are taken from:
 - (large) secret dungeon
 
 ### Scoring:
+Scoring is performed by graphoscore.py
 
+### Plotting:
+Plotting is performed by graphoshow.py
+
+### Future work:
 
 
 

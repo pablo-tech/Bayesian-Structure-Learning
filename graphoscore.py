@@ -1,3 +1,5 @@
+# Calculate the Bayesian score of a network against a dataset
+
 # NETWORKX
 try:
     import networkx as nx
@@ -9,7 +11,7 @@ except RuntimeError:
 
 
 def getScore(graph, dataframe):
-    filter(dataframe)
+    # filter(dataframe)
     return 0
 
 def filter(dataframe):
@@ -34,3 +36,21 @@ def queryDataframe(dataframe, queryArray):
 #     print(dataframe.loc[(dataframe['age']==1) & (dataframe['sex']==2)][['age', 'sex']])
 #     pass
 
+
+# SCORING WITH FACTORS: Cooper & Herscovits, page 320, formula 8
+# It is the same as Decisions under Uncertainty, page 47, formula 2.80
+# Posterior probability: is proportional to the prior probability
+# Cancelling out: prior probability cancels out when two networks are compared by division
+# Example: if Score(network1)/Score(network2)>1 then network1 is better representation of the data
+def getCooperHerscovitsBayesianScore(graph):
+    score = 1
+    return 1
+
+
+# SCORING WITH SUMS: Decisions Under Uncertainty, page 47, formula, formula 2.83
+# Posterior probability: is incremental to prior probability
+# Cancelling out: prior probability cancels out when two networks are compared by subtraction
+# Example: if Score(network1)-Score(network2)>0 then network1 is a better
+def getLogCooperHerscovitsBayesianScore(graph):
+    score = 0
+    return 1

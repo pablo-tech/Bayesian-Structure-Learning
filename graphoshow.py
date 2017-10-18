@@ -1,3 +1,5 @@
+# Plot a graph
+
 # NETWORKX
 try:
     import networkx as nx
