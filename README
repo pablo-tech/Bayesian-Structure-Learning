@@ -98,7 +98,7 @@ Initial graph score evaluation:
 
 Run through completion building the highest scoring graph:
 - (small) titanic: 35 seconds
-- (medium) wine: 4 minutes
+- (medium) wine: 2:45 minutes
 - (large) secret dungeon: 2 seconds
 
 The biggest performance penalty seems to be to check if the graph is still acyclical in a large network as it takes shape.

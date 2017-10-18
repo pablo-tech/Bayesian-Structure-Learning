@@ -56,11 +56,12 @@ def optimizeGraph(graph, dataframe):
     maxTries = 10
     attempt = 0
     initialScore = oscore.getScore(graph, dataframe, attempt)
+    bestGraph = graph
     for trie in range(0, maxTries):
         attempt = attempt + 1
         for node in graph.nodes():
-            graph = getChangedGraph(graph, node, dataframe)
-    finalScore = oscore.getScore(graph, dataframe, attempt)
+            bestGraph = getChangedGraph(bestGraph, node, dataframe)
+    finalScore = oscore.getScore(bestGraph, dataframe, attempt)
     print "****** INITIAL SCORE: " + str(int(initialScore)) + ", FINAL SCORE: " + str(int(finalScore)) + " ******"
     return graph
 
