@@ -57,3 +57,18 @@ print net2Name + " SCORE: " + str(net2Score)
 oshow.plotGraph(net2Graph, net2OutputFile)
 oshow.toString(net2Graph)
 oshow.write(net2OutputFile, net2Graph)
+
+
+############
+# VERIFY NETWORK 1: with Decisions Under Uncertainty, page 47, log formula 2.83
+values = [(2, [[5, 5]]), (2, [[1, 4], [4, 1]]), (2, [[4, 1], [0, 5]])]
+
+alphaIJ = oscore.getAlphaijFactors(values)
+print "ALPHA: " + str(alphaIJ)
+
+mIJ = oscore.getMijFactors(values)
+print "M: " + str(mIJ)
+
+randomVarNames = opanda.getRandomVarNodeNames(dataframe)
+n = oscore.getNumRandomVars(randomVarNames)
+print "max I: " + str(n)

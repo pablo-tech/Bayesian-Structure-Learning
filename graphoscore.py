@@ -1,5 +1,14 @@
 # Calculate the Bayesian score of a network against a dataset
 
+# PANDAS
+try:
+    import pandas as pd
+except ImportError:
+    raise ImportError("PANDAS required for filter()")
+except RuntimeError:
+    print("PANDAS unable to open")
+    raise
+
 
 import graphopanda as opanda
 import graphoxnet as oxnet
@@ -10,6 +19,7 @@ import math
 # SCORE: get score using factors, or sums of logs
 def getScore(graph, dataframe, label):
     return getCooperHerscovitsBayesianScore(graph, dataframe, label)
+    # return getLogBayesianScore(graph, dataframe, label)
 
 
 # SCORING WITH FACTORS: Cooper & Herscovits, page 320, formula 8
@@ -72,21 +82,58 @@ def getCooperHerscovitsBayesianScore(graph, dataframe, label):
     return score
 
 
+# SCORING WITH FACTORS: Decisions Under Uncertainty, page 47, formula 2.83
+# Posterior probability: is proportional to the prior probability
+# Cancelling out: prior probability cancels out when two networks are compared by division
+# Example: if Score(network1)-Score(network2)>0 then network1 is better representation of the data
+def getLogBayesianScore(graph, dataframe, label):
+    randomVarNames = opanda.getRandomVarNodeNames(dataframe)
+    for i in range(0, getNumRandomVars(randomVarNames)):
+        print "i= " + str(i)
+        randomVarName = randomVarNames[i]
+        randomVarValues = opanda.getUniqueRandomVarValues(dataframe, randomVarName)
+        parents = oxnet.getRandomVarParents(randomVarName, graph)
+        qi = getNumRandmVarParents(parents)
+        for j in range(0, qi):
+            print "j= " + str(j)
+            ri = getNumRandomVarValues(dataframe, randomVarName)
+            for k in range(0, ri):
+                print "k= " + str(k)
+
+
+# ri: the number of values each random var takes
+def getAlphaijFactors(values):
+    Alphaij = []
+    for value in values:
+        alpha = value[0]
+        # print "alpha=" + str(alpha)
+        Alphaij.append(alpha)
+    return Alphaij
+
+# Mij0
+# the number of times a random var takes a value, given it's parents
+def getMijFactors(values):
+    Mij = []
+    for value in values:
+        for m in value[1]:
+            # print "m=" + str(m)
+            Mij.append(m)
+    return Mij
+
+
 # ITERATE: iterates through i=(1:n), j=(1:qi), k=(1:ri)
 # Returns the values necessary to compute the Bayesian score
 # NOTE: Python uses 0-based indexing!!!
 def iterateThroughCombinations(graph, dataframe, label):
     values = [] # used to return all the necessary values to compute the Bayesian score
     randomVarNames = opanda.getRandomVarNodeNames(dataframe)
-    n = len(randomVarNames)
+    n = getNumRandomVars(randomVarNames)
     for i in range(0, n):  # i random var
         randomVarName = randomVarNames[i]
         randomVarValues = opanda.getUniqueRandomVarValues(dataframe, randomVarName)
         ri = len(randomVarValues)
         parents = oxnet.getRandomVarParents(randomVarName, graph)
-        qi = len(parents)
-        if len(parents)==0:
-            qi = 1
+        qi = getNumRandmVarParents(parents)
         for j in range (0, qi):  # j parent of random var
             MijList = []
             try:
@@ -113,6 +160,22 @@ def iterateThroughCombinations(graph, dataframe, label):
             values.append((ri, MijList))
     return values
 
+# I: iterator over random variables
+def getNumRandomVars(randomVarNames):
+    n = len(randomVarNames)
+    return n
+
+# J: iterator over random var parents
+def getNumRandmVarParents(randomVarParents):
+    qi = len(randomVarParents)
+    if len(randomVarParents) == 0:
+        qi = 1
+    return qi
+
+# K: iterator over instances/values of a random variable
+def getNumRandomVarValues(dataframe, randomVarName):
+    randomVarValues = opanda.getUniqueRandomVarValues(dataframe, randomVarName)
+    return len(randomVarValues)
 
 # RUN QUERIES: run the queries on the dataframe.  A query filters the dataframe.
 # The number of rows in the resulting dataframe is the pattern count we are looking for
