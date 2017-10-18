@@ -33,33 +33,32 @@ def getCooperHerscovitsBayesianScore(graph, dataframe, label):
         score = score * alphaIJ0Factorial
         print "score=" + str(score)
         # mIJK numerator
-        for countValue in value[1]:
-            print "COUNT VALUE " + countValue
-        mValues = value[1][0]
-        print "the values mValues=" + str(mValues)
-        print "############################# mValues=" + str(mValues)
-        for m in mValues:      # Design under uncertainty equation 2.80
-            print "====COMPUTING M: " + str(m)
-            print "m=" + str(m)
-            mFactorial = math.factorial(m)
-            print "mFactorial=" + str(mFactorial)
-            score = score * mFactorial
-            print "score=" + str(score)
-        print "all numerator score=" + str(score)
-        # DENOMINATOR
-        mAdjustedIJ0 = alphaIJ0;
-        print "reset mAdjustedIJ0=" + str(mAdjustedIJ0)
-        for m in mValues:      # Design under uncertainty equation 2.80
-            print "====COMPUTING DENOMINATOR: " + str(m)
-            print "m=" + str(m)
-            mAdjustedIJ0 = mAdjustedIJ0 + m
-            print "mAdjustedIJ0=" + str(mAdjustedIJ0)
-        mfinalIJ0 = mAdjustedIJ0
-        print "final mAdjustedIJ0=" + str(mAdjustedIJ0)
-        mAdjustedIJ0Factorial = math.factorial(mfinalIJ0)
-        print "mAdjustedIJ0Factorial=" + str(mAdjustedIJ0Factorial)
-        score = score / mAdjustedIJ0Factorial
-        print "all denominator score=" + str(score)
+        for mValues in value[1]:
+            print "COUNT VALUE " + str(mValues)
+            print "the values mValues=" + str(mValues)
+            print "############################# mValues=" + str(mValues)
+            for m in mValues:      # Design under uncertainty equation 2.80
+                print "====COMPUTING M: " + str(m)
+                print "m=" + str(m)
+                mFactorial = math.factorial(m)
+                print "mFactorial=" + str(mFactorial)
+                score = score * mFactorial
+                print "score=" + str(score)
+            print "all numerator score=" + str(score)
+            # DENOMINATOR
+            mAdjustedIJ0 = alphaIJ0;
+            print "reset mAdjustedIJ0=" + str(mAdjustedIJ0)
+            for m in mValues:      # Design under uncertainty equation 2.80
+                print "====COMPUTING DENOMINATOR: " + str(m)
+                print "m=" + str(m)
+                mAdjustedIJ0 = mAdjustedIJ0 + m
+                print "mAdjustedIJ0=" + str(mAdjustedIJ0)
+            mfinalIJ0 = mAdjustedIJ0
+            print "final mAdjustedIJ0=" + str(mAdjustedIJ0)
+            mAdjustedIJ0Factorial = math.factorial(mfinalIJ0)
+            print "mAdjustedIJ0Factorial=" + str(mAdjustedIJ0Factorial)
+            score = score / mAdjustedIJ0Factorial
+            print "all denominator score=" + str(score)
     return score
 
 
