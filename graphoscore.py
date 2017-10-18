@@ -44,22 +44,31 @@ def iterateThroughCombinations(graph, dataframe, label):
     for i in range(0, n):  # i random var
         randomVarName = randomVarNames[i]
         randomVarValues = opanda.getUniqueRandomVarValues(dataframe, randomVarName)
+        ri = len(randomVarValues)
         parents = oxnet.getRandomVarParents(randomVarName, graph)
         qi = len(parents)
         if len(parents)==0:
             qi = 1
         for j in range (0, qi):  # j parent of random var
+            MijList = []
             try:
                 randomVarParentName = parents[j]
                 parentVarValues = opanda.getUniqueRandomVarValues(dataframe, randomVarParentName)
-            except:
-                randomVarParentName = ""
-                parentVarValues = []
-                # print randomVarName + " has no parents!"
-            ri = len(randomVarValues)
-            queries = getIJquery(randomVarName, randomVarValues, randomVarParentName, parentVarValues)
-            MijList = getOccurranceCount(dataframe, queries)
-            print randomVarName + " Mijk=" + str(MijList) + " i=" + str(i) + " " + " FOR QUERIES " + str(queries)
+                for parentVarValue in parentVarValues:
+                    querySubList = []
+                    for randomVarValue in randomVarValues:
+                        queries = [(randomVarParentName, parentVarValue), (randomVarName, randomVarValue)]
+                        querySubList.append(queries)
+                    count = getJointOccurranceCount(dataframe, querySubList)
+                    MijList.append(count)
+            except:             # k iteration for nodes that dont have a parent
+                print "EXCEPT"
+            #     randomVarParentName = ""
+            #     parentVarValues = []
+            #     # print randomVarName + " has no parents!"
+            # queries = getIJquery(randomVarName, randomVarValues, randomVarParentName, parentVarValues)
+            # MijList = getOccurranceCount(dataframe, queries)
+            print randomVarName + " Mijk=" + str(MijList)
             values.append((ri, MijList))
     return values
 
@@ -73,15 +82,26 @@ def getOccurranceCount(dataframe, queries):
     # print "QUERIES " + str(queries)
     countList = []
     for query in queries:
-        print "QUERY " + str(query)
-        countSubList=[]
+        print "DISJOINT QUERY " + str(query)
+        # countSubList=[]
         for subQuery in query:
             counts = opanda.getQueryCounts(dataframe, subQuery)
-            countSubList.append(counts)
-            print "SUBQUERY " + str(subQuery) + " " + str(countSubList)
-        countList.append(countSubList)
+            countList.append(counts)
+        print "DISJOINT COUNT " + str(countList) + " FOR QUERY " + str(query)
+        # countList.append(countSubList)
     # print "COUNT LIST " + str(countList) + " FOR QUERIES " + str(queries)
     return countList
+
+def getJointOccurranceCount(dataframe, queries):
+    # print "QUERIES " + str(queries)
+    countList = []
+    for query in queries:
+        print "JOINT QUERY " + str(query)
+        counts = opanda.getJointQueryCounts(dataframe, query)
+        countList.append(counts)
+        print "JOINT COUNT " + str(countList) + " FOR QUERY " + str(query)
+    return countList
+
 
 # GENERATE QUERIES: create a list of filtering queries to run against the dataframe.
 # Does the k iteration in the Bayesian score here
@@ -89,11 +109,12 @@ def getOccurranceCount(dataframe, queries):
 def getIJquery(randomVarName, randomVarValues, randomVarParentName, parentVarValues):
     queryList = []
     # K iterations
-    if len(parentVarValues)!=0:               # random var has parent
-        querySubList = []
-        for parentVarValue in parentVarValues:
-            for randomVarValue in randomVarValues:
-                querySubList.append([(randomVarParentName, parentVarValue), (randomVarName, randomVarValue)])
+    # if len(parentVarValues)!=0:               # random var has parent
+    #     querySubList = []
+    #     for parentVarValue in parentVarValues:
+    #         for randomVarValue in randomVarValues:
+    #             querySubList.append([(randomVarParentName, parentVarValue), (randomVarName, randomVarValue)])
+    querySubList = []
     if len(parentVarValues)==0:                 # random var has no parents
         querySubList = []
         for randomVarValue in randomVarValues:
