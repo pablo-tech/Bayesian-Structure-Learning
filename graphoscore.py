@@ -18,8 +18,12 @@ import math
 ############
 # SCORE: get score using factors, or sums of logs
 def getScore(graph, dataframe, label):
-    logScore = getLogBayesianScore(graph, dataframe, label)
+    ### Log Bayesian score
+    #logScore = getLogBayesianScore(graph, dataframe, label)
+    #print "LOG SCORE: " + str(logScore)
+    ### Cooper & Herscovitz
     cooperHscore = getCooperHerscovitsBayesianScore(graph, dataframe, label)
+    print "COOPER HERRSCOVITS SCORE: " + str(cooperHscore)
     return cooperHscore
 
 
@@ -90,8 +94,8 @@ def getCooperHerscovitsBayesianScore(graph, dataframe, label):
 def getLogBayesianScore(graph, dataframe, label):
     score = float(0)
     values = iterateThroughCombinations(graph, dataframe, label)
-    alphaIJlist = getAlphaijFactors(values)
-    mIJlist = getMijFactors(values)
+    alphaIJ0list = getAlphaij0Hyperparam(values)
+    mij0list = getMij0Count(values)
     randomVarNames = opanda.getRandomVarNodeNames(dataframe)
     for i in range(0, getNumRandomVars(randomVarNames)):
         print "i= " + str(i)
@@ -100,15 +104,19 @@ def getLogBayesianScore(graph, dataframe, label):
         qi = getNumRandmVarParents(parents)
         for j in range(0, qi):
             print "j= " + str(j)
+            # sum over random vars and parents
+            numeratorAlpha = math.factorial(alphaIJ0list[i])
+            print str(i) + " numeratorAlpha " + str(numeratorAlpha)
+            score = score + alphaIJ0list[i]
             ri = getNumRandomVarValues(dataframe, randomVarName)
             for k in range(0, ri):
                 print "k= " + str(k)
-                score = score +
+                # sum over random var values
     return score
 
 
 # ri: the number of values each random var takes
-def getAlphaijFactors(values):
+def getAlphaij0Hyperparam(values):
     Alphaij = []
     for value in values:
         alpha = value[0]
@@ -118,7 +126,7 @@ def getAlphaijFactors(values):
 
 # Mij0
 # the number of times a random var takes a value, given it's parents
-def getMijFactors(values):
+def getMij0Count(values):
     Mij = []
     for value in values:
         for m in value[1]:
@@ -140,6 +148,8 @@ def iterateThroughCombinations(graph, dataframe, label):
         ri = len(randomVarValues)
         parents = oxnet.getRandomVarParents(randomVarName, graph)
         qi = getNumRandmVarParents(parents)
+        if qi==0:
+            qi=1    # iterate over no parent
         for j in range (0, qi):  # j parent of random var
             MijList = []
             try:

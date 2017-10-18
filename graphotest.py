@@ -63,10 +63,10 @@ oshow.write(net2OutputFile, net2Graph)
 # VERIFY NETWORK 1: with Decisions Under Uncertainty, page 47, log formula 2.83
 values = [(2, [[5, 5]]), (2, [[1, 4], [4, 1]]), (2, [[4, 1], [0, 5]])]
 
-alphaIJ = oscore.getAlphaijFactors(values)
+alphaIJ = oscore.getAlphaij0Hyperparam(values)
 print "ALPHA: " + str(alphaIJ)
 
-mIJ = oscore.getMijFactors(values)
+mIJ = oscore.getMij0Count(values)
 print "M: " + str(mIJ)
 
 randomVarNames = opanda.getRandomVarNodeNames(dataframe)
