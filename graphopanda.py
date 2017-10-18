@@ -39,26 +39,30 @@ def getUniqueRandomVarValues(dataframe, varName):
     return unique
 
 
-# def filter(dataframe):
-#     testQuery = [('age', 1), ('sex', 1)]
-#     filteredDF = queryDataframe(dataframe, testQuery)
-#     print(filteredDF)
+# COUNT: count number of pattern repeats by filtering a dataframe and counting how many rows are left
+def getQueryCounts(dataframe, queryArray):
+    filteredDF = dataframe
+    for queryTuple in queryArray:
+        filteredDF = queryDataframe(filteredDF, queryTuple)
+    count = len(filteredDF)
+    print str(filteredDF)
+    return count
 
 # FILTER: reduce the dataframe to the rows that match a query, with only the columns that match the query
 # queryArray = [('age', 1), ('sex', 2)]
-def queryDataframe(dataframe, queryArray):
+def queryDataframe(dataframe, tuple):
     filteredDF = dataframe
     fieldNames = []
-    for tuple in queryArray:
-        field_name = tuple[0]
-        field_value = tuple[1]
-        filteredDF = filteredDF.loc[(filteredDF[field_name] == field_value)]
-        fieldNames.append(field_name)
-    finalDataframe = filteredDF[fieldNames] # only return the columns in question
+    field_name = tuple[0]
+    field_value = tuple[1]
+    filteredDF = filteredDF.loc[(filteredDF[field_name] == field_value)]
+    fieldNames.append(field_name)
+    # finalDataframe = filteredDF[fieldNames] # only return the columns in question
     # print finalDataframe
-    return finalDataframe
+    # return finalDataframe
+    return filteredDF
 
-# def query(dataframe):
-#     #print(inputDF.loc[(inputDF['age']==1) & (inputDF['sex']==2)])
-#     print(dataframe.loc[(dataframe['age']==1) & (dataframe['sex']==2)][['age', 'sex']])
-#     pass
+# except:
+# filteredDF = filteredDF.loc[(filteredDF[field_name] == field_value)]
+# finalDataframe = filteredDF[field_name]
+# return finalDataframe

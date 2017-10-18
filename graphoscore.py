@@ -43,31 +43,24 @@ def iterateThroughCombinations(graph, dataframe, label):
     n = len(randomVarNames)
     for i in range(0, n):  # i random var
         randomVarName = randomVarNames[i]
+        randomVarValues = opanda.getUniqueRandomVarValues(dataframe, randomVarName)
         parents = oxnet.getRandomVarParents(randomVarName, graph)
         qi = len(parents)
         if len(parents)==0:
             qi = 1
         for j in range (0, qi):  # j parent of random var
-            randomVarValues = opanda.getUniqueRandomVarValues(dataframe, randomVarName)
-            ri = len(randomVarValues)
-            # print "RI " + str(ri) + " FOR " + str(randomVarName) + " FROM " + str(randomVarValues)
             try:
                 randomVarParentName = parents[j]
+                parentVarValues = opanda.getUniqueRandomVarValues(dataframe, randomVarParentName)
             except:
-                randomVarParentName = []
+                randomVarParentName = ""
+                parentVarValues = []
                 # print randomVarName + " has no parents!"
-            patternCount = []
-            for k in range(0, ri):  # k value of random var
-                valueOfRandomVar = randomVarValues[k]
-                # print label + " " + getVarNameString(randomVarName) + getVarParentString(randomVarParentName) + getVarValueString(valueOfRandomVar)
-                if len(randomVarParentName)==0: # random var has no parent
-                    score = 1
-                else:
-                    queries = getIJKqueries(randomVarName, valueOfRandomVar, randomVarParentName, dataframe)
-                    Mijk = countPatternOccurrances(dataframe, queries)
-                    print "Mijk="+str(Mijk) + " i="+str(i) + " j="+str(j) + " k="+str(k) + " " + " FOR QUERIES " + str(queries)
-                    patternCount.append(Mijk)
-            values.append((ri, patternCount))
+            ri = len(randomVarValues)
+            queries = getIJquery(randomVarName, randomVarValues, randomVarParentName, parentVarValues)
+            MijList = getOccurranceCount(dataframe, queries)
+            print randomVarName + " Mijk=" + str(MijList) + " i=" + str(i) + " " + " FOR QUERIES " + str(queries)
+            values.append((ri, MijList))
     return values
 
 
@@ -76,24 +69,38 @@ def iterateThroughCombinations(graph, dataframe, label):
 # A path from the root to a leaf corresponds to some instantiation of the parents of a random var
 # TODO: Thus the depth of the tree is equal to the number of parents of that random var
 # A given leaf contains the counts for the values of xi in its sample space, that are conditioned on the instantiation of the parents as specified in the tree
-def countPatternOccurrances(dataframe, queries):
-    count = 0
+def getOccurranceCount(dataframe, queries):
+    # print "QUERIES " + str(queries)
+    countList = []
     for query in queries:
-        filteredDF = opanda.queryDataframe(dataframe, query)
-        count = count + len(filteredDF)
-    # print "COUNT " + str(count) + " FOR QUERIES " + str(queries)
-    return count
+        print "QUERY " + str(query)
+        countSubList=[]
+        for subQuery in query:
+            counts = opanda.getQueryCounts(dataframe, subQuery)
+            countSubList.append(counts)
+            print "SUBQUERY " + str(subQuery) + " " + str(countSubList)
+        countList.append(countSubList)
+    # print "COUNT LIST " + str(countList) + " FOR QUERIES " + str(queries)
+    return countList
 
 # GENERATE QUERIES: create a list of filtering queries to run against the dataframe.
+# Does the k iteration in the Bayesian score here
 #     testQuery = [('age', 1), ('sex', 1)]
-def getIJKqueries(randomVarName, valueOfRandomVar, randomVarParentName, dataframe):
+def getIJquery(randomVarName, randomVarValues, randomVarParentName, parentVarValues):
     queryList = []
-    queryRandomVar = (randomVarName, valueOfRandomVar)
-    parentValues = opanda.getUniqueRandomVarValues(dataframe, randomVarParentName)
-    for parentValue in parentValues:
-        queryParentValue = (randomVarParentName, parentValue)
-        queryList.append([queryRandomVar,queryParentValue])
-    # print "IJK QUERY: " + str(queryList)
+    # K iterations
+    if len(parentVarValues)!=0:               # random var has parent
+        querySubList = []
+        for parentVarValue in parentVarValues:
+            for randomVarValue in randomVarValues:
+                querySubList.append([(randomVarParentName, parentVarValue), (randomVarName, randomVarValue)])
+    if len(parentVarValues)==0:                 # random var has no parents
+        querySubList = []
+        for randomVarValue in randomVarValues:
+            noParentQuery = [(randomVarName, randomVarValue)]
+            querySubList.append(noParentQuery)
+    queryList.append(querySubList)
+    # print "IJK QUERIES: " + str(queryList)
     return queryList
 
 
