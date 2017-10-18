@@ -44,14 +44,16 @@ Graph operations are performed by graphoxnet, which relies on Python's Networkx 
 Scoring is performed by graphoscore.py
 
 Because Cooper&Herskovits provide a numerical example, their formula (analogous to Decisions Under Uncertainty
-2.80) was initially used in scoring, instead of the log version in 2.83 of the book.
+2.80) was initially used in scoring.  For reference, the Cooper&Herskovits is included in this repository.
 
-For reference, the Cooper&Herskovits is included in this repository.
+The final Log scoring algorithm matches Decisions Under Uncertainty, page 47, formula 2.83
 
-Thereafter, getLogBayesianScore was defined in graphoscore.py
+Both scoring algorithms are defined in graphoscore.py
+
+They are compared to each other in graphotest.py
 
 ### Future work:
-
+Parallelize computation on Spark
 
 
 
