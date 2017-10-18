@@ -79,6 +79,9 @@ graphotest.py
 ``
 
 ### Performane:
+
+For high performance, the algorithm developed relies on native filtering methods in Python Pandas Dataframes.
+
 This is the time it took to run on a personal laptop:
 
 - (small) titanic:
