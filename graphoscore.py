@@ -18,8 +18,9 @@ import math
 ############
 # SCORE: get score using factors, or sums of logs
 def getScore(graph, dataframe, label):
-    return getCooperHerscovitsBayesianScore(graph, dataframe, label)
-    # return getLogBayesianScore(graph, dataframe, label)
+    logScore = getLogBayesianScore(graph, dataframe, label)
+    cooperHscore = getCooperHerscovitsBayesianScore(graph, dataframe, label)
+    return cooperHscore
 
 
 # SCORING WITH FACTORS: Cooper & Herscovits, page 320, formula 8

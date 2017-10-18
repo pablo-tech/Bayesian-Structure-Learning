@@ -72,3 +72,10 @@ print "M: " + str(mIJ)
 randomVarNames = opanda.getRandomVarNodeNames(dataframe)
 n = oscore.getNumRandomVars(randomVarNames)
 print "max I: " + str(n)
+
+parents = oxnet.getRandomVarParents("x2", net1Graph)
+qi = oscore.getNumRandmVarParents(parents)
+print "max J: " + str(qi)
+
+ri = oscore.getNumRandomVarValues(dataframe, "x2")
+print "max K: " + str(ri)
