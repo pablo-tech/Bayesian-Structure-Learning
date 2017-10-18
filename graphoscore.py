@@ -96,6 +96,7 @@ def getLogBayesianScore(graph, dataframe, label):
     values = iterateThroughCombinations(graph, dataframe, label)
     alphaIJ0list = getAlphaij0Hyperparam(values)
     mij0list = getMij0GroupedCount(values)
+    print "groupled mij0: " + str(mij0list)
     randomVarNames = opanda.getRandomVarNodeNames(dataframe)
     for i in range(0, getNumRandomVars(randomVarNames)):
         # print "i= " + str(i)
@@ -106,24 +107,29 @@ def getLogBayesianScore(graph, dataframe, label):
             # print "j= " + str(j)
             # sum over random vars and parents
             numeratorAlpha = alphaIJ0list[i]-1
-            print str(i) + " numeratorAlpha " + str(numeratorAlpha)
+            # print str(i) + " numeratorAlpha " + str(numeratorAlpha)
             numeratorFactorialAlpha = math.factorial(numeratorAlpha)
-            print str(i) + " numeratorFactorialAlpha " + str(numeratorFactorialAlpha)
+            # print str(i) + " numeratorFactorialAlpha " + str(numeratorFactorialAlpha)
             denominatorAlphaCount = numeratorAlpha
-            for countList in mij0list[i]:
-                print "countList: " + str(countList)
-                for count in countList:
-                    print ">>> count: " + str(count)
-                    denominatorAlphaCount = denominatorAlphaCount + count
-                    # print str(i) + " count term " + str(count)
-                    denominatorFactorialCount = math.factorial(denominatorAlphaCount)
-                    print str(i) + " denominatorFactorialCount " + str(denominatorFactorialCount)
-                    score = math.log(numeratorFactorialAlpha) - math.log(denominatorFactorialCount)
-                    print "UPDATED score: " + str(score)
+            # print "denominatorAlphaCount INIT " + str(denominatorAlphaCount)
+            for mijkSublistList in mij0list[i]:
+                # print "actual sub mijkList: " + str(mijkSublistList)
+                for mijk in mijkSublistList:
+                    # print ">>> mijk: " + str(count)
+                    denominatorAlphaCount = denominatorAlphaCount + mijk
+                    # print str(i) + " last term mijk count " + str(mijk)
+            denominatorFactorialCount = math.factorial(denominatorAlphaCount)
+            print str(i) + " denominatorFactorialCount " + str(denominatorFactorialCount)
+            score = math.log(numeratorFactorialAlpha) - math.log(denominatorFactorialCount)
+            print "***UPDATED score: " + str(score) + " WITH alphaCount " + str(denominatorAlphaCount) + " and mijkList " + str(mij0list[i])
             ri = getNumRandomVarValues(dataframe, randomVarName)
-            for k in range(0, ri):
-                print "k= " + str(k)
-                # sum over random var values
+            # iterate over the k values of random var
+            for mijkSubList in mij0list[i]:
+                # print "*mijk " + str(mijk)
+                factorialMijk = math.factorial(mijk)
+                # print "factorial *mijk " + str(factorialMijk)
+                score = score + math.log(factorialMijk)
+                print "$$$UPDATED score: " + str(score) + " with mijkSubList " + str(mijkSubList)
     return score
 
 
