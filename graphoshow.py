@@ -41,6 +41,9 @@ def toString(graph):
         print "{} EDGES: {}".format(node, graph[node])
         print "{} NEIGHTBORS: {}".format(node, graph.neighbors(node))
 
+def toGraphString(graph):
+    print "GRAPH: {} ".format(graph.graph)
+
 # PLOT graph: nodes, edges, labesl
 # https://stackoverflow.com/questions/8213522/when-to-use-cla-clf-or-close-for-clearing-a-plot-in-matplotlib
 def plotGraph(graph, filename):
@@ -74,7 +77,7 @@ def plotGraph(graph, filename):
 def write(outfile, graph):
     # print "GOT TO WRITE " + str(graph.nodes())
     with open(outfile, 'wb') as csvfile:
-        owriter = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        owriter = csv.writer(csvfile, delimiter=',', quotechar=' ', doublequote=False, quoting=csv.QUOTE_MINIMAL)
         for node in graph.nodes():
             row = node
             parents = oxnet.getRandomVarParents(str(node), graph)
@@ -84,15 +87,3 @@ def write(outfile, graph):
             print "writing row to file: " + str(row)
             owriter.writerow([row])
     pass
-
-
-def analizeGraph(graph):
-    # degree()
-    nx.connected_components
-    # graph.adj
-    # print(graph.node['fare'])
-    # nx.connected_components(graph)
-    # graph.adj
-    # print(inputDF)
-    # .values
-    # df.head()

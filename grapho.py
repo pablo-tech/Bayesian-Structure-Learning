@@ -56,47 +56,46 @@ def optimizeGraph(graph, dataframe):
     maxTries = 10
     attempt = 0
     initialScore = oscore.getScore(graph, dataframe, attempt)
-    minScoreGain = 100
-    score = initialScore
     for trie in range(0, maxTries):
         attempt = attempt + 1
         for node in graph.nodes():
-            tentativeGraph = getChangedGraph(graph, node)
-            tentativeScore = oscore.getScore(tentativeGraph, dataframe, attempt)
-            cycles = list(nx.simple_cycles(tentativeGraph))
-            if len(cycles)==0:
-                print "Graph Cycles: " + str(cycles)
-                if nx.is_directed_acyclic_graph(tentativeGraph):    #   make sure it is an acyclical graph
-                    delta = int(tentativeScore) - int(score)
-                    if int(delta)>int(minScoreGain):
-                        print ">modifying graph score from=" + str(score) + " to=" + str(tentativeScore) + " delta=" +str(delta)
-                        graph = tentativeGraph
-                        score = tentativeScore
-    print "****** INITIAL SCORE: " + str(initialScore) + ", FINAL SCORE: " + str(score) + " ******"
+            graph = getChangedGraph(graph, node, dataframe)
+    finalScore = oscore.getScore(graph, dataframe, attempt)
+    print "****** INITIAL SCORE: " + str(int(initialScore)) + ", FINAL SCORE: " + str(int(finalScore)) + " ******"
     return graph
-
 
 # MORPH
 # greedy iteration over the graph looking for a better shape than current
 # attempt the modifiaction at the provided node
 # try to connect the provided node to a random other node
-def getChangedGraph(graph, node):
+def getChangedGraph(graph, fromNode, dataframe):
     maxTries = 100
     attempt = 0
+    minScoreGain = 100
+    bestMoveGaph = graph    # greedily find the best graph after maxTries
     while True:
         randomNode = choice(graph.nodes())
         attempt = attempt + 1
         if attempt>maxTries:
-            return graph
-        if randomNode!=node:   # connect only to a different node
-            if not graph.has_edge(node, randomNode):     # connect only if the nodes are not connected
-                if len(oxnet.getRandomVarParents(randomNode, graph))==0:  # allow one parent for now
-                    graph.add_edge(node, randomNode)
-                    # print "trying to switch graphs!!!"
-                    return graph
-                # else: print "already has parent"
-            # else: print "edge already in place"
-        # else: print "nodes are the same"
+            return bestMoveGaph # after many attempts, return the bestMoveGaph
+        if randomNode!=fromNode:   # connect only to a different node
+            if not graph.has_edge(fromNode, randomNode):     # connect only if the nodes are not connected either way
+                if not graph.has_edge(randomNode, fromNode):  # connect only if the nodes are not connected either way
+                    if len(oxnet.getRandomVarParents(randomNode, graph))==0:  # allow one parent for now
+                        tentativeGraph = graph
+                        tentativeGraph.add_edge(fromNode, randomNode)
+                        tentativeScore = oscore.getScore(tentativeGraph, dataframe, attempt)
+                        currentBestScore = oscore.getScore(bestMoveGaph, dataframe, attempt)
+                        delta = int(tentativeScore) - int(currentBestScore)
+                        print ">Evaluating new graph for better score: from=" + str(int(currentBestScore)) + " to=" + str(int(tentativeScore)) + \
+                              " GAIN=" + str(delta) + " " + oshow.toGraphString(tentativeGraph)
+                        if int(delta) > int(minScoreGain):
+                            cycles = list(nx.simple_cycles(tentativeGraph))
+                            print "Potential Graph Cycles: " + str(cycles)
+                            if len(cycles)==0:
+                                if nx.is_directed_acyclic_graph(tentativeGraph)==False:
+                                    print "==> Switching graph! Cycles: " + str(cycles)
+                                    bestMoveGaph = tentativeGraph
 
 # ADD RANDOM VARIABLE NODES
 # len()

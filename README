@@ -94,6 +94,12 @@ Initial graph score evaluation:
 - (medium) wine: 1 second
 - (large) secret dungeon: 2 seconds
 
+Run through completion building the highest scoring graph:
+- (small) titanic: fraction of second
+- (medium) wine: 1 second
+- (large) secret dungeon: 2 seconds
+
+The biggest performance penalty seems to be to check if the graph is still acyclical in a large network as it takes shape.
 
 ### Future work:
 Parallelize computation on Spark
