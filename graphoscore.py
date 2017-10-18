@@ -10,7 +10,6 @@ import math
 # SCORE: get score using factors, or sums of logs
 def getScore(graph, dataframe, label):
     return getCooperHerscovitsBayesianScore(graph, dataframe, label)
-    # return getLogCooperHerscovitsBayesianScore(graph, dataframe, label)
 
 
 # SCORING WITH FACTORS: Cooper & Herscovits, page 320, formula 8
@@ -22,8 +21,14 @@ def getCooperHerscovitsBayesianScore(graph, dataframe, label):
     score = float(1)
     values = iterateThroughCombinations(graph, dataframe, label)
     print ">>>>> VALUES: " + str(values)
+    # >>>>> VALUES: [(2, [[5, 5]]), (2, [[1, 4], [4, 1]]), (2, [[4, 1], [0, 5]])]
+    #
     for value in values:
         print "*********************************** COMPUTING VALUE: " + str(value)
+        # *********************************** COMPUTING VALUE: (2, [[5, 5]])
+        # *********************************** COMPUTING VALUE: (2, [[1, 4], [4, 1]])
+        # *********************************** COMPUTING VALUE: (2, [[4, 1], [0, 5]])
+        #
         # NUMERATOR
         # Gamma(alphaIJ)
         alphaIJ0 = value[0]-1   # Design under uncertainty equation 2.80
@@ -37,6 +42,11 @@ def getCooperHerscovitsBayesianScore(graph, dataframe, label):
             print "COUNT VALUE " + str(mValues)
             print "the values mValues=" + str(mValues)
             print "############################# mValues=" + str(mValues)
+            # ############################# mValues=[5, 5]
+            # ############################# mValues=[1, 4]
+            # ############################# mValues=[4, 1]
+            # ############################# mValues=[4, 1]
+            # ############################# mValues=[0, 5]
             for m in mValues:      # Design under uncertainty equation 2.80
                 print "====COMPUTING M: " + str(m)
                 print "m=" + str(m)
@@ -61,44 +71,6 @@ def getCooperHerscovitsBayesianScore(graph, dataframe, label):
             print "all denominator score=" + str(score)
     return score
 
-
-# SCORING WITH SUMS: Decisions Under Uncertainty, page 47, formula, formula 2.83
-# Posterior probability: is incremental to prior probability
-# Cancelling out: prior probability cancels out when two networks are compared by subtraction
-# Example: if Score(network1)-Score(network2)>0 then network1 is a better
-def getLogCooperHerscovitsBayesianScore(graph, dataframe, label):
-    score = 0
-    values = iterateThroughCombinations(graph, dataframe, label)
-    print "VALUES: " + str(values)
-    for value in values:
-        print "COMPUTING: " + str(value)
-        # NUMERATOR
-        # mIJK numerator
-        mIJ0 = 0
-        for m in value[1][0]:      # Design under uncertainty equation 2.80
-            mFactorial = math.factorial(m)
-            print str(m) + " mFactorial=" + str(mFactorial)
-            score = score + math.log(mFactorial)
-            print "score=" + str(score)
-            mIJ0 = mIJ0 + m
-            print "mIJ0=" + str(mIJ0)
-        # alphaIJ
-        alphaIJ0 = value[0]-1   # Design under uncertainty equation 2.80
-        print "alphaIJ0=" + str(alphaIJ0)
-        alphaIJ0Factorial = math.factorial(alphaIJ0)
-        print "alphaIJ0Factorial=" + str(alphaIJ0Factorial)
-        # DENOMINATOR
-        denomIJ0 = mIJ0+alphaIJ0
-        print "denomIJ0=" + str(denomIJ0)
-        denomIJ0Factorial = math.factorial(denomIJ0)
-        print "denomIJ0Factorial=" + str(denomIJ0Factorial)
-        # RATIO
-        ratio = alphaIJ0Factorial/denomIJ0Factorial
-        print "ratio=" + str(ratio)
-        # score = score + math.log()
-        # score = score +
-        print ""
-    return score
 
 # ITERATE: iterates through i=(1:n), j=(1:qi), k=(1:ri)
 # Returns the values necessary to compute the Bayesian score

@@ -2,33 +2,24 @@
 # https://networkx.github.io/documentation/networkx-1.9/tutorial/tutorial.html
 
 
-# # SYSTEM
-# try:
-#     import sys
-# except ImportError:
-#     raise ImportError("SYS required for ARGUMENTS()")
-# except RuntimeError:
-#     print("SYS unable to open")
-#     raise
-
-
 ############
 # GRAPHO components developed
 import graphoscore as oscore
 import graphoshow as oshow
 import graphopanda as opanda
-import graphopanda as oxnet
+import graphoxnet as oxnet
 
 
 # COMPUTE: method called to perform the whole job
 # TODO: make sure no self loops
 # TODO: output both png and gph files
 def compute(infile, outfile):
-    graph = oxnet.getNewGraph("first")
+    label = infile
+    graph = oxnet.getNewGraph(label)
     inputDF = opanda.read(infile)
     randomVars = opanda.getRandomVarNodeNames(inputDF)
     graph = addRandomVarNodesToGraph(graph, randomVars)
-    score = oscore.getScore(graph, inputDF)
+    score = oscore.getScore(graph, inputDF, label)
     oshow.plotGraph(graph, outfile)
     oshow.toString(graph)
     oshow.write(outfile, graph)

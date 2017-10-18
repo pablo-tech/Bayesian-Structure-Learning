@@ -12,11 +12,6 @@ two Bayesian networks.
 - network2 score=2.22685407871e-10
 - THUS, network1 is more suitable for the given dataset
 
-NOTE: because Cooper&Herskovits provide a numerical example, their formula (analogous to Decisions Under Uncertainty
-2.80) is used in scoring, instead of the log version in 2.83 of the book.
-
-For reference, the Cooper&Herskovits is included in this repository.
-
 The test class is: graphotest.py
 The input file: cooperh.csv
 The output files:
@@ -48,7 +43,11 @@ Graph operations are performed by graphoxnet, which relies on Python's Networkx 
 ### Scoring:
 Scoring is performed by graphoscore.py
 
-Per the
+NOTE: because Cooper&Herskovits provide a numerical example, their formula (analogous to Decisions Under Uncertainty
+2.80) is used in scoring, instead of the log version in 2.83 of the book.
+
+For reference, the Cooper&Herskovits is included in this repository.
+
 
 ### Future work:
 
