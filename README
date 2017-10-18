@@ -46,7 +46,11 @@ graphoshow.py, which relies on Matplot
 ``
 
 ### Graphs:
-Graph operations are performed by graphoxnet, which relies on Python's Networkx library
+Graph operations are performed by:
+ 
+``
+graphoxnet, which relies on Python's Networkx library
+``
 
 ### Scoring:
 
@@ -68,6 +72,13 @@ They are compared to each other in:
 ``
 graphotest.py
 ``
+
+### Performane:
+This is the time it took to run on a personal laptop:
+
+- (small) titanic:
+- (medium) wine:
+- (large) secret dungeon:
 
 
 ### Future work:
