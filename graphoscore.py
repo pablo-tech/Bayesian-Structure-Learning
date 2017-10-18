@@ -22,9 +22,9 @@ def getScore(graph, dataframe, label):
     logScore = getLogBayesianScore(graph, dataframe, label)
     print "LOG SCORE: " + str(logScore)
     ### Cooper & Herscovitz
-    cooperHscore = getCooperHerscovitsBayesianScore(graph, dataframe, label)
-    print "COOPER HERRSCOVITS SCORE: " + str(cooperHscore)
-    return cooperHscore
+    # cooperHscore = getCooperHerscovitsBayesianScore(graph, dataframe, label)
+    # print "COOPER HERRSCOVITS SCORE: " + str(cooperHscore)
+    return logScore
 
 
 # SCORING WITH FACTORS: Cooper & Herscovits, page 320, formula 8

@@ -33,8 +33,11 @@ net1Graph.add_edge("x1", "x2")
 net1Graph.add_edge("x2", "x3")
 opanda.getUniqueRandomVarValues(dataframe, "x1")
 
-net1Score = oscore.getScore(net1Graph, dataframe, net1Name)
-print net1Name + " SCORE: " + str(net1Score)
+net1ProductorialScore = oscore.getCooperHerscovitsBayesianScore(net1Graph, dataframe, net1Name)
+print net1Name + " Productorial SCORE: " + str(net1ProductorialScore)
+
+net1LogScore = oscore.getLogBayesianScore(net1Graph, dataframe, net1Name)
+print net1Name + " Log SCORE: " + str(net1ProductorialScore)
 
 oshow.plotGraph(net1Graph, net1OutputFile)
 oshow.toString(net1Graph)
@@ -51,12 +54,23 @@ net2Graph = grapho.addRandomVarNodesToGraph(net2Graph, randomVarNames)
 net2Graph.add_edge("x1", "x2")
 net2Graph.add_edge("x1", "x3")
 
-net2Score = oscore.getScore(net2Graph, dataframe, net2Name)
-print net2Name + " SCORE: " + str(net2Score)
+net2ProductorialScore = oscore.getCooperHerscovitsBayesianScore(net2Graph, dataframe, net2Name)
+print net2Name + " Productorial SCORE: " + str(net2ProductorialScore)
+
+net2LogScore = oscore.getLogBayesianScore(net2Graph, dataframe, net2Name)
+print net2Name + " Log SCORE: " + str(net2LogScore)
 
 oshow.plotGraph(net2Graph, net2OutputFile)
 oshow.toString(net2Graph)
 oshow.write(net2OutputFile, net2Graph)
+
+############
+# COMPARE ALGORITHMS
+productorialComp = net1ProductorialScore/net2ProductorialScore
+print "net1 better than n2? Productorial " + str(productorialComp>1)
+
+logComp = net1ProductorialScore-net2ProductorialScore
+print "net1 better than n2? Log " + str(logComp>0)
 
 
 ############
