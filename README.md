@@ -26,11 +26,18 @@ These datasets are taken from:
 - (medium) wine: https://archive.ics.uci.edu/ml/datasets/Wine+Quality
 - (large) secret dungeon
 
+### Dataframes
+Data operations are performed by graphopanda, which relies on Python's Pandas library
+
+### Plotting:
+Plotting is performed by graphoshow.py, which relies on Matplot
+
+### Graphs:
+Graph operations are performed by graphoxnet, which relies on Python's Networkx library
+
 ### Scoring:
 Scoring is performed by graphoscore.py
 
-### Plotting:
-Plotting is performed by graphoshow.py
 
 ### Future work:
 
