@@ -170,7 +170,7 @@ def getNumRandomVars(randomVarNames):
 def getNumRandmVarParents(randomVarParents):
     qi = len(randomVarParents)
     if len(randomVarParents) == 0:
-        qi = 1
+        qi = 0
     return qi
 
 # K: iterator over instances/values of a random variable

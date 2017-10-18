@@ -75,7 +75,11 @@ print "max I: " + str(n)
 
 parents = oxnet.getRandomVarParents("x2", net1Graph)
 qi = oscore.getNumRandmVarParents(parents)
-print "max J: " + str(qi)
+print "max J with parent: " + str(qi)
+
+parents = oxnet.getRandomVarParents("x1", net1Graph)
+qi = oscore.getNumRandmVarParents(parents)
+print "max J without parent: " + str(qi)
 
 ri = oscore.getNumRandomVarValues(dataframe, "x2")
 print "max K: " + str(ri)
