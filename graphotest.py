@@ -69,6 +69,9 @@ print "ALPHA: " + str(alphaIJ)
 mIJ0 = oscore.getMij0Count(values)
 print "Mij0: " + str(mIJ0)
 
+mIJ0grouped = oscore.getMij0GroupedCount(values)
+print "Mij0 grouped: " + str(mIJ0grouped)
+
 randomVarNames = opanda.getRandomVarNodeNames(dataframe)
 n = oscore.getNumRandomVars(randomVarNames)
 print "max I: " + str(n)

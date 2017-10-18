@@ -95,20 +95,31 @@ def getLogBayesianScore(graph, dataframe, label):
     score = float(0)
     values = iterateThroughCombinations(graph, dataframe, label)
     alphaIJ0list = getAlphaij0Hyperparam(values)
-    mij0list = getMij0Count(values)
+    mij0list = getMij0GroupedCount(values)
     randomVarNames = opanda.getRandomVarNodeNames(dataframe)
     for i in range(0, getNumRandomVars(randomVarNames)):
-        print "i= " + str(i)
+        # print "i= " + str(i)
         randomVarName = randomVarNames[i]
         parents = oxnet.getRandomVarParents(randomVarName, graph)
         qi = getQi(parents)
         for j in range(0, qi):
-            print "j= " + str(j)
+            # print "j= " + str(j)
             # sum over random vars and parents
-            numeratorAlpha = math.factorial(alphaIJ0list[i])-1
+            numeratorAlpha = alphaIJ0list[i]-1
             print str(i) + " numeratorAlpha " + str(numeratorAlpha)
-            # denominatorAlphaCount = numeratorAlpha+
-            score = score + alphaIJ0list[i]
+            numeratorFactorialAlpha = math.factorial(numeratorAlpha)
+            print str(i) + " numeratorFactorialAlpha " + str(numeratorFactorialAlpha)
+            denominatorAlphaCount = numeratorAlpha
+            for countList in mij0list[i]:
+                print "countList: " + str(countList)
+                for count in countList:
+                    print ">>> count: " + str(count)
+                    denominatorAlphaCount = denominatorAlphaCount + count
+                    # print str(i) + " count term " + str(count)
+                    denominatorFactorialCount = math.factorial(denominatorAlphaCount)
+                    print str(i) + " denominatorFactorialCount " + str(denominatorFactorialCount)
+                    score = math.log(numeratorFactorialAlpha) - math.log(denominatorFactorialCount)
+                    print "UPDATED score: " + str(score)
             ri = getNumRandomVarValues(dataframe, randomVarName)
             for k in range(0, ri):
                 print "k= " + str(k)
@@ -128,6 +139,14 @@ def getAlphaij0Hyperparam(values):
 # Mij0
 # the number of times a random var takes a value, given it's parents
 def getMij0Count(values):
+    Mij0 = []
+    for value in values:
+        for m in value[1]:
+            # print "m=" + str(m)
+            Mij0.append(m)
+    return Mij0
+
+def getMij0GroupedCount(values):
     Mij0 = []
     for value in values:
         Mijk = []
