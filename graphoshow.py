@@ -27,6 +27,11 @@ except RuntimeError:
     print("CSV unable to open")
     raise
 
+############
+# GRAPHO components developed
+import graphoxnet as oxnet
+
+
 # PRINT nodes, graphs, edges, neighbors
 def toString(graph):
     print "GRAPH: {} ".format(graph.graph)
@@ -67,10 +72,17 @@ def plotGraph(graph, filename):
 
 # WRITE: a gph output file
 def write(outfile, graph):
+    # print "GOT TO WRITE " + str(graph.nodes())
     with open(outfile, 'wb') as csvfile:
         owriter = csv.writer(csvfile, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
         for node in graph.nodes():
-            owriter.writerow([node])
+            row = str(node)
+            parents = oxnet.getRandomVarParents(str(node), graph)
+            # print "Parents: " + str(parents)
+            for parent in parents:
+                row = str(parent) + ", " + str(node) + "\n"
+            print "writing row to file: " + str(row)
+            owriter.writerow([row])
     pass
 
 

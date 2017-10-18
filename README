@@ -82,11 +82,13 @@ graphotest.py
 
 For high performance, the algorithm developed relies on native filtering methods in Python Pandas Dataframes.
 
-This is the time it took to run on a personal laptop:
+Below is the time it took to run on a personal laptop.  NOTE: the code was run with console logs enabled, which
+by itself would likely reduce performance by and order of magnitude.
 
-- (small) titanic:
-- (medium) wine:
-- (large) secret dungeon:
+Initial graph score evaluation:
+- (small) titanic: fraction of second
+- (medium) wine: 1 second
+- (large) secret dungeon: 2 seconds
 
 
 ### Future work:

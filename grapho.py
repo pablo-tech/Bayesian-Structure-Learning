@@ -31,4 +31,5 @@ def compute(infile, outfile):
 def addRandomVarNodesToGraph(graph, nodeNames):
     for col in nodeNames:
         graph.add_node(col)
+        # print "ADDING NODE TO GRAPH: " + col
     return graph

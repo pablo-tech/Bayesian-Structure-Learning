@@ -10,6 +10,8 @@ except RuntimeError:
     raise
 
 
+############
+# GRAPHO components developed
 import graphopanda as opanda
 import graphoxnet as oxnet
 
@@ -119,9 +121,9 @@ def getLogBayesianScore(graph, dataframe, label):
                     denominatorAlphaCount = denominatorAlphaCount + mijk
                     # print str(i) + " last term mijk count " + str(mijk)
             denominatorFactorialCount = math.factorial(denominatorAlphaCount)
-            print str(i) + " denominatorFactorialCount " + str(denominatorFactorialCount)
+            # print str(i) + " denominatorFactorialCount " + str(denominatorFactorialCount)
             score = math.log(numeratorFactorialAlpha) - math.log(denominatorFactorialCount)
-            print "***UPDATED score: " + str(score) + " WITH alphaCount " + str(denominatorAlphaCount) + " and mijkList " + str(mij0list[i])
+            # print "***UPDATED score: " + str(score) + " WITH alphaCount " + str(denominatorAlphaCount) + " and mijkList " + str(mij0list[i])
             ri = getNumRandomVarValues(dataframe, randomVarName)
             # iterate over the k values of random var
             for mijkSubList in mij0list[i]:
@@ -129,7 +131,7 @@ def getLogBayesianScore(graph, dataframe, label):
                 factorialMijk = math.factorial(mijk)
                 # print "factorial *mijk " + str(factorialMijk)
                 score = score + math.log(factorialMijk)
-                print "$$$UPDATED score: " + str(score) + " with mijkSubList " + str(mijkSubList)
+                # print "$$$UPDATED score: " + str(score) + " with mijkSubList " + str(mijkSubList)
     return score
 
 
@@ -198,7 +200,7 @@ def iterateThroughCombinations(graph, dataframe, label):
                 queryList.append(querySubList)
                 count = getOccurranceCount(dataframe, queryList)
                 MijList.append(count)
-            print randomVarName + " Mijk=" + str(MijList)
+            # print randomVarName + " Mijk=" + str(MijList)
             values.append((ri, MijList))
     return values
 
