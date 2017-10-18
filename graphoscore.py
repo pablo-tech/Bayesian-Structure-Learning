@@ -62,12 +62,15 @@ def iterateThroughCombinations(graph, dataframe, label):
                     count = getJointOccurranceCount(dataframe, querySubList)
                     MijList.append(count)
             except:             # k iteration for nodes that dont have a parent
-                print "EXCEPT"
-            #     randomVarParentName = ""
-            #     parentVarValues = []
-            #     # print randomVarName + " has no parents!"
-            # queries = getIJquery(randomVarName, randomVarValues, randomVarParentName, parentVarValues)
-            # MijList = getOccurranceCount(dataframe, queries)
+                # print "EXCEPT"
+                queryList = []
+                querySubList = []
+                for randomVarValue in randomVarValues:
+                    noParentQuery = [(randomVarName, randomVarValue)]
+                    querySubList.append(noParentQuery)
+                queryList.append(querySubList)
+                count = getOccurranceCount(dataframe, queryList)
+                MijList.append(count)
             print randomVarName + " Mijk=" + str(MijList)
             values.append((ri, MijList))
     return values
@@ -82,47 +85,22 @@ def getOccurranceCount(dataframe, queries):
     # print "QUERIES " + str(queries)
     countList = []
     for query in queries:
-        print "DISJOINT QUERY " + str(query)
-        # countSubList=[]
+        # print "DISJOINT QUERY " + str(query)
         for subQuery in query:
             counts = opanda.getQueryCounts(dataframe, subQuery)
             countList.append(counts)
-        print "DISJOINT COUNT " + str(countList) + " FOR QUERY " + str(query)
-        # countList.append(countSubList)
-    # print "COUNT LIST " + str(countList) + " FOR QUERIES " + str(queries)
+        # print "DISJOINT COUNT " + str(countList) + " FOR QUERY " + str(query)
     return countList
 
 def getJointOccurranceCount(dataframe, queries):
     # print "QUERIES " + str(queries)
     countList = []
     for query in queries:
-        print "JOINT QUERY " + str(query)
+        # print "JOINT QUERY " + str(query)
         counts = opanda.getJointQueryCounts(dataframe, query)
         countList.append(counts)
-        print "JOINT COUNT " + str(countList) + " FOR QUERY " + str(query)
+        # print "JOINT COUNT " + str(countList) + " FOR QUERY " + str(query)
     return countList
-
-
-# GENERATE QUERIES: create a list of filtering queries to run against the dataframe.
-# Does the k iteration in the Bayesian score here
-#     testQuery = [('age', 1), ('sex', 1)]
-def getIJquery(randomVarName, randomVarValues, randomVarParentName, parentVarValues):
-    queryList = []
-    # K iterations
-    # if len(parentVarValues)!=0:               # random var has parent
-    #     querySubList = []
-    #     for parentVarValue in parentVarValues:
-    #         for randomVarValue in randomVarValues:
-    #             querySubList.append([(randomVarParentName, parentVarValue), (randomVarName, randomVarValue)])
-    querySubList = []
-    if len(parentVarValues)==0:                 # random var has no parents
-        querySubList = []
-        for randomVarValue in randomVarValues:
-            noParentQuery = [(randomVarName, randomVarValue)]
-            querySubList.append(noParentQuery)
-    queryList.append(querySubList)
-    # print "IJK QUERIES: " + str(queryList)
-    return queryList
 
 
 def getVarNameString(varName):
