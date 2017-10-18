@@ -88,11 +88,14 @@ def getCooperHerscovitsBayesianScore(graph, dataframe, label):
 # Cancelling out: prior probability cancels out when two networks are compared by division
 # Example: if Score(network1)-Score(network2)>0 then network1 is better representation of the data
 def getLogBayesianScore(graph, dataframe, label):
+    score = float(0)
+    values = iterateThroughCombinations(graph, dataframe, label)
+    alphaIJlist = getAlphaijFactors(values)
+    mIJlist = getMijFactors(values)
     randomVarNames = opanda.getRandomVarNodeNames(dataframe)
     for i in range(0, getNumRandomVars(randomVarNames)):
         print "i= " + str(i)
         randomVarName = randomVarNames[i]
-        randomVarValues = opanda.getUniqueRandomVarValues(dataframe, randomVarName)
         parents = oxnet.getRandomVarParents(randomVarName, graph)
         qi = getNumRandmVarParents(parents)
         for j in range(0, qi):
@@ -100,6 +103,8 @@ def getLogBayesianScore(graph, dataframe, label):
             ri = getNumRandomVarValues(dataframe, randomVarName)
             for k in range(0, ri):
                 print "k= " + str(k)
+                score = score +
+    return score
 
 
 # ri: the number of values each random var takes
