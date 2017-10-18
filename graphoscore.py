@@ -4,6 +4,7 @@
 import graphopanda as opanda
 import graphoxnet as oxnet
 
+import math
 
 ############
 # SCORE: get score using factors, or sums of logs
@@ -18,9 +19,39 @@ def getScore(graph, dataframe, label):
 # Cancelling out: prior probability cancels out when two networks are compared by division
 # Example: if Score(network1)/Score(network2)>1 then network1 is better representation of the data
 def getCooperHerscovitsBayesianScore(graph, dataframe, label):
-    score = 1
+    score = float(1)
     values = iterateThroughCombinations(graph, dataframe, label)
     print "VALUES: " + str(values)
+    for value in values:
+        print "COMPUTING VALUE: " + str(value)
+        # NUMERATOR
+        # Gamma(alphaIJ)
+        alphaIJ0 = value[0]-1   # Design under uncertainty equation 2.80
+        print "alphaIJ0=" + str(alphaIJ0)
+        alphaIJ0Factorial = math.factorial(alphaIJ0)
+        print "alphaIJ0Factorial=" + str(alphaIJ0Factorial)
+        score = score * alphaIJ0Factorial
+        print "score=" + str(score)
+        # mIJK numerator
+        for m in value[1][0]:      # Design under uncertainty equation 2.80
+            print "COMPUTING NUMERATOR: " + str(m)
+            print "m=" + str(m)
+            mFactorial = math.factorial(m)
+            print "mFactorial=" + str(mFactorial)
+            score = score * mFactorial
+            print "score=" + str(score)
+        print "all numerator score=" + str(score)
+        # DENOMINATOR
+        mAdjustedIJ0 = alphaIJ0;
+        for m in value[1][0]:      # Design under uncertainty equation 2.80
+            print "COMPUTING DENOMINATOR: " + str(m)
+            print "m=" + str(m)
+            mAdjustedIJ0 = mAdjustedIJ0 + m
+            print "mAdjustedIJ0=" + str(mAdjustedIJ0)
+        mAdjustedIJ0Factorial = math.factorial(mAdjustedIJ0)
+        print "mAdjustedIJ0Factorial=" + str(mAdjustedIJ0Factorial)
+        score = score / mAdjustedIJ0Factorial
+        print "all denominator score=" + str(score)
     return score
 
 
@@ -32,6 +63,34 @@ def getLogCooperHerscovitsBayesianScore(graph, dataframe, label):
     score = 0
     values = iterateThroughCombinations(graph, dataframe, label)
     print "VALUES: " + str(values)
+    for value in values:
+        print "COMPUTING: " + str(value)
+        # NUMERATOR
+        # mIJK numerator
+        mIJ0 = 0
+        for m in value[1][0]:      # Design under uncertainty equation 2.80
+            mFactorial = math.factorial(m)
+            print str(m) + " mFactorial=" + str(mFactorial)
+            score = score + math.log(mFactorial)
+            print "score=" + str(score)
+            mIJ0 = mIJ0 + m
+            print "mIJ0=" + str(mIJ0)
+        # alphaIJ
+        alphaIJ0 = value[0]-1   # Design under uncertainty equation 2.80
+        print "alphaIJ0=" + str(alphaIJ0)
+        alphaIJ0Factorial = math.factorial(alphaIJ0)
+        print "alphaIJ0Factorial=" + str(alphaIJ0Factorial)
+        # DENOMINATOR
+        denomIJ0 = mIJ0+alphaIJ0
+        print "denomIJ0=" + str(denomIJ0)
+        denomIJ0Factorial = math.factorial(denomIJ0)
+        print "denomIJ0Factorial=" + str(denomIJ0Factorial)
+        # RATIO
+        ratio = alphaIJ0Factorial/denomIJ0Factorial
+        print "ratio=" + str(ratio)
+        # score = score + math.log()
+        # score = score +
+        print ""
     return score
 
 # ITERATE: iterates through i=(1:n), j=(1:qi), k=(1:ri)
