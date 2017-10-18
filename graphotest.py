@@ -66,8 +66,8 @@ values = [(2, [[5, 5]]), (2, [[1, 4], [4, 1]]), (2, [[4, 1], [0, 5]])]
 alphaIJ = oscore.getAlphaij0Hyperparam(values)
 print "ALPHA: " + str(alphaIJ)
 
-mIJ = oscore.getMij0Count(values)
-print "M: " + str(mIJ)
+mIJ0 = oscore.getMij0Count(values)
+print "Mij0: " + str(mIJ0)
 
 randomVarNames = opanda.getRandomVarNodeNames(dataframe)
 n = oscore.getNumRandomVars(randomVarNames)

@@ -19,8 +19,8 @@ import math
 # SCORE: get score using factors, or sums of logs
 def getScore(graph, dataframe, label):
     ### Log Bayesian score
-    #logScore = getLogBayesianScore(graph, dataframe, label)
-    #print "LOG SCORE: " + str(logScore)
+    logScore = getLogBayesianScore(graph, dataframe, label)
+    print "LOG SCORE: " + str(logScore)
     ### Cooper & Herscovitz
     cooperHscore = getCooperHerscovitsBayesianScore(graph, dataframe, label)
     print "COOPER HERRSCOVITS SCORE: " + str(cooperHscore)
@@ -101,12 +101,13 @@ def getLogBayesianScore(graph, dataframe, label):
         print "i= " + str(i)
         randomVarName = randomVarNames[i]
         parents = oxnet.getRandomVarParents(randomVarName, graph)
-        qi = getNumRandmVarParents(parents)
+        qi = getQi(parents)
         for j in range(0, qi):
             print "j= " + str(j)
             # sum over random vars and parents
-            numeratorAlpha = math.factorial(alphaIJ0list[i])
+            numeratorAlpha = math.factorial(alphaIJ0list[i])-1
             print str(i) + " numeratorAlpha " + str(numeratorAlpha)
+            # denominatorAlphaCount = numeratorAlpha+
             score = score + alphaIJ0list[i]
             ri = getNumRandomVarValues(dataframe, randomVarName)
             for k in range(0, ri):
@@ -127,12 +128,14 @@ def getAlphaij0Hyperparam(values):
 # Mij0
 # the number of times a random var takes a value, given it's parents
 def getMij0Count(values):
-    Mij = []
+    Mij0 = []
     for value in values:
+        Mijk = []
         for m in value[1]:
             # print "m=" + str(m)
-            Mij.append(m)
-    return Mij
+            Mijk.append(m)
+        Mij0.append(Mijk)
+    return Mij0
 
 
 # ITERATE: iterates through i=(1:n), j=(1:qi), k=(1:ri)
@@ -147,9 +150,7 @@ def iterateThroughCombinations(graph, dataframe, label):
         randomVarValues = opanda.getUniqueRandomVarValues(dataframe, randomVarName)
         ri = len(randomVarValues)
         parents = oxnet.getRandomVarParents(randomVarName, graph)
-        qi = getNumRandmVarParents(parents)
-        if qi==0:
-            qi=1    # iterate over no parent
+        qi = getQi(parents)
         for j in range (0, qi):  # j parent of random var
             MijList = []
             try:
@@ -182,6 +183,12 @@ def getNumRandomVars(randomVarNames):
     return n
 
 # J: iterator over random var parents
+def getQi(randomVarParents):
+    qi = getNumRandmVarParents(randomVarParents)
+    if qi == 0:
+        qi = 1  # iterate over no parent
+    return qi
+
 def getNumRandmVarParents(randomVarParents):
     qi = len(randomVarParents)
     if len(randomVarParents) == 0:
