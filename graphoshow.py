@@ -34,15 +34,20 @@ import graphoxnet as oxnet
 
 # PRINT nodes, graphs, edges, neighbors
 def toString(graph):
-    print "GRAPH: {} ".format(graph.graph)
-    print "NODES: {}".format(graph.nodes())
-    print "EDGES: {}".format(graph.edges())
+    s = ""
+    s = s + "GRAPH: {} ".format(graph.graph)
+    s = s + "NODES: {}".format(graph.nodes)
+    s = s + "EDGES: {}".format(graph.edges)
     for node in graph.nodes():
-        print "{} EDGES: {}".format(node, graph[node])
-        print "{} NEIGHTBORS: {}".format(node, graph.neighbors(node))
+        s = s + "{} EDGES: {}".format(node, graph[node])
+        s = s + "{} NEIGHTBORS: {}".format(node, graph.neighbors(node))
+    return s
 
 def toGraphString(graph):
-    print "GRAPH: {} ".format(graph.graph)
+    return "GRAPH: {} ".format(graph.graph())
+
+def toEdgesString(graph):
+    return "EDGES: {} ".format(graph.edges())
 
 # PLOT graph: nodes, edges, labesl
 # https://stackoverflow.com/questions/8213522/when-to-use-cla-clf-or-close-for-clearing-a-plot-in-matplotlib

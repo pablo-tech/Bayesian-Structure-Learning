@@ -1,12 +1,12 @@
- density,fixedacidity 
- fixedacidity,alcohol 
- fixedacidity,chlorides 
- alcohol,density 
- fixedacidity,sulphates 
- fixedacidity,citricacid 
- chlorides,residualsugar 
- chlorides,totalsulfurdioxide 
- alcohol,volatileacidity 
- fixedacidity,quality 
- fixedacidity,ph 
- alcohol,freesulfurdioxide 
+fixedacidity
+alcohol
+chlorides
+density
+sulphates
+citricacid
+residualsugar
+totalsulfurdioxide
+volatileacidity
+quality
+ph
+freesulfurdioxide
