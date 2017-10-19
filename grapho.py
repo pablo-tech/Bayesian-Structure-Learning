@@ -70,7 +70,7 @@ def optimizeGraph(graph, dataframe):
 # attempt the modifiaction at the provided node
 # try to connect the provided node to a random other node
 def getChangedGraph(graph, fromNode, dataframe):
-    maxTries = 10
+    maxTries = 100
     attempt = 0
     minScoreGain = 10
     initialGraph = graph.copy()
@@ -92,21 +92,21 @@ def getChangedGraph(graph, fromNode, dataframe):
                 if len(oxnet.getRandomVarParents(randomNode, graph))==0:  # allow one parent for now
                     tentativeGraph = bestMoveGaph.copy()
                     tentativeGraph.add_edge(fromNode, randomNode)
-                    print "TENTATIVE--> NODES: " + str(tentativeGraph.nodes()) + ", EDGES: " + str(tentativeGraph.edges())
                     tentativeScore = oscore.getScore(tentativeGraph, dataframe, attempt)
                     currentBestScore = oscore.getScore(bestMoveGaph, dataframe, attempt)
                     delta = int(tentativeScore) - int(currentBestScore)
                     print ">Evaluating new graph for better score: from=" + str(int(currentBestScore)) + " to=" + str(int(tentativeScore)) + \
-                          " GAIN=" + str(delta) + " adding EDGE=" + str(fromNode) +"-"+ str(randomNode)
-                    # if int(delta) > int(minScoreGain):
-                    cycles = list(nx.simple_cycles(tentativeGraph))
-                    print "Potential Graph Cycles: " + str(cycles)
-                    if len(cycles)==0:
-                        # if nx.is_directed_acyclic_graph(tentativeGraph)==False:
-                        print "==> Switching graph candidate!"
-                        bestMoveGaph = tentativeGraph.copy()
-                        # else: print "Did not adopt because it would cause a cycle in the graph..."
-                    # else: print "Not enough score gain to make the change..."
+                          " GAIN=" + str(delta) + " adding EDGE=" + str(fromNode) +"-"+ str(randomNode) + \
+                          "TO =>NODES: " + str(tentativeGraph.nodes()) + ", =>EDGES: " + str(tentativeGraph.edges())
+                    if int(delta) > int(minScoreGain):
+                        cycles = list(nx.simple_cycles(tentativeGraph))
+                        print "Potential Graph Cycles: " + str(cycles)
+                        if len(cycles)==0:
+                            # if nx.is_directed_acyclic_graph(tentativeGraph)==False:
+                            print "==> Switching graph candidate!"
+                            bestMoveGaph = tentativeGraph.copy()
+                            # else: print "Did not adopt because it would cause a cycle in the graph..."
+                    else: print "Did not enough score gain to make the change..."
                 else: print "Did not pursue because the toNode already has a parent..."
             else: print "Did not tackle because the nodes already shared an edge..."
         else: print "Did not tackle because the nodes already shared an edge..."
