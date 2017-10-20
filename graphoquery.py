@@ -30,19 +30,20 @@ def getNijCount(iVar, kValueForVari, jParentVar, valueForParentj):
 # PARENTS JOINT DISTRIBUTION: get a full joint distribution
 # it joins all the vars in the dictionary, except the ignore var(i var in question), to produce a distribution of parents
 def getParentsJointDistribution(randomVar, parentRandomVars, varValuesDictionary):
+    print "joint dictionary " + str(varValuesDictionary)
     parentJointDistribution = []
     allVarNames = list(varValuesDictionary.keys())
     iteration = 0
     for varName in allVarNames:
         if varName!=randomVar:
             if varName in parentRandomVars:
-                print "valid var: " + str(varName)
+                print "parent var: " + str(varName)
                 if iteration==0:    # do the first var by itself
                     parentJointDistribution = getVarDistribution(varName, varValuesDictionary)
                     iteration = iteration + 1
                 else:               # do the other vars against the first
                     newJoins = []
-                    for varValue in varValuesDictionary[varValuesDictionary]:
+                    for varValue in varValuesDictionary[varName]:
                         newJoins.append(getJointDistribution(varName, varValue, parentJointDistribution))
                     parentJointDistribution.append(newJoins)
     return parentJointDistribution
