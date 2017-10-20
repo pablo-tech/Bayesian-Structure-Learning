@@ -41,7 +41,7 @@ def compute(infile, outfile):
     label = infile
     newGraph = oxnet.getNewGraph(label)
     dataframe = opanda.read(infile)
-    randomVars = opanda.getRandomVarNodeNames(dataframe)
+    randomVars = opanda.getRandomVarNames(dataframe)
     initGraph = addRandomVarNodesToGraph(newGraph, randomVars)
     optimGraph = optimizeGraph(initGraph, dataframe)
     oshow.plotGraph(optimGraph, outfile)

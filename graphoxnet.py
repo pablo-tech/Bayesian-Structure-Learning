@@ -29,3 +29,5 @@ def getNewGraph(graphName):
 # PARENTS for a node
 def getRandomVarParents(randomVarName, graph):
     return graph.predecessors(randomVarName)
+
+

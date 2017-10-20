@@ -13,13 +13,19 @@ import graphoshow as oshow
 import graphoscore as oscore
 import graphopanda as opanda
 import graphoxnet as oxnet
+import graphoquery as oquery
 
 inputFile = "cooperh.csv"
 outputFile = "cooperh.gph"
 
 dataframe = opanda.read(inputFile)
-randomVarNames = opanda.getRandomVarNodeNames(dataframe)
+randomVarNames = opanda.getRandomVarNames(dataframe)
 print "RANDOM VAR NAMES: " + str(randomVarNames)
+
+############
+# BASIC TESTS
+varValueDict = opanda.getRandomVarDictionary(dataframe)
+print "VAR VALUE DICTIONARY: " + str(varValueDict)
 
 ############
 # NETWORK 1: x1 -> x2 -> x3
@@ -42,6 +48,17 @@ print net1Name + " Log SCORE: " + str(net1ProductorialScore)
 oshow.plotGraph(net1Graph, net1OutputFile)
 oshow.toString(net1Graph)
 oshow.write(net1OutputFile, net1Graph)
+
+net1Dict = opanda.getRandomVarDictionary(dataframe)
+print "NET1 VAR VALUE DICTIONARY " + str(net1Dict)
+x1Net1Distribution = oquery.getVarDistribution("x1", net1Dict)
+print "NET1 DISTRIBUTION: " + str(x1Net1Distribution)
+net1ParentDistribution = oquery.getParentsJointDistribution("x1", ["x2"], net1Dict)
+print "NET1 PARENT DISTRIBUTION: " + str(net1ParentDistribution)
+net1Dict["xn"] = ["x", "y", "z"]
+print "NET1 MODIFIED DICT: " + str(net1Dict)
+net1ModifiedParentDistribution = oquery.getParentsJointDistribution("x1", ["x2", "xn"], net1Dict)
+print "NET1 MODIFIED PARENT DISTRIBUTION: " + str(net1ParentDistribution)
 
 ############
 # NETWORK 2: x1 -> x2, x1 -> x3
@@ -86,7 +103,7 @@ print "Mij0: " + str(mIJ0)
 mIJ0grouped = oscore.getMij0GroupedCount(values)
 print "Mij0 grouped: " + str(mIJ0grouped)
 
-randomVarNames = opanda.getRandomVarNodeNames(dataframe)
+randomVarNames = opanda.getRandomVarNames(dataframe)
 n = oscore.getNumRandomVars(randomVarNames)
 print "max I: " + str(n)
 
