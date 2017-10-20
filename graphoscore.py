@@ -23,14 +23,14 @@ import math
 # SCORE: get score using factors, or sums of logs
 def getScore(graph, dataframe, label):
     ### Log Cooper & Herscovitz
-    # logCooperHerscovitsScore = getUpdatedCooperHerscovitsBayesianScore(graph, dataframe, label, True)
-    updatedCooperHerscovitsScore = getUpdatedCooperHerscovitsBayesianScore(graph, dataframe, label, False)
+    logCooperHerscovitsScore = getUpdatedCooperHerscovitsBayesianScore(graph, dataframe, label)
+    # updatedCooperHerscovitsScore = getUpdatedCooperHerscovitsBayesianScore(graph, dataframe, label, False)
     ### Log Bayesian score
     # logBayesianScore = getLogBayesianScore(graph, dataframe, label)
     ### Cooper & Herscovitz
     # cooperHerscovitsScore = getCooperHerscovitsBayesianScore(graph, dataframe, label)
     # print "COOPER HERRSCOVITS SCORE: " + str(cooperHscore)
-    return updatedCooperHerscovitsScore
+    return logCooperHerscovitsScore
 
 # SCORING WITH FACTORS: Cooper & Herscovits, page 320, formula 8
 # It is the same as Decisions under Uncertainty, page 47, formula 2.80
@@ -38,6 +38,8 @@ def getScore(graph, dataframe, label):
 # Cancelling out: prior probability cancels out when two networks are compared by division
 # Example: if Score(network1)/Score(network2)>1 then network1 is better representation of the data
 def getUpdatedCooperHerscovitsBayesianScore(graph, dataframe, label, logForm):
+    logForm = True
+    print "LOG FORM? " + str(logForm)
     score = getBaseScore(logForm)
     randomVarNames = opanda.getRandomVarNames(dataframe)
     varValuesDictionary = opanda.getRandomVarDictionary(dataframe)
@@ -81,7 +83,7 @@ def getRandomVarAndParentAggregateConsideration(Ri, NijValues, logForm):
     denominator = Ri-1
     for nijk in NijValues:
         denominator = denominator + nijk
-    print "AGGREGATE>>>>>>Numerator=" + str(numerator) + " >>>>>>Denominator=" + str(denominator) + " FROM NijkList=" + str(NijValues)
+    #print "AGGREGATE>>>>>>Numerator=" + str(numerator) + " >>>>>>Denominator=" + str(denominator) + " FROM NijkList=" + str(NijValues)
     numeratorFactorial = math.factorial(numerator)            # Dirichlet Prior (all pseudocounts = 1) for a random var
     denominatorFactorial = math.factorial(denominator)
     if not logForm:
@@ -91,7 +93,7 @@ def getRandomVarAndParentAggregateConsideration(Ri, NijValues, logForm):
 
 # VAR AND PARENT VAR INDIVIDUAL FACTORS
 def getRandomVarAndParentIndividualConsideration(NijkValues, logForm):
-    print "Individual NijkValues="+str(NijkValues)
+    #print "Individual NijkValues="+str(NijkValues)
     # flatValues = oquery.getFlatendList(NijkValues)
     #print "Consideration NijkValues " + str(flatValues)
     numerator = getBaseScore(logForm)
@@ -101,7 +103,7 @@ def getRandomVarAndParentIndividualConsideration(NijkValues, logForm):
             numerator = numerator * factor
         else:
             numerator = numerator + math.log(factor)
-    print "INDIVIDUAL<<<<<<<<Numerator="+str(numerator) + " " + str(NijkValues) + " TOTAL="+str(numerator)
+    #print "INDIVIDUAL<<<<<<<<Numerator="+str(numerator) + " " + str(NijkValues) + " TOTAL="+str(numerator)
     return numerator
 
 def getBaseScore(logForm):
@@ -124,11 +126,7 @@ def getNumRandomVars(randomVarNames):
 def getQi(randomVarParents, varValuesDictionary):
     parentsDistribution = oquery.getParentsJointDistribution(randomVarParents, varValuesDictionary)
     qi = len(parentsDistribution)
-    print str(qi) + "=LENGTH FOR DISTRIBUTION \n" + str(parentsDistribution)
-    # qi = oquery.getParentsJointDistribution
-    # for parent in randomVarParents:
-    #     for value in varValuesDictionary[parent]
-    #     qi = getNumRandmVarParents(randomVarParents)+1
+    #print str(qi) + "=LENGTH FOR DISTRIBUTION \n" + str(parentsDistribution)
     if qi == 0:
         qi = 1  # iterate over var with no parent
     return qi

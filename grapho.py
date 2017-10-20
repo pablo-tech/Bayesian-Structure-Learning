@@ -51,18 +51,13 @@ def compute(infile, outfile):
 
 # OPTIMIZE
 # loop a limited number of times morphing graph into higher scoring shape
-# a minimum score gain is gauged before deciding to evolve the graph
 def optimizeGraph(graph, dataframe):
-    maxTries = 3
-    attempt = 0
-    graph = addRandomEdge(graph)
-    initialScore = oscore.getScore(graph, dataframe, attempt)
+    # graph = addRandomEdge(graph)
+    initialScore = oscore.getScore(graph, dataframe, 0)
     bestGraph = graph.copy()
-    for trie in range(0, maxTries):
-        attempt = attempt + 1
-        for node in graph.nodes():
-            bestGraph = getChangedGraph(bestGraph, node, dataframe)
-    finalScore = oscore.getScore(bestGraph, dataframe, attempt)
+    for node in graph.nodes():
+        bestGraph = getChangedGraph(bestGraph, node, dataframe).copy()
+    finalScore = oscore.getScore(bestGraph, dataframe, -1)
     print "****** INITIAL SCORE: " + str(int(initialScore)) + ", FINAL SCORE: " + str(int(finalScore)) + " ******"
     return bestGraph
 
@@ -75,12 +70,13 @@ def addRandomEdge(graph):
     graph.add_edge(fromNode, toNode)  # seed the graph
     return graph
 
-        # MORPH
+# MORPH
 # greedy iteration over the graph looking for a better shape than current
 # attempt the modifiaction at the provided node
 # try to connect the provided node to a random other node
+# a minimum score gain is gauged before deciding to evolve the graph
 def getChangedGraph(graph, toNode, dataframe):
-    maxTries = 100
+    maxTries = 10
     attempt = 0
     minScoreGain = 10
     initialGraph = graph.copy()

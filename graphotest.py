@@ -181,14 +181,14 @@ print "net1 better than n2? Log " + str(summatorialComp>0)
 # VERIFY NETWORK 1: with Decisions Under Uncertainty, page 47, log formula 2.83
 values = [(2, [[5, 5]]), (2, [[1, 4], [4, 1]]), (2, [[4, 1], [0, 5]])]
 
-alphaIJ = oscore.getAlphaij0Hyperparam(values)
-print "ALPHA: " + str(alphaIJ)
+# alphaIJ = oscore.getAlphaij0Hyperparam(values)
+# print "ALPHA: " + str(alphaIJ)
+#
+# mIJ0 = oscore.getMij0Count(values)
+# print "Mij0: " + str(mIJ0)
 
-mIJ0 = oscore.getMij0Count(values)
-print "Mij0: " + str(mIJ0)
-
-mIJ0grouped = oscore.getMij0GroupedCount(values)
-print "Mij0 grouped: " + str(mIJ0grouped)
+# mIJ0grouped = oscore.getMij0GroupedCount(values)
+# print "Mij0 grouped: " + str(mIJ0grouped)
 
 randomVarNames = opanda.getRandomVarNames(dataframe)
 n = oscore.getNumRandomVars(randomVarNames)

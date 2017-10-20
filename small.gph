@@ -2,7 +2,7 @@ fare
 numparentschildren
 age
 portembarked
- fare,passengerclass 
+passengerclass
 sex
- sex,survived 
+survived
 numsiblings
