@@ -58,9 +58,10 @@ def getUpdatedCooperHerscovitsBayesianScore(graph, dataframe, label):
             kValueForRandomVari = iRandomVarValues[k]
             NijkList = ocount.getNijkCountList(iRandomVarName, kValueForRandomVari, iRandomVarParents, varValuesDictionary, dataframe)
             varAndParentAggregateConsideration = getRandomVarAndParentAggregateConsideration(Ri, NijkList, logForm)
-            AggregateConsiderationList.append(varAndParentAggregateConsideration)
             varValuesIndividualConsideration = getRandomVarAndParentIndividualConsideration(NijkList, logForm)
+            AggregateConsiderationList.append(varAndParentAggregateConsideration)
             IndividualConsiderationList.append(varValuesIndividualConsideration)
+
     if not logForm: # multiply
         for aggregate in AggregateConsiderationList:
             score = score * aggregate

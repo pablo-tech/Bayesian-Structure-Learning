@@ -1,6 +1,6 @@
 fixedacidity
-alcohol
-chlorides
+ citricacid,alcohol 
+ ph,chlorides 
 density
 sulphates
 citricacid
@@ -9,4 +9,4 @@ totalsulfurdioxide
 volatileacidity
 quality
 ph
-freesulfurdioxide
+ alcohol,freesulfurdioxide 
