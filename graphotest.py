@@ -111,26 +111,26 @@ print "2-parent of x2=0...NijkQuery..." + str(nijkQueries)
 nijkQueries = ocount.getNijkQueries("x1", 1, ["x2", "xm"], net1Dict)
 print "2-parent of x1=1...NijkQuery..." + str(nijkQueries)
 
-nik0Count = ocount.getNij0Count("x1", [], net1Dict, dataframe)
-print "0-parent of x1...Nij0Count..." + str(nik0Count)
-nik0Count = ocount.getNij0Count("x1", [], net1Dict, dataframe)
-print "0-parent of x1...Nij0Count..." + str(nik0Count)
-
-nik0Count = ocount.getNij0Count("x2", ["x1"], net1Dict, dataframe)
-print "1-parent of x2...Nij0Count..." + str(nik0Count)
-nik0Count = ocount.getNij0Count("x2", ["x1"], net1Dict, dataframe)
-print "1-parent of x2...Nij0Count..." + str(nik0Count)
-
-nik0Count = ocount.getNij0Count("x3", ["x2"], net1Dict, dataframe)
-print "1-parent of x3...Nij0Count..." + str(nik0Count)
-nik0Count = ocount.getNij0Count("x3", ["x2"], net1Dict, dataframe)
-print "1-parent of x3...Nij0Count..." + str(nik0Count)
-
-nik0Count = ocount.getNij0Count("x1", ["x2", "xm"], net1Dict, dataframe)
-print "2-parent of x1...Nij0Count..." + str(nik0Count)
-
-nik0Count = ocount.getNij0Count("x1", ["x2", "xm", "xn"], net1Dict, dataframe)
-print "3-parent of x1...Nij0Count..." + str(nik0Count)
+# nik0Count = ocount.getNij0Count("x1", [], net1Dict, dataframe)
+# print "0-parent of x1...Nij0Count..." + str(nik0Count)
+# nik0Count = ocount.getNij0Count("x1", [], net1Dict, dataframe)
+# print "0-parent of x1...Nij0Count..." + str(nik0Count)
+#
+# nik0Count = ocount.getNij0Count("x2", ["x1"], net1Dict, dataframe)
+# print "1-parent of x2...Nij0Count..." + str(nik0Count)
+# nik0Count = ocount.getNij0Count("x2", ["x1"], net1Dict, dataframe)
+# print "1-parent of x2...Nij0Count..." + str(nik0Count)
+#
+# nik0Count = ocount.getNij0Count("x3", ["x2"], net1Dict, dataframe)
+# print "1-parent of x3...Nij0Count..." + str(nik0Count)
+# nik0Count = ocount.getNij0Count("x3", ["x2"], net1Dict, dataframe)
+# print "1-parent of x3...Nij0Count..." + str(nik0Count)
+#
+# nik0Count = ocount.getNij0Count("x1", ["x2", "xm"], net1Dict, dataframe)
+# print "2-parent of x1...Nij0Count..." + str(nik0Count)
+#
+# nik0Count = ocount.getNij0Count("x1", ["x2", "xm", "xn"], net1Dict, dataframe)
+# print "3-parent of x1...Nij0Count..." + str(nik0Count)
 
 
 

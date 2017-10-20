@@ -117,6 +117,8 @@ Run through completion building the highest scoring graph:
 
 The biggest performance penalty seems to be to check if the graph is still acyclical in a large network as it takes shape.
 
+NOTE: attention must be paid to preferably use the LOG form of the formula to avoid potential zero, or divide by zero errors
+
 ### Sample output:
 
 - (medium) wine:
