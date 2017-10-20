@@ -31,6 +31,25 @@ These datasets are taken from:
 - (medium) wine: https://archive.ics.uci.edu/ml/datasets/Wine+Quality
 - (large) secret dungeon
 
+
+### System requirements:
+
+Python 2.7.14 with NetworkX 1.9, Pandas 0.20.3
+
+
+### How to Run:
+``
+python project1.py small.csv small.gph
+``
+
+``
+python project1.py medium.csv medium.gph
+``
+
+``
+python project1.py large.csv large.gph
+``
+
 ### Dataframes
 Data operations are performed by: 
 
@@ -142,11 +161,6 @@ Please find in the folder:
 - (small) titanic: small.gph and small.gph.png
 - (medium) wine: medium.gph and small.gph.png
 - (large) secret dungeon: large.gph and large.gph.png
-
-
-### System requirements:
-
-Python 2.7.14 with NetworkX 1.9, Pandas 0.20.3
 
 
 ### Future work:
