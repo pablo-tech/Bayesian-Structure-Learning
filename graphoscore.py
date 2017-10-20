@@ -21,9 +21,9 @@ import math
 
 ############
 # SCORE: get score using factors, or sums of logs
-def getScore(graph, dataframe, label):
+def getScore(graph, dataframe):
     ### Log Cooper & Herscovitz
-    logCooperHerscovitsScore = getUpdatedCooperHerscovitsBayesianScore(graph, dataframe, label)
+    logCooperHerscovitsScore = getUpdatedCooperHerscovitsBayesianScore(graph, dataframe)
     # updatedCooperHerscovitsScore = getUpdatedCooperHerscovitsBayesianScore(graph, dataframe, label, False)
     ### Log Bayesian score
     # logBayesianScore = getLogBayesianScore(graph, dataframe, label)
@@ -37,7 +37,7 @@ def getScore(graph, dataframe, label):
 # Posterior probability: is proportional to the prior probability
 # Cancelling out: prior probability cancels out when two networks are compared by division
 # Example: if Score(network1)/Score(network2)>1 then network1 is better representation of the data
-def getUpdatedCooperHerscovitsBayesianScore(graph, dataframe, label):
+def getUpdatedCooperHerscovitsBayesianScore(graph, dataframe):
     logForm = True
     # print "LOG FORM? " + str(logForm)
     score = getBaseScore(logForm)
