@@ -62,7 +62,7 @@ xnValues = ("nx", "ny", "nz")
 net1Dict["xm"] = xmValues
 net1Dict["xn"] = xnValues
 print "NET1 MODIFIED DICT: " + str(net1Dict)
-
+#
 net1Modified1ParentDistribution = oquery.getParentsJointDistribution(["x2"], net1Dict)
 print "NET1 MODIFIED ONE PARENT DISTRIBUTION: " + str(len(net1Modified1ParentDistribution)) # + str(net1Modified1ParentDistribution)
 for join in net1Modified1ParentDistribution:
