@@ -57,8 +57,9 @@ def optimizeGraph(graph, dataframe):
     # graph = addRandomEdge(graph)
     initialScore = oscore.getScore(graph, dataframe, 0)
     bestGraph = graph.copy()
+    attempt = 0
     for node in graph.nodes():
-        bestGraph = getChangedGraph(bestGraph, node, dataframe).copy()
+        bestGraph = getChangedGraph(bestGraph, node, dataframe, attempt).copy()
     finalScore = oscore.getScore(bestGraph, dataframe, -1)
     # print "****** INITIAL SCORE: " + str(int(initialScore)) + ", FINAL SCORE: " + str(int(finalScore)) + " ******"
     return bestGraph
@@ -77,8 +78,7 @@ def addRandomEdge(graph):
 # attempt the modifiaction at the provided node
 # try to connect the provided node to a random other node
 # a minimum score gain is gauged before deciding to evolve the graph
-def getChangedGraph(graph, toNode, dataframe):
-    attempt = 0
+def getChangedGraph(graph, toNode, dataframe, attempt):
     bestMoveGraph = graph.copy()    # greedily find the best graph after maxTries
     for randomNode in graph.nodes():
         if randomNode!=toNode:   # connect only to a different node
@@ -116,14 +116,6 @@ def compareGraphs(tentativeGraph1, tentativeGraph2, bestMoveGraph, dataframe, at
         if tentativeScore2 > tentativeScore1:
             return tentativeGraph2
     return bestMoveGraph
-            # delta = int(tentativeScore) - int(currentBestScore)
-    # print ">Evaluating new graph for better score: from=" + str(int(currentBestScore)) + " to=" + str(
-    #     int(tentativeScore)) + \
-    #       " GAIN=" + str(delta) + " adding EDGE=" + str(randomNode) + "-" + str(toNode) + \
-    #       "TO =>NODES: " + str(tentativeGraph.nodes()) + ", =>EDGES: " + str(tentativeGraph.edges())
-    # if int(delta) > int(minScoreGain):
-    # else:
-    #     print "Did not pursue because the toNode already has a parent..."
 
 # SWITCH GRAPH: after verifying the graph is acyclical
 def switchGraph(newBestGaph, bestMoveGraph):
