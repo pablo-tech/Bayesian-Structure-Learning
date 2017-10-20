@@ -37,7 +37,7 @@ def getScore(graph, dataframe, label):
 # Posterior probability: is proportional to the prior probability
 # Cancelling out: prior probability cancels out when two networks are compared by division
 # Example: if Score(network1)/Score(network2)>1 then network1 is better representation of the data
-def getUpdatedCooperHerscovitsBayesianScore(graph, dataframe, label, logForm):
+def getUpdatedCooperHerscovitsBayesianScore(graph, dataframe, label):
     logForm = True
     print "LOG FORM? " + str(logForm)
     score = getBaseScore(logForm)
@@ -45,6 +45,8 @@ def getUpdatedCooperHerscovitsBayesianScore(graph, dataframe, label, logForm):
     varValuesDictionary = opanda.getRandomVarDictionary(dataframe)
     print ">>> " + str(varValuesDictionary)
     N = getN(randomVarNames)
+    AggregateConsiderationList = []
+    IndividualConsiderationList = []
     for i in range(0, N):  # i random var
         iRandomVarName = randomVarNames[i]
         Ri = getNumRandomVarValues(dataframe, iRandomVarName)
@@ -56,15 +58,21 @@ def getUpdatedCooperHerscovitsBayesianScore(graph, dataframe, label, logForm):
             kValueForRandomVari = iRandomVarValues[k]
             NijkList = ocount.getNijkCountList(iRandomVarName, kValueForRandomVari, iRandomVarParents, varValuesDictionary, dataframe)
             varAndParentAggregateConsideration = getRandomVarAndParentAggregateConsideration(Ri, NijkList, logForm)
+            AggregateConsiderationList.append(varAndParentAggregateConsideration)
             varValuesIndividualConsideration = getRandomVarAndParentIndividualConsideration(NijkList, logForm)
-    if not logForm:
-        productorialTotal = varAndParentAggregateConsideration * varValuesIndividualConsideration
-        print "TOTAL=>"+str(score)+"*" + str(productorialTotal)
-        score = score * productorialTotal
-    else:
-        sumatorialConsideration = varAndParentAggregateConsideration + varValuesIndividualConsideration
-        print "TOTAL=>"+str(score)+"+" + str(sumatorialConsideration)
-        score = score + sumatorialConsideration
+            IndividualConsiderationList.append(varValuesIndividualConsideration)
+    if not logForm: # multiply
+        for aggregate in AggregateConsiderationList:
+            score = score * aggregate
+        for individual in IndividualConsiderationList:
+            score = score * individual
+        print "TOTAL=>"+str(score)
+    else:           # add
+        for aggregate in AggregateConsiderationList:
+            score = score + aggregate
+        for individual in IndividualConsiderationList:
+            score = score + individual
+        print "TOTAL=>"+str(score)
     return score
 
 def getNij0(NijValues):

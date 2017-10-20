@@ -46,10 +46,10 @@ net1Graph.add_edge("x1", "x2")
 net1Graph.add_edge("x2", "x3")
 opanda.getUniqueRandomVarValues(dataframe, "x1")
 
-net1UpdatedProductorialScore = oscore.getUpdatedCooperHerscovitsBayesianScore(net1Graph, dataframe, net1Name, False)
-print net1Name + " Productorial SCORE: " + str(net1UpdatedProductorialScore)
+# net1UpdatedProductorialScore = oscore.getUpdatedCooperHerscovitsBayesianScore(net1Graph, dataframe, net1Name)
+# print net1Name + " Productorial SCORE: " + str(net1UpdatedProductorialScore)
 
-net1UpdatedSummatorialScore = oscore.getUpdatedCooperHerscovitsBayesianScore(net1Graph, dataframe, net1Name, True)
+net1UpdatedSummatorialScore = oscore.getUpdatedCooperHerscovitsBayesianScore(net1Graph, dataframe, net1Name)
 print net1Name + " Log SCORE: " + str(net1UpdatedSummatorialScore)
 
 # net1ProductorialScore = oscore.getCooperHerscovitsBayesianScore(net1Graph, dataframe, net1Name)
@@ -145,10 +145,10 @@ net2Graph = grapho.addRandomVarNodesToGraph(net2Graph, randomVarNames)
 net2Graph.add_edge("x1", "x2")
 net2Graph.add_edge("x1", "x3")
 
-net2UpdatedProductorialScore = oscore.getUpdatedCooperHerscovitsBayesianScore(net2Graph, dataframe, net2Name, False)
-print net2Name + " Productorial SCORE: " + str(net2UpdatedProductorialScore)
+# net2UpdatedProductorialScore = oscore.getUpdatedCooperHerscovitsBayesianScore(net2Graph, dataframe, net2Name)
+# print net2Name + " Productorial SCORE: " + str(net2UpdatedProductorialScore)
 
-net2UpdatedSummatorialScore = oscore.getUpdatedCooperHerscovitsBayesianScore(net2Graph, dataframe, net1Name, True)
+net2UpdatedSummatorialScore = oscore.getUpdatedCooperHerscovitsBayesianScore(net2Graph, dataframe, net1Name)
 print net2Name + " Log SCORE: " + str(net2UpdatedSummatorialScore)
 
 # net2ProductorialScore = oscore.getCooperHerscovitsBayesianScore(net2Graph, dataframe, net2Name)
@@ -164,8 +164,8 @@ oshow.write(net2OutputFile, net2Graph)
 ############
 # COMPARE ALGORITHMS
 
-productorialComp = net1UpdatedProductorialScore/net2UpdatedProductorialScore
-print "net1 better than n2? Productorial " + str(productorialComp>1)
+# productorialComp = net1UpdatedProductorialScore/net2UpdatedProductorialScore
+# print "net1 better than n2? Productorial " + str(productorialComp>1)
 
 summatorialComp = net1UpdatedSummatorialScore-net2UpdatedSummatorialScore
 print "net1 better than n2? Log " + str(summatorialComp>0)
