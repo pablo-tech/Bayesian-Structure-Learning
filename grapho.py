@@ -85,7 +85,7 @@ def addRandomEdge(graph):
 # a minimum score gain is gauged before deciding to evolve the graph
 def getChangedGraph(graph, toNode, dataframe):
     bestMoveGraph = graph.copy()    # greedily find the best graph after maxTries
-    maxAttempts = 20
+    maxAttempts = 5
     attempt = 0
     for randomNode in graph.nodes():
         if attempt < maxAttempts:
