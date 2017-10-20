@@ -46,11 +46,17 @@ net1Graph.add_edge("x1", "x2")
 net1Graph.add_edge("x2", "x3")
 opanda.getUniqueRandomVarValues(dataframe, "x1")
 
-net1ProductorialScore = oscore.getCooperHerscovitsBayesianScore(net1Graph, dataframe, net1Name)
-print net1Name + " Productorial SCORE: " + str(net1ProductorialScore)
+net1UpdatedProductorialScore = oscore.getUpdatedCooperHerscovitsBayesianScore(net1Graph, dataframe, net1Name, False)
+print net1Name + " Productorial SCORE: " + str(net1UpdatedProductorialScore)
 
-net1LogScore = oscore.getLogBayesianScore(net1Graph, dataframe, net1Name)
-print net1Name + " Log SCORE: " + str(net1ProductorialScore)
+net1UpdatedSummatorialScore = oscore.getUpdatedCooperHerscovitsBayesianScore(net1Graph, dataframe, net1Name, True)
+print net1Name + " Log SCORE: " + str(net1UpdatedSummatorialScore)
+
+# net1ProductorialScore = oscore.getCooperHerscovitsBayesianScore(net1Graph, dataframe, net1Name)
+# print net1Name + " Productorial SCORE: " + str(net1ProductorialScore)
+#
+# net1LogScore = oscore.getLogBayesianScore(net1Graph, dataframe, net1Name)
+# print net1Name + " Log SCORE: " + str(net1LogScore)
 
 oshow.plotGraph(net1Graph, net1OutputFile)
 oshow.toString(net1Graph)
@@ -105,25 +111,25 @@ print "2-parent of x2=0...NijkQuery..." + str(nijkQueries)
 nijkQueries = ocount.getNijkQueries("x1", 1, ["x2", "xm"], net1Dict)
 print "2-parent of x1=1...NijkQuery..." + str(nijkQueries)
 
-nik0Count = ocount.getNij0("x1", [], net1Dict, dataframe)
+nik0Count = ocount.getNij0Count("x1", [], net1Dict, dataframe)
 print "0-parent of x1...Nij0Count..." + str(nik0Count)
-nik0Count = ocount.getNij0("x1", [], net1Dict, dataframe)
+nik0Count = ocount.getNij0Count("x1", [], net1Dict, dataframe)
 print "0-parent of x1...Nij0Count..." + str(nik0Count)
 
-nik0Count = ocount.getNij0("x2", ["x1"], net1Dict, dataframe)
+nik0Count = ocount.getNij0Count("x2", ["x1"], net1Dict, dataframe)
 print "1-parent of x2...Nij0Count..." + str(nik0Count)
-nik0Count = ocount.getNij0("x2", ["x1"], net1Dict, dataframe)
+nik0Count = ocount.getNij0Count("x2", ["x1"], net1Dict, dataframe)
 print "1-parent of x2...Nij0Count..." + str(nik0Count)
 
-nik0Count = ocount.getNij0("x3", ["x2"], net1Dict, dataframe)
+nik0Count = ocount.getNij0Count("x3", ["x2"], net1Dict, dataframe)
 print "1-parent of x3...Nij0Count..." + str(nik0Count)
-nik0Count = ocount.getNij0("x3", ["x2"], net1Dict, dataframe)
+nik0Count = ocount.getNij0Count("x3", ["x2"], net1Dict, dataframe)
 print "1-parent of x3...Nij0Count..." + str(nik0Count)
 
-nik0Count = ocount.getNij0("x1", ["x2", "xm"], net1Dict, dataframe)
+nik0Count = ocount.getNij0Count("x1", ["x2", "xm"], net1Dict, dataframe)
 print "2-parent of x1...Nij0Count..." + str(nik0Count)
 
-nik0Count = ocount.getNij0("x1", ["x2", "xm", "xn"], net1Dict, dataframe)
+nik0Count = ocount.getNij0Count("x1", ["x2", "xm", "xn"], net1Dict, dataframe)
 print "3-parent of x1...Nij0Count..." + str(nik0Count)
 
 
@@ -139,11 +145,11 @@ net2Graph = grapho.addRandomVarNodesToGraph(net2Graph, randomVarNames)
 net2Graph.add_edge("x1", "x2")
 net2Graph.add_edge("x1", "x3")
 
-net2ProductorialScore = oscore.getCooperHerscovitsBayesianScore(net2Graph, dataframe, net2Name)
-print net2Name + " Productorial SCORE: " + str(net2ProductorialScore)
-
-net2LogScore = oscore.getLogBayesianScore(net2Graph, dataframe, net2Name)
-print net2Name + " Log SCORE: " + str(net2LogScore)
+# net2ProductorialScore = oscore.getCooperHerscovitsBayesianScore(net2Graph, dataframe, net2Name)
+# print net2Name + " Productorial SCORE: " + str(net2ProductorialScore)
+#
+# net2LogScore = oscore.getLogBayesianScore(net2Graph, dataframe, net2Name)
+# print net2Name + " Log SCORE: " + str(net2LogScore)
 
 oshow.plotGraph(net2Graph, net2OutputFile)
 oshow.toString(net2Graph)
@@ -151,11 +157,11 @@ oshow.write(net2OutputFile, net2Graph)
 
 ############
 # COMPARE ALGORITHMS
-productorialComp = net1ProductorialScore/net2ProductorialScore
-print "net1 better than n2? Productorial " + str(productorialComp>1)
-
-logComp = net1ProductorialScore-net2ProductorialScore
-print "net1 better than n2? Log " + str(logComp>0)
+# productorialComp = net1ProductorialScore/net2ProductorialScore
+# print "net1 better than n2? Productorial " + str(productorialComp>1)
+#
+# logComp = net1ProductorialScore-net2ProductorialScore
+# print "net1 better than n2? Log " + str(logComp>0)
 
 
 ############

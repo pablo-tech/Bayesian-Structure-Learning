@@ -5,7 +5,7 @@ import graphoquery as oquery
 import graphopanda as opanda
 
 
-def getNij0(iRandomVar, jParentVars, varValuesDictionary, dataframe):
+def getNij0Count(iRandomVar, jParentVars, varValuesDictionary, dataframe):
     iVarValues = varValuesDictionary[iRandomVar]
     total = 0
     for iVarValue in iVarValues:

@@ -52,14 +52,6 @@ def getRandomVarDictionary(dataframe):
         varValuesDict[name] =  getUniqueRandomVarValues(dataframe, name)
     return varValuesDict
 
-# # COUNT: count number of pattern repeats by filtering a dataframe and counting how many rows are left
-# def getQueryCounts(dataframe, queryArray):
-#     queryTuple = queryArray[0]
-#     filteredDF = queryDataframe(dataframe, queryTuple)
-#     count = len(filteredDF)
-#     return count
-#
-
 # JOINT QUERY RESULT
 # execute queries in the array one by one to arrive at a filtered dataframe
 def getJointQueryResult(dataframe, queryArray):

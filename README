@@ -39,11 +39,18 @@ graphopanda, which relies on Python's Pandas library
 ``
 
 ### Querying:
-Queries to filter dataframes, to count occurrance of data patterns, are performed by:
+To count occurrance of data patterns, aggregations are performed by:
+
+``
+graphocount
+``
+
+Queries to filter dataframes are performed by:
 
 ``
 graphoquery
 ``
+
 
 ### Plotting:
 Plotting is performed by:

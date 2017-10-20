@@ -14,19 +14,114 @@ except RuntimeError:
 # GRAPHO components developed
 import graphopanda as opanda
 import graphoxnet as oxnet
+import graphocount as ocount
+import graphoquery as oquery
 
 import math
 
 ############
 # SCORE: get score using factors, or sums of logs
 def getScore(graph, dataframe, label):
+    ### Log Cooper & Herscovitz
+    # logCooperHerscovitsScore = getUpdatedCooperHerscovitsBayesianScore(graph, dataframe, label, True)
+    updatedCooperHerscovitsScore = getUpdatedCooperHerscovitsBayesianScore(graph, dataframe, label, False)
     ### Log Bayesian score
-    logScore = getLogBayesianScore(graph, dataframe, label)
+    # logBayesianScore = getLogBayesianScore(graph, dataframe, label)
     ### Cooper & Herscovitz
-    # cooperHscore = getCooperHerscovitsBayesianScore(graph, dataframe, label)
+    # cooperHerscovitsScore = getCooperHerscovitsBayesianScore(graph, dataframe, label)
     # print "COOPER HERRSCOVITS SCORE: " + str(cooperHscore)
-    return logScore
+    return updatedCooperHerscovitsScore
 
+# SCORING WITH FACTORS: Cooper & Herscovits, page 320, formula 8
+# It is the same as Decisions under Uncertainty, page 47, formula 2.80
+# Posterior probability: is proportional to the prior probability
+# Cancelling out: prior probability cancels out when two networks are compared by division
+# Example: if Score(network1)/Score(network2)>1 then network1 is better representation of the data
+def getUpdatedCooperHerscovitsBayesianScore(graph, dataframe, label, logForm):
+    score = getBaseScore(logForm)
+    randomVarNames = opanda.getRandomVarNames(dataframe)
+    N = getN(randomVarNames)
+    for i in range(0, N):  # i random var
+        iRandomVarName = randomVarNames[i]
+        iRandomVarParents = oxnet.getRandomVarParents(iRandomVarName, graph)
+        print str(i) + " is " + str(iRandomVarName) + " with parents " + str(iRandomVarParents)
+        Qi = getQi(iRandomVarParents)
+        for j in range(0, Qi):  # j parents of ranom var i
+            Ri = getNumRandomVarValues(dataframe,iRandomVarName)
+            varValuesDictionary = opanda.getRandomVarDictionary(dataframe)
+            Nij = ocount.getNij0Count(iRandomVarName, iRandomVarParents, varValuesDictionary, dataframe)
+            print str(i) + " " + str(j) + " " + "Nij: " + str(Nij)
+            varAndParentAggregateConsideration = getRandomVarAndParentAggregateFactor(Ri, Nij, logForm)
+            NijkValues = []
+            for k in range(0, Ri):
+                iRandomVarValue = opanda.getUniqueRandomVarValues(dataframe, iRandomVarName)
+                NijkValues.append(iRandomVarValue)
+            print str(i) + " " + str(j) + " " + str(k) + " " + "NijkValues: " + str(NijkValues)
+            varValuesIndividualConsideration = getRandomVarAndParentIndividualFactor(NijkValues, logForm)
+            if not logForm:
+                compoundFactor = varAndParentAggregateConsideration * varValuesIndividualConsideration
+                score = score * compoundFactor
+            else:
+                aggregateConsideration = varAndParentAggregateConsideration + varValuesIndividualConsideration
+                score = score + aggregateConsideration
+    return score
+
+# VAR AND PARENT AGGREGATE FACTOR: per Cooper & Herscovits
+def getRandomVarAndParentAggregateFactor(Ri, Nij0, logForm):
+    numerator = math.factorial(Ri-1)            # Dirichlet Prior (all pseudocounts = 1) for a random var
+    denominator = math.factorial(Nij0+Ri-1)
+    if not logForm:
+        return numerator / denominator
+    else:
+        return math.log(numerator) - math.log(denominator)
+
+# VAR AND PARENT VAR INDIVIDUAL FACTORS
+def getRandomVarAndParentIndividualFactor(NijkValues, logForm):
+    print "NijkValues: " + str(NijkValues)
+    numerator = getBaseScore(logForm)
+    for Nijk in oquery.getFlatendList(NijkValues):
+        factor = math.factorial(Nijk)
+        if not logForm:
+            numerator = numerator * factor
+        else:
+            numerator = numerator + math.log(factor)
+    return numerator
+
+def getBaseScore(logForm):
+    if not logForm:
+        base = float(1)   # multiply neutral
+        return base
+    else:
+        base = float(0)   # add neutral
+        return base
+
+# I:0-N iterator over random variables
+def getN(randomVarNames):
+    return getNumRandomVars(randomVarNames)
+
+def getNumRandomVars(randomVarNames):
+    n = len(randomVarNames)
+    return n
+
+# J:0-Qi iterator over random var parents
+def getQi(randomVarParents):
+    qi = getNumRandmVarParents(randomVarParents)
+    if qi == 0:
+        qi = 1  # iterate over no parent
+    return qi
+
+def getNumRandmVarParents(randomVarParents):
+    qi = len(randomVarParents)
+    if len(randomVarParents) == 0:
+        qi = 0
+    return qi
+
+# K: iterator over instances/values of a random variable
+def getNumRandomVarValues(dataframe, randomVarName):
+    randomVarValues = opanda.getUniqueRandomVarValues(dataframe, randomVarName)
+    return len(randomVarValues)
+
+# ==================
 
 # SCORING WITH FACTORS: Cooper & Herscovits, page 320, formula 8
 # It is the same as Decisions under Uncertainty, page 47, formula 2.80
@@ -203,28 +298,7 @@ def iterateThroughCombinations(graph, dataframe, label):
             values.append((ri, MijList))
     return values
 
-# I: iterator over random variables
-def getNumRandomVars(randomVarNames):
-    n = len(randomVarNames)
-    return n
 
-# J: iterator over random var parents
-def getQi(randomVarParents):
-    qi = getNumRandmVarParents(randomVarParents)
-    if qi == 0:
-        qi = 1  # iterate over no parent
-    return qi
-
-def getNumRandmVarParents(randomVarParents):
-    qi = len(randomVarParents)
-    if len(randomVarParents) == 0:
-        qi = 0
-    return qi
-
-# K: iterator over instances/values of a random variable
-def getNumRandomVarValues(dataframe, randomVarName):
-    randomVarValues = opanda.getUniqueRandomVarValues(dataframe, randomVarName)
-    return len(randomVarValues)
 
 # RUN QUERIES: run the queries on the dataframe.  A query filters the dataframe.
 # The number of rows in the resulting dataframe is the pattern count we are looking for
