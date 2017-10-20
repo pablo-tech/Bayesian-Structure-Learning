@@ -1,8 +1,8 @@
-fare
-numparentschildren
- numsiblings,age 
- survived,portembarked 
- portembarked,passengerclass 
- numsiblings,sex 
- numsiblings,survived 
- fare,numsiblings 
+numsiblings,age
+numparentschildren,portembarked
+numsiblings,portembarked
+survived,portembarked
+portembarked,passengerclass
+numsiblings,sex
+numsiblings,survived
+fare,numsiblings

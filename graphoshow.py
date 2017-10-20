@@ -80,15 +80,26 @@ def plotGraph(graph, filename):
 
 # WRITE: a gph output file
 def write(outfile, graph):
-    # print "GOT TO WRITE " + str(graph.nodes())
-    with open(outfile, 'wb') as csvfile:
-        owriter = csv.writer(csvfile, delimiter=',', quotechar=' ', doublequote=False, quoting=csv.QUOTE_MINIMAL)
-        for node in graph.nodes():
-            row = node
-            parents = oxnet.getRandomVarParents(str(node), graph)
-            # print "Parents: " + str(parents)
-            for parent in parents:
-                row = parent + "," + node
+
+    f = open(outfile, 'w')
+
+    for node in graph.nodes():
+        parents = oxnet.getRandomVarParents(str(node), graph)
+        for parent in parents:
+            row = parent + "," + node + "\n"
             print "writing row to file: " + str(row)
-            owriter.writerow([row])
-    pass
+            f.write(row)
+
+
+    # # print "GOT TO WRITE " + str(graph.nodes())
+    # with open(outfile, 'wb') as csvfile:
+    #     owriter = csv.writer(csvfile, delimiter=',', quotechar=' ', escapechar='', quoting = csv.QUOTE_NONE)
+    #     #owriter = csv.writer(csvfile, delimiter=',', quotechar=' ', doublequote=False, quoting=csv.QUOTE_MINIMAL)
+    #     for node in graph.nodes():
+    #         row = node
+    #         parents = oxnet.getRandomVarParents(str(node), graph)
+    #         for parent in parents:
+    #             row = parent,node
+    #         print "writing row to file: " + str(row)
+    #         owriter.writerow([row])
+    # pass

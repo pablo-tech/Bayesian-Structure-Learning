@@ -44,7 +44,7 @@ def compute(infile, outfile):
     randomVars = opanda.getRandomVarNames(dataframe)
     initGraph = addRandomVarNodesToGraph(newGraph, randomVars)
     optimGraph = optimizeGraph(initGraph, dataframe)
-    oshow.plotGraph(optimGraph, outfile)
+    #oshow.plotGraph(optimGraph, outfile) # Disabled for submission
     oshow.write(outfile, optimGraph)
     # oshow.toString(optimGraph)
     pass
@@ -103,17 +103,17 @@ def compareGraphs(tentativeGraph1, tentativeGraph2, bestMoveGraph, dataframe, at
     tentativeScore2 = oscore.getScore(tentativeGraph2, dataframe, attempt)
     currentBestScore = oscore.getScore(bestMoveGraph, dataframe, attempt)
     print "SCORE COMP: " + str(tentativeScore1) + " " + str(tentativeScore2) + " " + str(currentBestScore)
-    if attempt>100:
-        if tentativeScore1>tentativeScore2:
-            if tentativeScore1>currentBestScore:
+    if attempt>10:
+        if long(tentativeScore1) > long(tentativeScore2):
+            if long(tentativeScore1) > long(currentBestScore):
                 return tentativeGraph1
-        if tentativeScore2 > tentativeScore1:
-            if tentativeScore2>currentBestScore:
+        if long(tentativeScore2) > long(tentativeScore1):
+            if long(tentativeScore2) > long(currentBestScore):
                 return tentativeGraph2
     else:   # encourage getting off the status quo; formula appears to not penalize lack of parents
-        if tentativeScore1>tentativeScore2:
+        if long(tentativeScore1) > long(tentativeScore2):
             return tentativeGraph1
-        if tentativeScore2 > tentativeScore1:
+        if long(tentativeScore2) > long(tentativeScore1):
             return tentativeGraph2
     return bestMoveGraph
 
