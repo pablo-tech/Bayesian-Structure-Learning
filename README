@@ -103,7 +103,8 @@ For high performance, the algorithm developed relies on native filtering methods
 Below is the time it took to run on a personal laptop.  NOTE: the code was run with console logs enabled, which
 by itself would likely reduce performance by and order of magnitude.
 
-The algorithm is currently configured to make at most 100 attempts per node to optimize any one graph.
+The algorithm is currently configured to make at most a maximum number of optimization attempts per node
+to optimize any one graph.
 
 Initial graph score evaluation:
 - (small) titanic: fraction of second

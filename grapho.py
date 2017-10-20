@@ -58,7 +58,7 @@ def optimizeGraph(graph, dataframe):
     # graph = addRandomEdge(graph)
     initialScore = oscore.getScore(graph, dataframe)
     bestGraph = graph.copy()
-    maxAttempts = 5
+    maxAttempts = 10
     attempt = 0
     for node in graph.nodes():
         if attempt < maxAttempts:
@@ -85,7 +85,7 @@ def addRandomEdge(graph):
 # a minimum score gain is gauged before deciding to evolve the graph
 def getChangedGraph(graph, toNode, dataframe):
     bestMoveGraph = graph.copy()    # greedily find the best graph after maxTries
-    maxAttempts = 10
+    maxAttempts = 20
     attempt = 0
     for randomNode in graph.nodes():
         if attempt < maxAttempts:
@@ -96,8 +96,9 @@ def getChangedGraph(graph, toNode, dataframe):
                         tentativeGraph1.add_edge(randomNode, toNode)
                         tentativeGraph2 = graph.copy()
                         tentativeGraph2.add_edge(toNode, randomNode)
-                        newBestGaph = compareGraphs(tentativeGraph1, tentativeGraph2, bestMoveGraph, dataframe)
-                        bestMoveGraph = switchGraph(newBestGaph, bestMoveGraph).copy()
+                        newBestGaph = compareGraphs(tentativeGraph1, tentativeGraph2, bestMoveGraph, dataframe, attempt)
+                        switched = switchGraph(newBestGaph, bestMoveGraph)
+                        bestMoveGraph = switched.copy()
                         attempt = attempt + 1
                     else: print "Did not tackle because the nodes already shared an edge..."
                 else: print "Did not tackle because the nodes already shared an edge..."
@@ -106,25 +107,23 @@ def getChangedGraph(graph, toNode, dataframe):
 
 
 # COMPARE: pick the best graph from a comparison set
-def compareGraphs(tentativeGraph1, tentativeGraph2, bestMoveGraph, dataframe):
+def compareGraphs(tentativeGraph1, tentativeGraph2, bestMoveGraph, dataframe, attempt):
     tentativeScore1 = oscore.getScore(tentativeGraph1, dataframe)
     tentativeScore2 = oscore.getScore(tentativeGraph2, dataframe)
     currentBestScore = oscore.getScore(bestMoveGraph, dataframe)
     print "SCORE COMP: " + str(tentativeScore1) + " " + str(tentativeScore2) + " " + str(currentBestScore)
-    # if attempt>10:
-    # print "BOTTOM ATTEMPT: " + str(attempt)
-    if long(tentativeScore1) > long(tentativeScore2):
-        if long(tentativeScore1) > long(currentBestScore):
+    if attempt>10:
+        if long(tentativeScore1) > long(tentativeScore2):
+            if long(tentativeScore1) > long(currentBestScore):
+                return tentativeGraph1
+        if long(tentativeScore2) > long(tentativeScore1):
+            if long(tentativeScore2) > long(currentBestScore):
+                return tentativeGraph2
+    else:   # encourage getting off the status quo; formula appears to not penalize lack of parents
+        if long(tentativeScore1) > long(tentativeScore2):
             return tentativeGraph1
-    if long(tentativeScore2) > long(tentativeScore1):
-        if long(tentativeScore2) > long(currentBestScore):
+        if long(tentativeScore2) > long(tentativeScore1):
             return tentativeGraph2
-    # else:   # encourage getting off the status quo; formula appears to not penalize lack of parents
-    #     if long(tentativeScore1) > long(tentativeScore2):
-    #         return tentativeGraph1
-    #     if long(tentativeScore2) > long(tentativeScore1):
-    #         return tentativeGraph2
-    # print "ATTEMPT " + str(attempt)
     return bestMoveGraph
 
 # SWITCH GRAPH: after verifying the graph is acyclical
