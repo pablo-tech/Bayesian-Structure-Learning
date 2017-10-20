@@ -29,6 +29,35 @@ def getNijCount(iVar, kValueForVari, jParentVar, valueForParentj):
 
 # PARENTS JOINT DISTRIBUTION: get a full joint distribution
 # it joins all the vars in the dictionary, except the ignore var(i var in question), to produce a distribution of parents
+## 1 parent output:
+# [('x2', 0)]
+# [('x2', 1)]
+## 2 parent output:
+# [('x2', 0), ('xm', 'mx')]
+# [('x2', 0), ('xm', 'my')]
+# [('x2', 0), ('xm', 'mz')]
+# [('x2', 1), ('xm', 'mx')]
+# [('x2', 1), ('xm', 'my')]
+# [('x2', 1), ('xm', 'mz')]
+## 3 parent output:
+# [('xn', 'nx'), ('x2', 0), ('xm', 'mx')]
+# [('xn', 'nx'), ('x2', 0), ('xm', 'my')]
+# [('xn', 'nx'), ('x2', 0), ('xm', 'mz')]
+# [('xn', 'nx'), ('x2', 1), ('xm', 'mx')]
+# [('xn', 'nx'), ('x2', 1), ('xm', 'my')]
+# [('xn', 'nx'), ('x2', 1), ('xm', 'mz')]
+# [('xn', 'ny'), ('x2', 0), ('xm', 'mx')]
+# [('xn', 'ny'), ('x2', 0), ('xm', 'my')]
+# [('xn', 'ny'), ('x2', 0), ('xm', 'mz')]
+# [('xn', 'ny'), ('x2', 1), ('xm', 'mx')]
+# [('xn', 'ny'), ('x2', 1), ('xm', 'my')]
+# [('xn', 'ny'), ('x2', 1), ('xm', 'mz')]
+# [('xn', 'nz'), ('x2', 0), ('xm', 'mx')]
+# [('xn', 'nz'), ('x2', 0), ('xm', 'my')]
+# [('xn', 'nz'), ('x2', 0), ('xm', 'mz')]
+# [('xn', 'nz'), ('x2', 1), ('xm', 'mx')]
+# [('xn', 'nz'), ('x2', 1), ('xm', 'my')]
+# [('xn', 'nz'), ('x2', 1), ('xm', 'mz')]
 def getParentsJointDistribution(parentRandomVars, varValuesDictionary):
     print "joint dictionary " + str(varValuesDictionary)
     parentJointDistribution = []
