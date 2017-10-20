@@ -52,58 +52,56 @@ def getRandomVarDictionary(dataframe):
         varValuesDict[name] =  getUniqueRandomVarValues(dataframe, name)
     return varValuesDict
 
-# COUNT: count number of pattern repeats by filtering a dataframe and counting how many rows are left
-def getQueryCounts(dataframe, queryArray):
-    queryTuple = queryArray[0]
-    filteredDF = queryDataframe(dataframe, queryTuple)
-    count = len(filteredDF)
-    return count
-
-# def getJointQueryCounts(dataframe, queryArray):
-#     filteredDF = dataframe
-#     fieldNames = []
-#     for queryTuple in queryArray:
-#         filteredDF = queryDataframe(filteredDF, queryTuple)
-#         fieldNames.append(queryTuple[0])
-#     finalDF = filteredDF[fieldNames]
-#     count = len(finalDF)
+# # COUNT: count number of pattern repeats by filtering a dataframe and counting how many rows are left
+# def getQueryCounts(dataframe, queryArray):
+#     queryTuple = queryArray[0]
+#     filteredDF = queryDataframe(dataframe, queryTuple)
+#     count = len(filteredDF)
 #     return count
+#
 
 # JOINT QUERY RESULT
 # execute queries in the array one by one to arrive at a filtered dataframe
 def getJointQueryResult(dataframe, queryArray):
-    print "getJointQueryResult query: " + str(queryArray) + " " + str(len(queryArray))
+    # print "getJointQueryResult query: " + str(queryArray) + " " + str(len(queryArray))
     filteredDF = dataframe
     fieldNames = []
     if len(queryArray)>1: # random var has parents
         for querySingle in queryArray:
-            print "querySingle query: " + str(querySingle) + " " + str(len(querySingle))
             for queryTuple in querySingle:
-                print "queryTuple query: " + str(queryTuple) + " " + str(len(queryTuple))
                 updatedTuple = [queryTuple[0], queryTuple[1]]
-                print "WITH PARENT QUERY TUPLE: " + str(updatedTuple)
                 filteredDF = queryDataframe(filteredDF, updatedTuple)
-                print "filteredDF " + str(filteredDF)
-                fieldNames.append(queryTuple[0])
-        print "COLUMN FILTER: " + str(fieldNames) + " FOR DF " + str (filteredDF)
-        finalDF = filteredDF[fieldNames]
+                fieldName = queryTuple[0]
+                fieldNames = getUniqueFieldNames(fieldName, fieldNames, dataframe)
+        if len(filteredDF)>0:
+            finalDF = filteredDF[fieldNames]    # filter columns only if rows remain
+        else:
+            finalDF = filteredDF
     else:
         queryTuple = oquery.getFlatendList(queryArray)
-        print "NO PARENT QUERY TUPLE: " + str(queryTuple)
         finalDF = queryDataframe(dataframe, queryTuple)
     return finalDF
+
+# UNIQUE FIELDS: gather a unique set of columns, even if the dataframe is queried multiple times for the same
+# query case: [[('x1', 1), ('x2', 0), ('xm', 'mx')], [('x1', 1), ('x2', 0), ('xm', 'my')], [('x1', 1), ('x2', 0), ('xm', 'mz')], [('x1', 1), ('x2', 1), ('xm', 'mx')], [('x1', 1), ('x2', 1), ('xm', 'my')], [('x1', 1), ('x2', 1), ('xm', 'mz')]]
+def getUniqueFieldNames(fieldName, fieldNames, dataframe):
+    if not fieldName in fieldNames:     # have only unique names in the list
+        fieldNames.append(fieldName)
+    return fieldNames
+
+# REMOVE UNNECESSARY COLUMNS: remove from field names columns no longer present
+# def
 
 # FILTER: reduce the dataframe to the rows that match a query, with only the columns that match the query
 # queryArray = [('age', 1), ('sex', 2)]
 def queryDataframe(dataframe, tuple):
-    print "FINAL QUERY TUPLE " + str(tuple)
+    # print "FINAL QUERY TUPLE " + str(tuple)
     filteredDF = dataframe
     field_name = tuple[0]
     field_value = tuple[1]
-    print "FIELD NAME: " + str(field_name) + " FIELD VALUE " + str(field_value)
     if field_name in getRandomVarNames(dataframe):
         filteredDF = filteredDF.loc[(filteredDF[field_name] == field_value)]
         return filteredDF
-    else:   # skip filtering vars that are not present in the already filtered dataframe
+    else:   # skip filtering vars that are not present in the dataframe
         return dataframe
 
