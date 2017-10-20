@@ -5,14 +5,15 @@ import graphoquery as oquery
 import graphopanda as opanda
 
 
-def getNij0Count(iRandomVar, jParentVars, varValuesDictionary, dataframe):
-    iVarValues = varValuesDictionary[iRandomVar]
-    total = 0
-    for iVarValue in iVarValues:
-        countList = getNijkCountList(iRandomVar, iVarValue, jParentVars, varValuesDictionary, dataframe)
-        for count in countList:
-            total = total + count
-    return total
+# def getNij0Count(iRandomVar, jParentVars, varValuesDictionary, dataframe):
+#     iVarValues = varValuesDictionary[iRandomVar]
+#     total = 0
+#     for iVarValue in iVarValues:
+#         countList = getNijkCountList(iRandomVar, iVarValue, jParentVars, varValuesDictionary, dataframe)
+#         print "ACTUALOUNT="+str(countList) + " + for var=" + str(iRandomVar) + " with values=" + str(iVarValues)
+#         for count in countList:
+#             total = total + count
+#     return total
 
 # j represents the unique instantiations of parents: eg full joint distribution of parents
 def getNijkCountList(iRandomVar, kValueForVari, jParentVars, varValuesDictionary, dataframe):
