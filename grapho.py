@@ -121,15 +121,14 @@ def compareGraphs(tentativeGraph1, tentativeGraph2, bestMoveGraph, dataframe, at
 def switchGraph(newBestGaph, bestMoveGraph):
     cycles = list(nx.simple_cycles(newBestGaph))
     print "Potential Graph Cycles: " + str(cycles)
+    graph = bestMoveGraph.copy()
     if len(cycles) == 0:
-        # if nx.is_directed_acyclic_graph(tentativeGraph)==False:
-        print "==> Switching graph candidate!"
-        return newBestGaph
-        # else: print "Did not adopt because it would cause a cycle in the graph..."
+        if nx.is_directed_acyclic_graph(newBestGaph)==False:
+            print "==> Switching graph candidate!"
+            graph = newBestGaph.copy()
     else:
         print "Did not enough score gain to make the change..."
-        return bestMoveGraph
-
+    return graph
 
 # ADD RANDOM VARIABLE NODES
 # len()
