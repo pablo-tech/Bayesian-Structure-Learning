@@ -47,6 +47,7 @@ def compute(infile, outfile):
     #oshow.plotGraph(optimGraph, outfile) # Disabled for submission
     oshow.write(outfile, optimGraph)
     # oshow.toString(optimGraph)
+    print "DONE"
     pass
 
 # OPTIMIZE
@@ -89,8 +90,7 @@ def getChangedGraph(graph, toNode, dataframe, attempt):
                     tentativeGraph2 = graph.copy()
                     tentativeGraph2.add_edge(toNode, randomNode)
                     newBestGaph = compareGraphs(tentativeGraph1, tentativeGraph2, bestMoveGraph, dataframe, attempt)
-                    bestMoveGraph = switchGraph(newBestGaph, bestMoveGraph).copy()
-                    attempt = attempt+1
+                    bestMoveGraph = switchGraph(newBestGaph, bestMoveGraph, attempt).copy()
                 else: print "Did not tackle because the nodes already shared an edge..."
             else: print "Did not tackle because the nodes already shared an edge..."
         else: print "Did not try to connect same to/from nodes..."
@@ -115,20 +115,20 @@ def compareGraphs(tentativeGraph1, tentativeGraph2, bestMoveGraph, dataframe, at
             return tentativeGraph1
         if long(tentativeScore2) > long(tentativeScore1):
             return tentativeGraph2
+    print "ATTEMPT " + str(attempt)
     return bestMoveGraph
 
 # SWITCH GRAPH: after verifying the graph is acyclical
-def switchGraph(newBestGaph, bestMoveGraph):
+def switchGraph(newBestGaph, bestMoveGraph, attempt):
+    print "considering switch!"
     cycles = list(nx.simple_cycles(newBestGaph))
-    print "Potential Graph Cycles: " + str(cycles)
-    graph = bestMoveGraph.copy()
-    if len(cycles) == 0:
-        if nx.is_directed_acyclic_graph(newBestGaph)==False:
-            print "==> Switching graph candidate!"
-            graph = newBestGaph.copy()
+    if len(cycles) != 0:
+        if nx.is_directed_acyclic_graph(newBestGaph):
+            print "DAG test failed..."
+            return bestMoveGraph
     else:
-        print "Did not enough score gain to make the change..."
-    return graph
+        print "==> Switching graph candidate!"
+        return newBestGaph
 
 # ADD RANDOM VARIABLE NODES
 # len()

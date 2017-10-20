@@ -80,18 +80,28 @@ def plotGraph(graph, filename):
 
 # WRITE: a gph output file
 def write(outfile, graph):
+    print "WILL SAVE TO FILE: " + str(outfile) + " " + str(graph)
+    try:
+        f = open(outfile, 'w')
+        f.write(getContent(graph))
+        f.close()
+    except:
+        print "WRITE to file failed!"
+    pass
 
-    f = open(outfile, 'w')
-
+def getContent(graph):
+    content = ""
     for node in graph.nodes():
         parents = oxnet.getRandomVarParents(str(node), graph)
-        for parent in parents:
-            row = parent + "," + node + "\n"
-            print "writing row to file: " + str(row)
-            f.write(row)
+        if len(parents)>0:
+            for parent in parents:
+                content = content + str(parent) + "," + str(node) + "\n"
+        else:
+            content = content + node + "\n"
+    print "writing to file: " + str(content)
+    return content
 
-
-    # # print "GOT TO WRITE " + str(graph.nodes())
+                # # print "GOT TO WRITE " + str(graph.nodes())
     # with open(outfile, 'wb') as csvfile:
     #     owriter = csv.writer(csvfile, delimiter=',', quotechar=' ', escapechar='', quoting = csv.QUOTE_NONE)
     #     #owriter = csv.writer(csvfile, delimiter=',', quotechar=' ', doublequote=False, quoting=csv.QUOTE_MINIMAL)
