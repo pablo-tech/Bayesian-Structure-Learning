@@ -40,24 +40,28 @@ def getScore(graph, dataframe, label):
 def getUpdatedCooperHerscovitsBayesianScore(graph, dataframe, label, logForm):
     score = getBaseScore(logForm)
     randomVarNames = opanda.getRandomVarNames(dataframe)
+    varValuesDictionary = opanda.getRandomVarDictionary(dataframe)
+    print ">>> " + str(varValuesDictionary)
     N = getN(randomVarNames)
     for i in range(0, N):  # i random var
         iRandomVarName = randomVarNames[i]
+        Ri = getNumRandomVarValues(dataframe, iRandomVarName)
         iRandomVarParents = oxnet.getRandomVarParents(iRandomVarName, graph)
-        print str(i) + " is " + str(iRandomVarName) + " with parents " + str(iRandomVarParents)
         Qi = getQi(iRandomVarParents)
         for j in range(0, Qi):  # j parents of ranom var i
-            Ri = getNumRandomVarValues(dataframe,iRandomVarName)
-            varValuesDictionary = opanda.getRandomVarDictionary(dataframe)
-            Nij = ocount.getNij0Count(iRandomVarName, iRandomVarParents, varValuesDictionary, dataframe)
-            print str(i) + " " + str(j) + " " + "Nij: " + str(Nij)
-            varAndParentAggregateConsideration = getRandomVarAndParentAggregateFactor(Ri, Nij, logForm)
+            Nij0 = ocount.getNij0Count(iRandomVarName, iRandomVarParents, varValuesDictionary, dataframe)
+            print "**** " + str(i) + "=" + iRandomVarName + " Ri=" + str(Ri) + " with parents " + str(
+                iRandomVarParents) + " Nij0: " + str(Nij0)
+            print str(i) + " is " + str(iRandomVarName)
+            varAndParentAggregateConsideration = getRandomVarAndParentAggregateConsideration(Ri, Nij0, logForm)
             NijkValues = []
             for k in range(0, Ri):
-                iRandomVarValue = opanda.getUniqueRandomVarValues(dataframe, iRandomVarName)
-                NijkValues.append(iRandomVarValue)
-            print str(i) + " " + str(j) + " " + str(k) + " " + "NijkValues: " + str(NijkValues)
-            varValuesIndividualConsideration = getRandomVarAndParentIndividualFactor(NijkValues, logForm)
+                iRandomVarValues = opanda.getUniqueRandomVarValues(dataframe, iRandomVarName)
+                kValueForRandomVari = iRandomVarValues[k]
+                NijkList = ocount.getNijkCountList(iRandomVarName, kValueForRandomVari, iRandomVarParents, varValuesDictionary, dataframe)
+                NijkValues.append(NijkList)
+            print "**** " + str(i)+"="+iRandomVarName + " NijkValues: " + str(NijkValues)
+            varValuesIndividualConsideration = getRandomVarAndParentIndividualConsideration(NijkValues, logForm)
             if not logForm:
                 compoundFactor = varAndParentAggregateConsideration * varValuesIndividualConsideration
                 score = score * compoundFactor
@@ -67,17 +71,19 @@ def getUpdatedCooperHerscovitsBayesianScore(graph, dataframe, label, logForm):
     return score
 
 # VAR AND PARENT AGGREGATE FACTOR: per Cooper & Herscovits
-def getRandomVarAndParentAggregateFactor(Ri, Nij0, logForm):
-    numerator = math.factorial(Ri-1)            # Dirichlet Prior (all pseudocounts = 1) for a random var
-    denominator = math.factorial(Nij0+Ri-1)
+def getRandomVarAndParentAggregateConsideration(Ri, Nij0, logForm):
+    numerator = Ri-1
+    denominator = Nij0+Ri-1
+    print "Numerator=" + str(numerator) + " Denominator=" + str(denominator)
+    numeratorFactorial = math.factorial(numerator)            # Dirichlet Prior (all pseudocounts = 1) for a random var
+    denominatorFactorial = math.factorial(denominator)
     if not logForm:
-        return numerator / denominator
+        return numeratorFactorial / denominatorFactorial
     else:
-        return math.log(numerator) - math.log(denominator)
+        return math.log(numeratorFactorial) - math.log(denominatorFactorial)
 
 # VAR AND PARENT VAR INDIVIDUAL FACTORS
-def getRandomVarAndParentIndividualFactor(NijkValues, logForm):
-    print "NijkValues: " + str(NijkValues)
+def getRandomVarAndParentIndividualConsideration(NijkValues, logForm):
     numerator = getBaseScore(logForm)
     for Nijk in oquery.getFlatendList(NijkValues):
         factor = math.factorial(Nijk)

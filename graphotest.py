@@ -21,7 +21,7 @@ outputFile = "cooperh.gph"
 
 dataframe = opanda.read(inputFile)
 randomVarNames = opanda.getRandomVarNames(dataframe)
-print "RANDOM VAR NAMES: " + str(randomVarNames)
+print "RANDOM VAR NAMES: " + str(randomVarNames) + "\n" + str(dataframe)
 
 ############
 # BASIC TESTS
@@ -31,8 +31,8 @@ print "VAR VALUE DICTIONARY: " + str(varValueDict)
 result1 = opanda.getJointQueryResult(dataframe, [("x1", 1)])
 print "RESULT1 " + str(result1)
 
-resultx = opanda.getJointQueryResult(dataframe, [("x1x", 1)])
-print "RESULTX " + str(resultx)
+# resultx = opanda.getJointQueryResult(dataframe, [("x1test", 1)])
+# print "RESULTX " + str(resultx)
 
 ############
 # NETWORK 1: x1 -> x2 -> x3
@@ -145,6 +145,12 @@ net2Graph = grapho.addRandomVarNodesToGraph(net2Graph, randomVarNames)
 net2Graph.add_edge("x1", "x2")
 net2Graph.add_edge("x1", "x3")
 
+net2UpdatedProductorialScore = oscore.getUpdatedCooperHerscovitsBayesianScore(net2Graph, dataframe, net2Name, False)
+print net2Name + " Productorial SCORE: " + str(net2UpdatedProductorialScore)
+
+net2UpdatedSummatorialScore = oscore.getUpdatedCooperHerscovitsBayesianScore(net2Graph, dataframe, net1Name, True)
+print net2Name + " Log SCORE: " + str(net2UpdatedSummatorialScore)
+
 # net2ProductorialScore = oscore.getCooperHerscovitsBayesianScore(net2Graph, dataframe, net2Name)
 # print net2Name + " Productorial SCORE: " + str(net2ProductorialScore)
 #
@@ -157,6 +163,13 @@ oshow.write(net2OutputFile, net2Graph)
 
 ############
 # COMPARE ALGORITHMS
+
+productorialComp = net1UpdatedProductorialScore/net2UpdatedProductorialScore
+print "net1 better than n2? Productorial " + str(productorialComp>1)
+
+summatorialComp = net1UpdatedSummatorialScore-net2UpdatedSummatorialScore
+print "net1 better than n2? Log " + str(summatorialComp>0)
+
 # productorialComp = net1ProductorialScore/net2ProductorialScore
 # print "net1 better than n2? Productorial " + str(productorialComp>1)
 #

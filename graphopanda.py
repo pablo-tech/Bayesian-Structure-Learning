@@ -55,23 +55,26 @@ def getRandomVarDictionary(dataframe):
 # JOINT QUERY RESULT
 # execute queries in the array one by one to arrive at a filtered dataframe
 def getJointQueryResult(dataframe, queryArray):
-    # print "getJointQueryResult query: " + str(queryArray) + " " + str(len(queryArray))
+    print "getJointQueryResult query: " + str(queryArray)
     filteredDF = dataframe
     fieldNames = []
-    if len(queryArray)>1: # random var has parents
-        for querySingle in queryArray:
-            for queryTuple in querySingle:
-                updatedTuple = [queryTuple[0], queryTuple[1]]
-                filteredDF = queryDataframe(filteredDF, updatedTuple)
-                fieldName = queryTuple[0]
-                fieldNames = getUniqueFieldNames(fieldName, fieldNames, dataframe)
-        if len(filteredDF)>0:
-            finalDF = filteredDF[fieldNames]    # filter columns only if rows remain
+    for query in queryArray:
+        filteredDF = queryDataframe(filteredDF, query)
+        fieldName = query[0]
+        fieldNames = getUniqueFieldNames(fieldName, fieldNames, filteredDF)
+        print "FieldNames=" + str(fieldNames)
+        if len(filteredDF) > 0:
+            finalDF = filteredDF[fieldNames]  # filter columns only if rows remain
         else:
             finalDF = filteredDF
-    else:
-        queryTuple = oquery.getFlatendList(queryArray)
-        finalDF = queryDataframe(dataframe, queryTuple)
+    return finalDF
+
+# JOINT QUERY RESULT
+# execute queries in the array one by one to arrive at a filtered dataframe
+def getSingleQueryResult(dataframe, queryArray):
+    print "getSingleQueryResult query: " + str(queryArray)
+    queryTuple = oquery.getFlatendList(queryArray)
+    finalDF = queryDataframe(dataframe, queryTuple)
     return finalDF
 
 # UNIQUE FIELDS: gather a unique set of columns, even if the dataframe is queried multiple times for the same
@@ -79,7 +82,11 @@ def getJointQueryResult(dataframe, queryArray):
 def getUniqueFieldNames(fieldName, fieldNames, dataframe):
     if not fieldName in fieldNames:     # have only unique names in the list
         fieldNames.append(fieldName)
-    return fieldNames
+    finalFields = []
+    for remainingField in getRandomVarNames(dataframe):
+        if remainingField in fieldNames:
+            finalFields.append(remainingField)
+    return finalFields
 
 # REMOVE UNNECESSARY COLUMNS: remove from field names columns no longer present
 # def

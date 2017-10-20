@@ -32,7 +32,7 @@
 # [('xn', 'nz'), ('x2', 1), ('xm', 'my')]
 # [('xn', 'nz'), ('x2', 1), ('xm', 'mz')]
 def getParentsJointDistribution(parentRandomVars, varValuesDictionary):
-    print "joint dictionary " + str(varValuesDictionary)
+    # print "joint dictionary " + str(varValuesDictionary)
     parentJointDistribution = []
     iteration = 0
     firstVar = ""
