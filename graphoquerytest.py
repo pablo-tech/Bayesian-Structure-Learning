@@ -3,7 +3,7 @@
 
 import graphoquery as oit
 
-query1 = oit.getNijQuery("x2", 2, "x1", 1)
+query1 = oit.getPairQuery("x2", 2, "x1", 1)
 print str(query1)
 
 query2 = oit.getPairQueryDistribution("x2", ['1', '2'], "x1", ['3', '4'])

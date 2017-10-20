@@ -53,12 +53,30 @@ net1Dict = opanda.getRandomVarDictionary(dataframe)
 print "NET1 VAR VALUE DICTIONARY " + str(net1Dict)
 x1Net1Distribution = oquery.getVarDistribution("x1", net1Dict)
 print "NET1 DISTRIBUTION: " + str(x1Net1Distribution)
-net1ParentDistribution = oquery.getParentsJointDistribution("x1", ["x2"], net1Dict)
+net1ParentDistribution = oquery.getParentsJointDistribution(["x2"], net1Dict)
 print "NET1 PARENT DISTRIBUTION: " + str(net1ParentDistribution)
-net1Dict["xn"] = ["x", "y", "z"]
+# xmValues = ("mx", "my")
+# xnValues = ("nx", "ny")
+xmValues = ("mx", "my", "mz")
+xnValues = ("nx", "ny", "nz")
+net1Dict["xm"] = xmValues
+net1Dict["xn"] = xnValues
 print "NET1 MODIFIED DICT: " + str(net1Dict)
-net1ModifiedParentDistribution = oquery.getParentsJointDistribution("x1", ["x2", "xn"], net1Dict)
-print "NET1 MODIFIED PARENT DISTRIBUTION: " + str(net1ParentDistribution)
+
+net1Modified1ParentDistribution = oquery.getParentsJointDistribution(["x2"], net1Dict)
+print "NET1 MODIFIED ONE PARENT DISTRIBUTION: " + str(len(net1Modified1ParentDistribution)) # + str(net1Modified1ParentDistribution)
+for join in net1Modified1ParentDistribution:
+    print "1x parent join: " + str(join)
+
+net1Modified2ParentDistribution = oquery.getParentsJointDistribution(["x2", "xm"], net1Dict)
+print "NET1 MODIFIED TWO PARENT DISTRIBUTION: " + str(len(net1Modified2ParentDistribution)) # + str(net1Modified2ParentDistribution)
+for join in net1Modified2ParentDistribution:
+    print "2x parent join: " + str(join)
+
+net1Modified3ParentDistribution = oquery.getParentsJointDistribution(["x2", "xm", "xn"], net1Dict)
+print "NET1 MODIFIED THREE PARENT DISTRIBUTION: " + str(len(net1Modified3ParentDistribution)) # + str(net1Modified3ParentDistribution)
+for join in net1Modified3ParentDistribution:
+    print "3x join: " + str(join)
 
 ############
 # NETWORK 2: x1 -> x2, x1 -> x3
