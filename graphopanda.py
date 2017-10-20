@@ -55,14 +55,14 @@ def getRandomVarDictionary(dataframe):
 # JOINT QUERY RESULT
 # execute queries in the array one by one to arrive at a filtered dataframe
 def getJointQueryResult(dataframe, queryArray):
-    print "getJointQueryResult query: " + str(queryArray)
+    # print "getJointQueryResult query: " + str(queryArray)
     filteredDF = dataframe
     fieldNames = []
     for query in queryArray:
         filteredDF = queryDataframe(filteredDF, query)
         fieldName = query[0]
         fieldNames = getUniqueFieldNames(fieldName, fieldNames, filteredDF)
-        print "FieldNames=" + str(fieldNames)
+        # print "FieldNames=" + str(fieldNames)
         if len(filteredDF) > 0:
             finalDF = filteredDF[fieldNames]  # filter columns only if rows remain
         else:
@@ -72,7 +72,7 @@ def getJointQueryResult(dataframe, queryArray):
 # JOINT QUERY RESULT
 # execute queries in the array one by one to arrive at a filtered dataframe
 def getSingleQueryResult(dataframe, queryArray):
-    print "getSingleQueryResult query: " + str(queryArray)
+    # print "getSingleQueryResult query: " + str(queryArray)
     queryTuple = oquery.getFlatendList(queryArray)
     finalDF = queryDataframe(dataframe, queryTuple)
     return finalDF
