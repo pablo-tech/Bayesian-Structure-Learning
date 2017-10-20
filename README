@@ -38,6 +38,13 @@ Data operations are performed by:
 graphopanda, which relies on Python's Pandas library
 ``
 
+### Querying:
+Queries to filter dataframes, to count occurrance of data patterns, are performed by:
+
+``
+graphoquery
+``
+
 ### Plotting:
 Plotting is performed by:
  
