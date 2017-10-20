@@ -1,32 +1,5 @@
 # Helper functions to compute score
 
-def getNijkForIteration(i, j, k):
-    return 1
-
-
-# def getNijkQueries(iRandomVar, kValueForRandomVari):
-#     queries = []
-#     for
-
-
-
-# QUERY BUILDER: Build a query for the iteration
-# queryArray = [('age', 1), ('sex', 2)]
-# [(randomVarParentName, parentVarValue), (randomVarName, randomVarValue)]
-def getNijCount(iVar, kValueForVari, jParentVar, valueForParentj):
-    query = [(iVar, kValueForVari), (jParentVar, valueForParentj)]
-    print "returning " + str(query)
-    return query
-
-# PARENT DISTRIBUTION
-# Get queries for all parent value combinations
-# def getParentVarDistribution(randomVarParentsDictionary):
-#     queryDistribution = []
-#     for parent in list(randomVarParentsDictionary.keys()):
-#         for valueForParent in randomVarParentsDictionary[parent]:
-#             getParentQueries = getPairQueryDistribution()
-
-
 # PARENTS JOINT DISTRIBUTION: get a full joint distribution
 # it joins all the vars in the dictionary, except the ignore var(i var in question), to produce a distribution of parents
 ## 1 parent output:
@@ -107,12 +80,15 @@ def getFlatendList(listOfLists):
 def getJointDistribution(randomVarName, randomVarValue, otherVarsDistribution):
     jointDistribution = []
     randomVar = (randomVarName, randomVarValue)
-    for otherOutcome in otherVarsDistribution:
-        joinedOutcome = []
-        joinedOutcome.append(randomVar)
-        for item in otherOutcome:
-            joinedOutcome.append(item)
-        jointDistribution.append(joinedOutcome)
+    if len(otherVarsDistribution)>0:    # random var has parents
+        for otherOutcome in otherVarsDistribution:
+            joinedOutcome = []
+            joinedOutcome.append(randomVar)
+            for item in otherOutcome:
+                joinedOutcome.append(item)
+            jointDistribution.append(joinedOutcome)
+    else:   # no parents
+        jointDistribution.append((randomVarName, randomVarValue))
     return jointDistribution
 
 # SINGLE VAR DISTRIBUTION

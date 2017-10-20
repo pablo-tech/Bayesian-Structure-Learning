@@ -14,6 +14,7 @@ import graphoscore as oscore
 import graphopanda as opanda
 import graphoxnet as oxnet
 import graphoquery as oquery
+import graphocount as ocount
 
 inputFile = "cooperh.csv"
 outputFile = "cooperh.gph"
@@ -26,6 +27,12 @@ print "RANDOM VAR NAMES: " + str(randomVarNames)
 # BASIC TESTS
 varValueDict = opanda.getRandomVarDictionary(dataframe)
 print "VAR VALUE DICTIONARY: " + str(varValueDict)
+
+result1 = opanda.getJointQueryResult(dataframe, [("x1", 1)])
+print "RESULT1 " + str(result1)
+
+resultx = opanda.getJointQueryResult(dataframe, [("x1x", 1)])
+print "RESULTX " + str(resultx)
 
 ############
 # NETWORK 1: x1 -> x2 -> x3
@@ -77,6 +84,49 @@ net1Modified3ParentDistribution = oquery.getParentsJointDistribution(["x2", "xm"
 print "NET1 MODIFIED THREE PARENT DISTRIBUTION: " + str(len(net1Modified3ParentDistribution)) # + str(net1Modified3ParentDistribution)
 for join in net1Modified3ParentDistribution:
     print "3x join: " + str(join)
+
+nijkQueries = ocount.getNijkQueries("x1", 0, [], net1Dict)
+print "0-parent of x1=0...NijkQuery..." + str(nijkQueries)
+nijkQueries = ocount.getNijkQueries("x1", 1, [], net1Dict)
+print "0-parent of x1=1...NijkQuery..." + str(nijkQueries)
+
+nijkQueries = ocount.getNijkQueries("x2", 0, ["x1"], net1Dict)
+print "1-parent of x2=0...NijkQuery..." + str(nijkQueries)
+nijkQueries = ocount.getNijkQueries("x2", 1, ["x1"], net1Dict)
+print "1-parent of x2=1...NijkQuery..." + str(nijkQueries)
+
+nijkQueries = ocount.getNijkQueries("x3", 0, ["x2"], net1Dict)
+print "1-parent of x3=0...NijkQuery..." + str(nijkQueries)
+nijkQueries = ocount.getNijkQueries("x3", 1, ["x2"], net1Dict)
+print "1-parent of x3=1...NijkQuery..." + str(nijkQueries)
+
+nijkQueries = ocount.getNijkQueries("x1", 0, ["x2", "xm"], net1Dict)
+print "2-parent of x2=0...NijkQuery..." + str(nijkQueries)
+nijkQueries = ocount.getNijkQueries("x1", 1, ["x2", "xm"], net1Dict)
+print "2-parent of x1=1...NijkQuery..." + str(nijkQueries)
+
+nik0Count = ocount.getNij0("x1", [], net1Dict, dataframe)
+print "0-parent of x1...Nij0Count..." + str(nik0Count)
+nik0Count = ocount.getNij0("x1", [], net1Dict, dataframe)
+print "0-parent of x1...Nij0Count..." + str(nik0Count)
+
+nik0Count = ocount.getNij0("x2", ["x1"], net1Dict, dataframe)
+print "1-parent of x2...Nij0Count..." + str(nik0Count)
+nik0Count = ocount.getNij0("x2", ["x1"], net1Dict, dataframe)
+print "1-parent of x2...Nij0Count..." + str(nik0Count)
+
+nik0Count = ocount.getNij0("x3", ["x2"], net1Dict, dataframe)
+print "1-parent of x3...Nij0Count..." + str(nik0Count)
+nik0Count = ocount.getNij0("x3", ["x2"], net1Dict, dataframe)
+print "1-parent of x3...Nij0Count..." + str(nik0Count)
+
+nik0Count = ocount.getNij0("x1", ["x2", "xm"], net1Dict, dataframe)
+print "2-parent of x1...Nij0Count..." + str(nik0Count)
+
+nik0Count = ocount.getNij0("x1", ["x2", "xm", "xn"], net1Dict, dataframe)
+print "3-parent of x1...Nij0Count..." + str(nik0Count)
+
+
 
 ############
 # NETWORK 2: x1 -> x2, x1 -> x3
