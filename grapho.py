@@ -44,7 +44,7 @@ def compute(infile, outfile):
     randomVars = opanda.getRandomVarNames(dataframe)
     initGraph = addRandomVarNodesToGraph(newGraph, randomVars)
     optimGraph = optimizeGraph(initGraph, dataframe)
-    #oshow.plotGraph(optimGraph, outfile) # Disabled for submission
+    oshow.plotGraph(optimGraph, outfile) # Disabled for submission
     oshow.write(outfile, optimGraph)
     # oshow.toString(optimGraph)
     print "DONE"

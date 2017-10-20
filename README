@@ -142,8 +142,15 @@ Please find in the folder:
 - (medium) wine: medium.gph and small.gph.png
 - (large) secret dungeon: large.gph and large.gph.png
 
+
+### System requirements:
+
+Python 2.7.14 with NetworkX 1.9, Pandas 0.20.3
+
+
 ### Future work:
 Parallelize computation on Spark
+
 
 
 
