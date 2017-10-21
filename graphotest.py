@@ -49,7 +49,7 @@ opanda.getUniqueRandomVarValues(dataframe, "x1")
 # net1UpdatedProductorialScore = oscore.getUpdatedCooperHerscovitsBayesianScore(net1Graph, dataframe, net1Name)
 # print net1Name + " Productorial SCORE: " + str(net1UpdatedProductorialScore)
 
-net1UpdatedSummatorialScore = oscore.getUpdatedCooperHerscovitsBayesianScore(net1Graph, dataframe, net1Name)
+net1UpdatedSummatorialScore = oscore.getUpdatedCooperHerscovitsBayesianScore(net1Graph, dataframe)
 print net1Name + " Log SCORE: " + str(net1UpdatedSummatorialScore)
 
 # net1ProductorialScore = oscore.getCooperHerscovitsBayesianScore(net1Graph, dataframe, net1Name)
@@ -148,7 +148,7 @@ net2Graph.add_edge("x1", "x3")
 # net2UpdatedProductorialScore = oscore.getUpdatedCooperHerscovitsBayesianScore(net2Graph, dataframe, net2Name)
 # print net2Name + " Productorial SCORE: " + str(net2UpdatedProductorialScore)
 
-net2UpdatedSummatorialScore = oscore.getUpdatedCooperHerscovitsBayesianScore(net2Graph, dataframe, net1Name)
+net2UpdatedSummatorialScore = oscore.getUpdatedCooperHerscovitsBayesianScore(net2Graph, dataframe)
 print net2Name + " Log SCORE: " + str(net2UpdatedSummatorialScore)
 
 # net2ProductorialScore = oscore.getCooperHerscovitsBayesianScore(net2Graph, dataframe, net2Name)

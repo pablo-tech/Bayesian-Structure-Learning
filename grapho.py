@@ -43,28 +43,29 @@ def compute(infile, outfile):
     dataframe = opanda.read(infile)
     randomVars = opanda.getRandomVarNames(dataframe)
     initGraph = addRandomVarNodesToGraph(newGraph, randomVars)
-    optimGraph = optimizeGraph(initGraph, dataframe)
-    oshow.plotGraph(optimGraph, outfile) # Disabled for submission
-    oshow.write(outfile, optimGraph)
-    # oshow.toString(optimGraph)
+    optimGraph = optimizeGraph(initGraph, dataframe, outfile)
     print "DONE"
     pass
 
 # OPTIMIZE
 # loop a limited number of times morphing graph into higher scoring shape
-def optimizeGraph(graph, dataframe):
+def optimizeGraph(graph, dataframe, outfile):
     # graph = addRandomEdge(graph)
     # graph = addRandomEdge(graph)
     # graph = addRandomEdge(graph)
     initialScore = oscore.getScore(graph, dataframe)
     bestGraph = graph.copy()
-    maxAttempts = 10
+    maxAttempts = 20
     attempt = 0
     for node in graph.nodes():
         if attempt < maxAttempts:
             bestGraph = getChangedGraph(bestGraph, node, dataframe).copy()
             attempt = attempt + 1
+            oshow.plotGraph(bestGraph, outfile)  # Disabled for submission
+            oshow.write(outfile, bestGraph)
+            # oshow.toString(optimGraph)
             print "TOP ATTEMPT: " + str(attempt)
+
     finalScore = oscore.getScore(bestGraph, dataframe)
     # print "****** INITIAL SCORE: " + str(int(initialScore)) + ", FINAL SCORE: " + str(int(finalScore)) + " ******"
     return bestGraph
