@@ -54,8 +54,8 @@ def getUpdatedCooperHerscovitsBayesianScore(graph, dataframe):
             kValueForRandomVari = iRandomVarValues[k]
             NijkList = ocount.getNijkCountList(iRandomVarName, kValueForRandomVari, iRandomVarParents, varValuesDictionary, dataframe)
             NijkAll.append(NijkList)
-        print "NijkDict: " + str(NijkAll)
-        varAndParentAggregateConsideration = getRandomVarAndParentAggregateConsideration(Ri, NijkAll, logForm)
+        print "NijkALL: " + str(NijkAll)
+        varAndParentAggregateConsideration = getRandomVarAndParentAggregateConsideration(Ri, NijkAll)
         # print "varAndParentAggregateConsideration: " + str(varAndParentAggregateConsideration)
         # varValuesIndividualConsideration = getRandomVarAndParentIndividualConsideration(NijkAll, logForm)
         # print "varValuesIndividualConsideration: " + str(varValuesIndividualConsideration)
@@ -87,29 +87,28 @@ def getNij0(NijValues):
 # VAR AND PARENT AGGREGATE FACTOR: per Cooper & Herscovits
 # input NijkAll, random var has no parent: [[5], [5]]
 # input NijkAll, random var has parent: [[1, 4], [4, 1]]
-def getRandomVarAndParentAggregateConsideration(Ri, NijkAll, logForm):
+def getRandomVarAndParentAggregateConsideration(Ri, NijkAll):
     numParentValues = len(NijkAll[0])
-    print "numParentValues " + str(numParentValues) + " for " + str(NijkAll)
     # get a list to process that looks the same for one or many parents:
     # one parent: [[5, 5]]
     # many parents = [[4, 1], [1, 4]]
     if numParentValues==1:
         NijkListOfLists = [oquery.getFlatendList(NijkAll)]
     else: NijkListOfLists = NijkAll
-    print "NijkListOfLists " + str(NijkListOfLists)
     numerator = Ri-1
-    numeratorFactorial = math.factorial(numerator)            # Dirichlet Prior (all pseudocounts = 1) for a random var
+    denominatorList = []
     for NijkSingleList in NijkListOfLists:
         denominator = Ri - 1
         for Nijk in NijkSingleList: # oquery.getFlatendList(NijkSingleList)
-            print str(Nijk) + " in NijkSingleList " + str(NijkSingleList)
             denominator = denominator + Nijk    # add Nijk values to Ri term
+            denominatorList.append(denominator)
         print "AGGREGATE>>>>>>Numerator=" + str(numerator) + " >>>>>>Denominator=" + str(denominator) + " FROM NijkSingleList=" + str(NijkSingleList)
-        denominatorFactorial = math.factorial(denominator)
-        if not logForm:
-            return float(numeratorFactorial) / float(denominatorFactorial)  # NOTE this may round to ZERO!
-        else:
-            return math.log(numeratorFactorial) - math.log(denominatorFactorial)
+    total = 0   # assumes log form
+    for denom in denominatorList:       # Dirichlet Prior (all pseudocounts = 1) for a random var
+        diff = math.log(math.factorial(numerator)) - math.log(math.factorial(denom))
+        total = total + diff
+        print "total from var and parent " + str(total) + " diff " + str(diff)
+    return total
 
 # VAR AND PARENT VAR INDIVIDUAL FACTORS
 def getRandomVarAndParentIndividualConsideration(NijkDict, logForm):
