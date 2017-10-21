@@ -113,18 +113,18 @@ def compareGraphs(tentativeGraph1, tentativeGraph2, bestMoveGraph, dataframe, at
     tentativeScore2 = oscore.getScore(tentativeGraph2, dataframe)
     currentBestScore = oscore.getScore(bestMoveGraph, dataframe)
     print "SCORE COMP: " + str(tentativeScore1) + " " + str(tentativeScore2) + " " + str(currentBestScore)
-    if attempt>10:
-        if long(tentativeScore1) > long(tentativeScore2):
-            if long(tentativeScore1) > long(currentBestScore):
-                return tentativeGraph1
-        if long(tentativeScore2) > long(tentativeScore1):
-            if long(tentativeScore2) > long(currentBestScore):
-                return tentativeGraph2
-    else:   # encourage getting off the status quo; formula appears to not penalize lack of parents
-        if long(tentativeScore1) > long(tentativeScore2):
-            return tentativeGraph1
-        if long(tentativeScore2) > long(tentativeScore1):
-            return tentativeGraph2
+    # if attempt>10:
+    #     if long(tentativeScore1) > long(tentativeScore2):
+    #         if long(tentativeScore1) > long(currentBestScore):
+    #             return tentativeGraph1
+    #     if long(tentativeScore2) > long(tentativeScore1):
+    #         if long(tentativeScore2) > long(currentBestScore):
+    #             return tentativeGraph2
+    # else:   # encourage getting off the status quo; formula appears to not penalize lack of parents
+    if long(tentativeScore1) > long(tentativeScore2):
+        return tentativeGraph1
+    if long(tentativeScore2) > long(tentativeScore1):
+        return tentativeGraph2
     return bestMoveGraph
 
 # SWITCH GRAPH: after verifying the graph is acyclical
