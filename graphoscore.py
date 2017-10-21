@@ -34,8 +34,7 @@ def getScore(graph, dataframe):
 # Example: if Score(network1)/Score(network2)>1 then network1 is better representation of the data
 def getUpdatedCooperHerscovitsBayesianScore(graph, dataframe):
     logForm = True
-    # print "LOG FORM? " + str(logForm)
-    score = getBaseScore(logForm)
+    score = 0 # log form
     randomVarNames = opanda.getRandomVarNames(dataframe)
     varValuesDictionary = opanda.getRandomVarDictionary(dataframe)
     print ">>> " + str(varValuesDictionary)
@@ -55,24 +54,9 @@ def getUpdatedCooperHerscovitsBayesianScore(graph, dataframe):
             NijkList = ocount.getNijkCountList(iRandomVarName, kValueForRandomVari, iRandomVarParents, varValuesDictionary, dataframe)
             NijkAll.append(NijkList)
         print "NijkALL: " + str(NijkAll)
-        varAndParentAggregateConsideration = getRandomVarAndParentAggregateConsideration(Ri, NijkAll)
-        # print "varAndParentAggregateConsideration: " + str(varAndParentAggregateConsideration)
-        # varValuesIndividualConsideration = getRandomVarAndParentIndividualConsideration(NijkAll, logForm)
-        # print "varValuesIndividualConsideration: " + str(varValuesIndividualConsideration)
-        AggregateConsiderationList.append(varAndParentAggregateConsideration)
-        # IndividualConsiderationList.append(varValuesIndividualConsideration)
-    if not logForm: # multiply
-        for aggregate in AggregateConsiderationList:
-            score = score * aggregate
-        for individual in IndividualConsiderationList:
-            score = score * individual
-        print "TOTAL=>"+str(score)
-    else:           # add
-        for aggregate in AggregateConsiderationList:
-            score = score + aggregate
-        for individual in IndividualConsiderationList:
-            score = score + individual
-        print "TOTAL=>"+str(score)
+        score = score + getRandomVarAndParentAggregateConsideration(Ri, NijkAll)
+        score = score +getRandomVarAndParentIndividualConsideration(NijkAll)
+    print "TOTAL=>"+str(score)
     return score
 
 def getNij0(NijValues):
@@ -88,16 +72,9 @@ def getNij0(NijValues):
 # input NijkAll, random var has no parent: [[5], [5]]
 # input NijkAll, random var has parent: [[1, 4], [4, 1]]
 def getRandomVarAndParentAggregateConsideration(Ri, NijkAll):
-    numParentValues = len(NijkAll[0])
-    # get a list to process that looks the same for one or many parents:
-    # one parent: [[5, 5]]
-    # many parents = [[4, 1], [1, 4]]
-    if numParentValues==1:
-        NijkListOfLists = [oquery.getFlatendList(NijkAll)]
-    else: NijkListOfLists = NijkAll
     numerator = Ri-1
     denominatorList = []
-    for NijkSingleList in NijkListOfLists:
+    for NijkSingleList in getNijkListOfLists(NijkAll):
         denominator = Ri - 1
         for Nijk in NijkSingleList: # oquery.getFlatendList(NijkSingleList)
             denominator = denominator + Nijk    # add Nijk values to Ri term
@@ -105,24 +82,30 @@ def getRandomVarAndParentAggregateConsideration(Ri, NijkAll):
         print "AGGREGATE>>>>>>Numerator=" + str(numerator) + " >>>>>>Denominator=" + str(denominator) + " FROM NijkSingleList=" + str(NijkSingleList)
     total = 0   # assumes log form
     for denom in denominatorList:       # Dirichlet Prior (all pseudocounts = 1) for a random var
-        diff = math.log(math.factorial(numerator)) - math.log(math.factorial(denom))
+        diff = math.log(math.factorial(numerator))-math.log(math.factorial(denom))
         total = total + diff
         print "total from var and parent " + str(total) + " diff " + str(diff)
     return total
 
+def getNijkListOfLists(NijkAll):
+    numParentValues = len(NijkAll[0])
+    # get a list to process that looks the same for one or many parents:
+    # one parent: [[5, 5]]
+    # many parents = [[4, 1], [1, 4]]
+    if numParentValues==1:
+        NijkListOfLists = [oquery.getFlatendList(NijkAll)]
+    else: NijkListOfLists = NijkAll
+    print "NijkListOfLists= " + str(NijkListOfLists)
+    return NijkListOfLists
+
 # VAR AND PARENT VAR INDIVIDUAL FACTORS
-def getRandomVarAndParentIndividualConsideration(NijkDict, logForm):
-    #print "Individual NijkValues="+str(NijkValues)
-    # flatValues = oquery.getFlatendList(NijkValues)
-    #print "Consideration NijkValues " + str(flatValues)
-    numerator = getBaseScore(logForm)
-    for Nijk in list(NijkDict.keys()):
-        factor = math.factorial(Nijk)
-        if not logForm:
-            numerator = numerator * factor
-        else:
-            numerator = numerator + math.log(factor)
-    #print "INDIVIDUAL<<<<<<<<Numerator="+str(numerator) + " " + str(NijkValues) + " TOTAL="+str(numerator)
+def getRandomVarAndParentIndividualConsideration(NijkAll):
+    numerator = 0
+    for NijkSingleList in getNijkListOfLists(NijkAll):
+        for Nijk in NijkSingleList:
+            term = math.factorial(Nijk)
+            numerator = numerator + math.log(term)
+            print "INDIVIDUAL<<<<<<<<Numerator="+str(Nijk) + " " + str(NijkAll) + " TOTAL="+str(numerator)
     return numerator
 
 def getBaseScore(logForm):
