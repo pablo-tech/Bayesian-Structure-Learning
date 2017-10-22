@@ -76,17 +76,16 @@ Plotting is performed by:
 graphoshow.py, which relies on Matplot
 ``
 
+Note that .png files with images of each graph is also provided.  Example:
+![Alt text](medium.gph.jpg?raw=true "Title")
+
+
 ### Graphs:
 Graph operations are performed by:
  
 ``
 graphoxnet, which relies on Python's Networkx library
 ``
-
-Note that .png files with images of each graph is also provided
-
-Example:
-![Alt text](medium.gph.jpg?raw=true "Title")
 
 ### Scoring:
 
