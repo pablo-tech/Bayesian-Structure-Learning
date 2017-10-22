@@ -1,7 +1,7 @@
-## Bayesian Network Scoring
-This project is a competition to find Bayesian network structures that best fit some given data.
+## Bayesian Network Search
+This project finds an optimal Bayesian Network structures that best fit some given data.
 
-### Testing: Cooper&Herskovits, 1992
+### Scoring: Cooper&Herskovits, 1992
 The scoring function is callibrated using the original Bayesian Structure Scoring paper, from which first published the
 equations in the Decision Under Uncertainty book (2.80).  The paper provides example input data and values for
 two Bayesian networks.
