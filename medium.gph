@@ -1,7 +1,7 @@
 alcohol,fixedacidity
-alcohol
+density,alcohol
 fixedacidity,chlorides
-density
+residualsugar,density
 fixedacidity,sulphates
 fixedacidity,citricacid
 residualsugar
@@ -9,4 +9,4 @@ fixedacidity,totalsulfurdioxide
 fixedacidity,volatileacidity
 fixedacidity,quality
 fixedacidity,ph
-freesulfurdioxide
+alcohol,freesulfurdioxide

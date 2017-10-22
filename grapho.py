@@ -75,33 +75,39 @@ def optimizeGraph(graph, dataframe, outfile):
 # a minimum score gain is gauged before deciding to evolve the graph
 def getChangedGraph(graph, givenNode, dataframe):
     bestGraph = graph.copy()    # greedily find the best graph after maxTries
-    maxAttempts = 5
-    attempt = 0
-    if attempt < maxAttempts:
-        for choiceNode in graph.nodes():
-            if choiceNode!=givenNode:   # connect only to a different node
-                if not graph.has_edge(choiceNode, givenNode):     # connect only if the nodes are not connected either way
-                    if not graph.has_edge(givenNode, choiceNode):  # connect only if the nodes are not connected either way
-                        candidateGraphs = getCandidateGraphs(choiceNode, givenNode, bestGraph)
-                        newBestGraph = getBestGraph(candidateGraphs, bestGraph, dataframe)
-                        switched = switchGraph(newBestGraph, bestGraph)
-                        bestGraph = switched.copy()
-                        attempt = attempt + 1
-                    else: print "Did not tackle because the nodes already shared an edge..."
-                else: print "Did not tackle because the nodes already shared an edge..."
-            else: print "Did not try to connect same to/from nodes..."
+    for choiceNode in graph.nodes():
+        if choiceNode!=givenNode:   # connect only to a different node
+            candidateGraphs = getCandidateGraphs(choiceNode, givenNode, bestGraph)
+            newBestGraph = getBestGraph(candidateGraphs, bestGraph, dataframe)
+            switched = switchGraph(newBestGraph, bestGraph)
+            bestGraph = switched.copy()
+        else: print "Did not try to connect same to/from nodes..."
     return bestGraph
 
 def getCandidateGraphs(choiceNode, givenNode, currentGraph):
     candidates = []
     # add edge
-    tentativeGraph1 = currentGraph.copy()
-    tentativeGraph1.add_edge(choiceNode, givenNode)
-    candidates.append(tentativeGraph1)
+    if not currentGraph.has_edge(choiceNode, givenNode):
+        if not currentGraph.has_edge(givenNode, choiceNode):
+            tentativeGraph1 = currentGraph.copy()
+            tentativeGraph1.add_edge(choiceNode, givenNode)
+            candidates.append(tentativeGraph1)
     # add opposite edge
-    tentativeGraph2 = currentGraph.copy()
-    tentativeGraph2.add_edge(givenNode, choiceNode)
-    candidates.append(tentativeGraph2)
+    if not currentGraph.has_edge(givenNode, choiceNode):
+        if not currentGraph.has_edge(choiceNode, givenNode):
+            tentativeGraph2 = currentGraph.copy()
+            tentativeGraph2.add_edge(givenNode, choiceNode)
+            candidates.append(tentativeGraph2)
+    # remove edge
+    if currentGraph.has_edge(choiceNode, givenNode):
+        tentativeGraph3 = currentGraph.copy()
+        tentativeGraph3.remove_edge(choiceNode, givenNode)
+        candidates.append(tentativeGraph3)
+    # remove opposite edge
+    if currentGraph.has_edge(givenNode, choiceNode):
+        tentativeGraph4 = currentGraph.copy()
+        tentativeGraph4.remove_edge(givenNode, choiceNode)
+        candidates.append(tentativeGraph4)
     return candidates
 
 # COMPARE: pick the best graph from a comparison set
