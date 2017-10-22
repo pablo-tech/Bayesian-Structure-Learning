@@ -77,6 +77,7 @@ graphoshow.py, which relies on Matplot
 ``
 
 Note that .png files with images of each graph is also provided.  Example:
+
 ![Alt text](medium.gph.jpg?raw=true "Title")
 
 
