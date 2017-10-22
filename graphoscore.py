@@ -37,7 +37,7 @@ def getUpdatedCooperHerscovitsBayesianScore(graph, dataframe):
     score = 0 # log form
     randomVarNames = opanda.getRandomVarNames(dataframe)
     varValuesDictionary = opanda.getRandomVarDictionary(dataframe)
-    print ">>> " + str(varValuesDictionary)
+    # print ">>> " + str(varValuesDictionary)
     N = getN(randomVarNames)
     AggregateConsiderationList = []
     IndividualConsiderationList = []

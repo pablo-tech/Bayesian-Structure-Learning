@@ -120,13 +120,13 @@ def getBestGraph(candidates, currentGraph, dataframe):
     return bestGraph
 
 # SWITCH GRAPH: after verifying the graph is acyclical
-def switchGraph(newBestGaph, bestMoveGraph):
+def switchGraph(newBestGaph, currentGraph):
     cycles = list(nx.simple_cycles(newBestGaph))
     if len(cycles) != 0:
         if nx.is_directed_acyclic_graph(newBestGaph):
             print "DAG test failed..."
-            return bestMoveGraph
-    print "==> Switching graph candidate!"
+            return currentGraph
+    print "==> Switching graph candidate! TO " + oshow.toString(newBestGaph)
     return newBestGaph
 
 # ADD RANDOM VARIABLE NODES
