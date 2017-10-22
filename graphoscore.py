@@ -56,7 +56,7 @@ def getUpdatedCooperHerscovitsBayesianScore(graph, dataframe):
         # print "NijkALL: " + str(NijkAll)
         score = score + getRandomVarAndParentAggregateConsideration(Ri, NijkAll)
         score = score +getRandomVarAndParentIndividualConsideration(NijkAll)
-    print "TOTAL=>"+str(score)
+    # print "TOTAL=>"+str(long(score))
     return score
 
 def getNij0(NijValues):

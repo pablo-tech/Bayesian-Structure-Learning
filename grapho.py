@@ -50,9 +50,6 @@ def compute(infile, outfile):
 # OPTIMIZE
 # loop a limited number of times morphing graph into higher scoring shape
 def optimizeGraph(graph, dataframe, outfile):
-    # graph = addRandomEdge(graph)
-    # graph = addRandomEdge(graph)
-    # graph = addRandomEdge(graph)
     initialScore = oscore.getScore(graph, dataframe)
     bestGraph = graph.copy()
     maxAttempts = 20
@@ -67,69 +64,63 @@ def optimizeGraph(graph, dataframe, outfile):
             print "TOP ATTEMPT: " + str(attempt)
 
     finalScore = oscore.getScore(bestGraph, dataframe)
-    # print "****** INITIAL SCORE: " + str(int(initialScore)) + ", FINAL SCORE: " + str(int(finalScore)) + " ******"
+    print "****** INITIAL SCORE: " + str(int(initialScore)) + ", FINAL SCORE: " + str(int(finalScore)) + " ******"
     return bestGraph
 
-# SEED the graph
-def addRandomEdge(graph):
-    fromNode = choice(graph.nodes())
-    toNode = choice(graph.nodes())
-    while fromNode==toNode:
-        toNode = choice(graph.nodes())
-    graph.add_edge(fromNode, toNode)  # seed the graph
-    return graph
 
 # MORPH: K2 ALGORITHM
 # greedy iteration over the graph looking for a better shape than current
 # attempt the modifiaction at the provided node
 # try to connect the provided node to a random other node
 # a minimum score gain is gauged before deciding to evolve the graph
-def getChangedGraph(graph, toNode, dataframe):
-    bestMoveGraph = graph.copy()    # greedily find the best graph after maxTries
+def getChangedGraph(graph, givenNode, dataframe):
+    bestGraph = graph.copy()    # greedily find the best graph after maxTries
     maxAttempts = 5
     attempt = 0
-    for randomNode in graph.nodes():
-        if attempt < maxAttempts:
-            if randomNode!=toNode:   # connect only to a different node
-                if not graph.has_edge(randomNode, toNode):     # connect only if the nodes are not connected either way
-                    if not graph.has_edge(toNode, randomNode):  # connect only if the nodes are not connected either way
-                        tentativeGraph1 = graph.copy()
-                        tentativeGraph1.add_edge(randomNode, toNode)
-                        tentativeGraph2 = graph.copy()
-                        tentativeGraph2.add_edge(toNode, randomNode)
-                        newBestGaph = compareGraphs(tentativeGraph1, tentativeGraph2, bestMoveGraph, dataframe, attempt)
-                        switched = switchGraph(newBestGaph, bestMoveGraph)
-                        bestMoveGraph = switched.copy()
+    if attempt < maxAttempts:
+        for choiceNode in graph.nodes():
+            if choiceNode!=givenNode:   # connect only to a different node
+                if not graph.has_edge(choiceNode, givenNode):     # connect only if the nodes are not connected either way
+                    if not graph.has_edge(givenNode, choiceNode):  # connect only if the nodes are not connected either way
+                        candidateGraphs = getCandidateGraphs(choiceNode, givenNode, bestGraph)
+                        newBestGraph = getBestGraph(candidateGraphs, bestGraph, dataframe)
+                        switched = switchGraph(newBestGraph, bestGraph)
+                        bestGraph = switched.copy()
                         attempt = attempt + 1
                     else: print "Did not tackle because the nodes already shared an edge..."
                 else: print "Did not tackle because the nodes already shared an edge..."
             else: print "Did not try to connect same to/from nodes..."
-    return bestMoveGraph
+    return bestGraph
 
+def getCandidateGraphs(choiceNode, givenNode, currentGraph):
+    candidates = []
+    # add edge
+    tentativeGraph1 = currentGraph.copy()
+    tentativeGraph1.add_edge(choiceNode, givenNode)
+    candidates.append(tentativeGraph1)
+    # add opposite edge
+    tentativeGraph2 = currentGraph.copy()
+    tentativeGraph2.add_edge(givenNode, choiceNode)
+    candidates.append(tentativeGraph2)
+    return candidates
 
 # COMPARE: pick the best graph from a comparison set
-def compareGraphs(tentativeGraph1, tentativeGraph2, bestMoveGraph, dataframe, attempt):
-    tentativeScore1 = oscore.getScore(tentativeGraph1, dataframe)
-    tentativeScore2 = oscore.getScore(tentativeGraph2, dataframe)
-    currentBestScore = oscore.getScore(bestMoveGraph, dataframe)
-    print "SCORE COMP: " + str(tentativeScore1) + " " + str(tentativeScore2) + " " + str(currentBestScore)
-    # if attempt>10:
-    #     if long(tentativeScore1) > long(tentativeScore2):
-    #         if long(tentativeScore1) > long(currentBestScore):
-    #             return tentativeGraph1
-    #     if long(tentativeScore2) > long(tentativeScore1):
-    #         if long(tentativeScore2) > long(currentBestScore):
-    #             return tentativeGraph2
-    # else:   # encourage getting off the status quo; formula appears to not penalize lack of parents
-    if long(tentativeScore1) > long(tentativeScore2):
-        return tentativeGraph1
-    if long(tentativeScore2) > long(tentativeScore1):
-        return tentativeGraph2
-    return bestMoveGraph
+def getBestGraph(candidates, currentGraph, dataframe):
+    priorGraph = currentGraph
+    bestGraph = priorGraph
+    priorScore = oscore.getScore(currentGraph, dataframe)
+    newBestScore = priorScore
+    for graph in candidates:
+        score = oscore.getScore(graph, dataframe)
+        if score > newBestScore:
+            bestGraph = graph.copy()
+            newBestScore = score
+    if newBestScore > priorScore:
+        print "considering switch! Score FROM: priorScore " + str(long(priorScore)) + " TO " + str(long(newBestScore))
+    return bestGraph
 
 # SWITCH GRAPH: after verifying the graph is acyclical
 def switchGraph(newBestGaph, bestMoveGraph):
-    print "considering switch!"
     cycles = list(nx.simple_cycles(newBestGaph))
     if len(cycles) != 0:
         if nx.is_directed_acyclic_graph(newBestGaph):
