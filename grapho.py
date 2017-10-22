@@ -126,7 +126,7 @@ def switchGraph(newBestGaph, currentGraph):
         if nx.is_directed_acyclic_graph(newBestGaph):
             print "DAG test failed..."
             return currentGraph
-    print "==> Switching graph candidate! TO " + oshow.toString(newBestGaph)
+    print "==> Switched to graph candidate! " + oshow.toString(newBestGaph)
     return newBestGaph
 
 # ADD RANDOM VARIABLE NODES
