@@ -87,6 +87,9 @@ graphoxnet, which relies on Python's Networkx library
 
 Note that .png files with images of each graph is also provided
 
+Example:
+![Alt text](medium.gph.jpg?raw=true "Title")
+
 ### Scoring:
 
 Scoring is performed by: 
