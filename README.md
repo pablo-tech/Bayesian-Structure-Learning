@@ -1,5 +1,3 @@
-# Project 1
-
 ## Bayesian Network Scoring
 This project is a competition to find Bayesian network structures that best fit some given data.
 
