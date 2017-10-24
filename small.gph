@@ -3,6 +3,6 @@ age,numparentschildren
 sex,age
 numparentschildren,portembarked
 age,passengerclass
-survived,sex
+sex
 survived
 fare,numsiblings

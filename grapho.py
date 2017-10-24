@@ -84,6 +84,7 @@ def getChangedGraph(graph, givenNode, dataframe):
         else: print "Did not try to connect same to/from nodes..."
     return bestGraph
 
+# GRADIENT ASCENT: looking for neighboring better scores
 def getCandidateGraphs(choiceNode, givenNode, currentGraph):
     candidates = []
     # add edge
