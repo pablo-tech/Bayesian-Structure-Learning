@@ -32,7 +32,7 @@ These datasets are taken from:
 
 ### System requirements:
 
-Python 2.7.14 with NetworkX 1.9, Pandas 0.20.3
+Python 2.7.14 with NetworkX 1.9, Pandas 0.20.3, Matplotlib 2.1.0
 
 
 ### How to Run:
