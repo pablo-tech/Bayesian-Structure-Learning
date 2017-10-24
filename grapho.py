@@ -50,6 +50,7 @@ def compute(infile, outfile):
 # OPTIMIZE
 # loop a limited number of times morphing graph into higher scoring shape
 #
+#
 def optimizeGraph(graph, dataframe, outfile):
     initialScore = oscore.getScore(graph, dataframe)
     bestGraph = graph.copy()
