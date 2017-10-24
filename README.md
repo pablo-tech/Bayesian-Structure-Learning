@@ -101,11 +101,6 @@ Because Cooper&Herskovits provide a numerical example, their formula (analogous 
 
 The final Log scoring algorithm matches Decisions Under Uncertainty, page 47, formula 2.83
 
-Both scoring algorithms are defined in graphoscore.py
-
-While not immediately evident from the formulas mentioned, both algorithms use Uniform Dirichlet Prior (all pseudocounts = 1).
-
-
 They are compared to each other in: 
 
 ``
@@ -143,18 +138,31 @@ NOTE: attention must be paid to preferably use the LOG form of the formula to av
 ### Sample output:
 
 - (medium) wine:
+ 
  alcohol,fixedacidity
+ 
  density,alcohol
+ 
  alcohol,chlorides
+ 
  fixedacidity,density
+ 
  citricacid,sulphates
+ 
  fixedacidity,citricacid
+ 
  fixedacidity,residualsugar
+ 
  fixedacidity,totalsulfurdioxide
+ 
  alcohol,volatileacidity
+ 
  fixedacidity,quality
+ 
  fixedacidity,ph
+ 
  alcohol,freesulfurdioxide
+ 
 
 ### Plot output
 
@@ -165,6 +173,10 @@ Please find in the folder:
 
 
 ### Future work:
+
+Use Uniform Dirichlet Prior (all pseudocounts = 1), for any Nijk, so there are no leaps in interpretation if ijk is
+ not present in the dataset
+
 Parallelize computation on Spark
 
 
