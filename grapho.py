@@ -58,7 +58,7 @@ def optimizeGraph(graph, dataframe, outfile):
         if attempt < maxAttempts:
             bestGraph = getChangedGraph(bestGraph, node, dataframe).copy()
             attempt = attempt + 1
-            oshow.plotGraph(bestGraph, outfile)  # Disabled for submission
+            # oshow.plotGraph(bestGraph, outfile)  # Disabled for submission
             oshow.write(outfile, bestGraph)
             # oshow.toString(optimGraph)
             print "TOP ATTEMPT: " + str(attempt)
