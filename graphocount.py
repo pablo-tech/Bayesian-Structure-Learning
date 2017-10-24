@@ -9,12 +9,12 @@ dynamicCount = {}
 
 # j represents the unique instantiations of parents: eg full joint distribution of parents
 def getNijkCountList(iRandomVar, kValueForVari, jParentVars, varValuesDictionary, dataframe):
-    countKey = getCountKey(iRandomVar, kValueForVari, jParentVars)
-    try:
-        memoizedCountList = dynamicCount[countKey]
-        if memoizedCountList != []:
-            return memoizedCountList
-    except:
+    # countKey = getCountKey(iRandomVar, kValueForVari, jParentVars)
+    # try:
+    #     memoizedCountList = dynamicCount[countKey]
+    #     if memoizedCountList != []:
+    #         return memoizedCountList
+    # except:
         # print "not found: count for " + str(countKey)
         countList = []
         countQueries = getNijkQueries(iRandomVar, kValueForVari, jParentVars, varValuesDictionary)
@@ -28,8 +28,8 @@ def getNijkCountList(iRandomVar, kValueForVari, jParentVars, varValuesDictionary
                 count = len(queryResult)
                 countList.append(count)
         # print "COUNTS=" + str(countList) + " for Nijk full joint " + str(countQueries)
-        dynamicCount[countKey] = countList
-        print str(countKey) + " COUNT MEMOIZED TO: " + str(countList)
+        # dynamicCount[countKey] = countList
+        # print str(countKey) + " COUNT MEMOIZED TO: " + str(countList)
         return countList
 
 def getCountKey(iRandomVar, kValueForVari, jParentVars):
